@@ -6,7 +6,7 @@ private:
 
 	int x, y, dx, dy, alto, ancho;
 	//agregue este comentario
-
+	//date de baja khaled
 
 public:
 	Entidad();
