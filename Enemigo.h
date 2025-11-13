@@ -2,15 +2,15 @@
 #include "Entidad.h"
 #include "Jugador.h"
 
-class Enemigos : public Entidad {
+class Enemigo : public Entidad {
 protected:
 	int dx, dy;
 	Jugador* jugador; //para que los enemigos puedan interactuar con el jugador
 	bool activo;
 
 public:
-	Enemigos(int x, int y, Jugador* jugador);
-	~Enemigos();
+	Enemigo(int x, int y, Jugador* jugador);
+	~Enemigo();
 
 	bool estaActivo() { return activo; }
 	void desactivar() { activo = false; }
