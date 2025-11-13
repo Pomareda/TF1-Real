@@ -5,6 +5,7 @@ class Entidad
 private:
 
 	int x, y, dx, dy, alto, ancho;
+	//agregue este comentario
 
 
 public:
