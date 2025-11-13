@@ -50,18 +50,18 @@ inline void Jugador::mover(Graphics^ g, Bitmap^ bmp) {
 	switch (Direccion)
 	{
 	case Direcciones::Abajo:
-		idX = 0;
-		if (idY > 0 && idY < 3)
-			++idY;
+		idY = 0;  // Fila 0 - mirando abajo
+		if (idX >= 0 && idX < 5)
+			++idX;
 		else
-			idY = 1;
+			idX = 0;
 		dx = 0;
 		dy = 10;
 		Ultima = Abajo;
 		break;
 	case Direcciones::Arriba:
-		idY = 0;
-		if (idX >= 0 && idX < 3)
+		idY = 2;  // Fila 2 - mirando arriba
+		if (idX >= 0 && idX < 5)
 			++idX;
 		else
 			idX = 0;
@@ -70,21 +70,21 @@ inline void Jugador::mover(Graphics^ g, Bitmap^ bmp) {
 		Ultima = Arriba;
 		break;
 	case Direcciones::Derecha:
-		idY = 1;
-		if (idX >= 1 && idX < 3)
+		idY = 1;  // Fila 1 - derecha mirando abajo
+		if (idX >= 0 && idX < 5)
 			++idX;
 		else
-			idX = 1;
+			idX = 0;
 		dx = 10;
 		dy = 0;
 		Ultima = Derecha;
 		break;
 	case Direcciones::Izquierda:
-		idY = 3;
-		if (idX >= 1 && idX < 3)
+		idY = 4;  // Fila 4 - izquierda mirando abajo
+		if (idX >= 0 && idX < 5)
 			++idX;
 		else
-			idX = 1;
+			idX = 0;
 		dx = -10;
 		dy = 0;
 		Ultima = Izquierda;
@@ -94,27 +94,26 @@ inline void Jugador::mover(Graphics^ g, Bitmap^ bmp) {
 		switch (Ultima)
 		{
 		case Direcciones::Abajo:
-			idY = 2;
+			idY = 0;
 			idX = 0;
 			break;
 		case Direcciones::Arriba:
-			idY = 0;
+			idY = 2;
 			idX = 0;
 			break;
 		case Direcciones::Derecha:
 			idY = 1;
-			idX = 1;
+			idX = 0;
 			break;
 		case Direcciones::Izquierda:
-			idY = 3;
-			idX = 1;
+			idY = 4;
+			idX = 0;
 			break;
 		default:
 			break;
 		}
 		break;
 	}
-
 	x += dx;
 	y += dy;
 }
