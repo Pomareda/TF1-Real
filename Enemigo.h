@@ -1,6 +1,7 @@
 #pragma once
 #include "Entidad.h"
 #include "Jugador.h"
+using namespace System::Drawing;
 
 class Enemigo : public Entidad {
 protected:
@@ -13,10 +14,9 @@ public:
 
 	bool estaActivo() { return activo; }
 	void desactivar() { activo = false; }
-
+	
 	void mover();
 	void dibujar(Graphics^ g, Bitmap^ bmp);
-
 	int getAncho() { return ancho; }
 	int getAlto() { return alto; }
 };
@@ -46,6 +46,8 @@ inline void Enemigo::mover() {
 
 inline void Enemigo::dibujar(Graphics^ g, Bitmap^ bmp) {
 	if (!activo) return;
+	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx, y + 12, (ancho - 7), (alto - 13));
+	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x, y, ancho * 1.15, alto * 1.15);
 	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);

@@ -8,17 +8,17 @@ private:
 	Jugador jugador;
 	vector<Enemigo*> enemigos;
 public:
-	Controladora();
+	Controladora(Bitmap^bmp);
 	~Controladora();
 	void agregarEnemigo(Enemigo* enemigo);
 	void moverEnemigos(Graphics^ g, Bitmap^ bmp);
 	void moverJugador(Graphics^ g, Bitmap^ bmp);
 	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo);
-
+	bool colision(Graphics^ g);
 	Jugador* getJugador() { return &jugador; }
 };
 
-inline Controladora::Controladora() : jugador(100, 100, 64, 64) {
+inline Controladora::Controladora(Bitmap ^bmp) : jugador(100, 80, bmp->Width/6, bmp->Height/6) {
 }
 
 inline Controladora::~Controladora() {
@@ -38,7 +38,15 @@ inline void Controladora::moverEnemigos(Graphics^ g, Bitmap^ bmp) {
 }
 
 inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp) {
+	int posX_anterior = jugador.getX();
+	int posY_anterior = jugador.getY();
+
 	jugador.mover();
+
+	if (colision(g)) {
+		jugador.SetX(posX_anterior);
+		jugador.SetY(posY_anterior);
+	}
 }
 
 inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo) {
@@ -46,4 +54,14 @@ inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmp
 	for (Enemigo* enemigo : enemigos) {
 		enemigo->dibujar(g, bmpEnemigo);
 	}
+}
+
+inline bool Controladora::colision(Graphics^ g) {
+	for (int i = 0; i < enemigos.size(); i++)
+	{
+		if (jugador.getRect().IntersectsWith(enemigos[i]->getRect())) {
+			return true;
+		}
+	}
+	return false;
 }

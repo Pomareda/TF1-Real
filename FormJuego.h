@@ -19,19 +19,14 @@ namespace TF1 {
 			g = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
-			control = new Controladora();
-
+			map1 = gcnew Bitmap("Mapa1.png");
 			bmpPersonajeHumano = gcnew Bitmap("PersonajeHuman.png");
 			bmpEnemigoIA = gcnew Bitmap("EnemigoIA.png");
-			
+			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
+			control = new Controladora(bmpPersonajeHumano);
 			Jugador* jugadorPtr = control->getJugador();
-
 			Enemigo* enemigo1 = new Enemigo(80, 180, 0, 0);
 			control->agregarEnemigo(enemigo1);
-
-			map1 = gcnew Bitmap("Mapa1.png");
-			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
-
 		}
 
 	protected:
@@ -114,7 +109,6 @@ namespace TF1 {
 
 		gBuffer->Clear(Color::White);
 		gBuffer->DrawImage(map1, 0, 0, this->ClientRectangle.Width, this->ClientRectangle.Height);
-
 		control->moverJugador(gBuffer, bmpPersonajeHumano);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 
