@@ -15,17 +15,11 @@ protected:
 	Direcciones Direccion;
 
 public:
-    Jugador(int x, int y, int ancho, int alto) : Entidad(x, y, ancho, alto) {
-		
-		Ultima = Direcciones::Abajo;
-		Direccion = Direcciones::Ninguna;
-
-
-	};
+	Jugador(int x, int y, int ancho, int alto);
     ~Jugador();
 
-    void mover(Graphics^ g, Bitmap^ bmp)override;
-
+    void mover();
+	void dibujar(Graphics^ g, Bitmap^ bmp);
     void mostrarConfianza();
 
     bool colision_mapa();
@@ -33,9 +27,6 @@ public:
     bool colision_IAsuprema();
     bool colisiona_aliado();
 
-    /*virtual void dibujar() = 0;*/
-
-    // Getters y setters
     int getConfianza() { return confianza; };
     int getAncho() { return ancho; };
     int getAlto() { return alto; };
@@ -45,8 +36,16 @@ public:
 
 };
 
+inline Jugador::Jugador(int x, int y, int ancho, int alto) : Entidad(x, y, ancho, alto) {
+	confianza = 100;
+	opc = 1; 
+	Ultima = Direcciones::Abajo;
+	Direccion = Direcciones::Ninguna;
+}
 
-inline void Jugador::mover(Graphics^ g, Bitmap^ bmp) {
+inline Jugador::~Jugador() {}
+
+inline void Jugador::mover() {
 	switch (Direccion)
 	{
 	case Direcciones::Abajo:
@@ -116,4 +115,11 @@ inline void Jugador::mover(Graphics^ g, Bitmap^ bmp) {
 	}
 	x += dx;
 	y += dy;
+}
+
+inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
+	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
+	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 1.0, alto * 1.0);
+	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);
+
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "Jugador.h"
+#include "Controladora.h"
 
 namespace TF1 {
 
@@ -19,8 +19,16 @@ namespace TF1 {
 			g = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
+			control = new Controladora();
+
 			bmpPersonajeHumano = gcnew Bitmap("PersonajeHuman.png");
-			jugadorHumano = new Jugador(100, 100, bmpPersonajeHumano->Width / 6, bmpPersonajeHumano->Height / 6);
+			bmpEnemigoIA = gcnew Bitmap("EnemigoIA.png");
+			
+			Jugador* jugadorPtr = control->getJugador();
+			Enemigo* enemigo1 = new Enemigo(300, 100, jugadorPtr, 2, 0);
+			
+			control->agregarEnemigo(enemigo1);
+
 			map1 = gcnew Bitmap("Mapa1.png");
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
 
@@ -33,6 +41,7 @@ namespace TF1 {
 			{
 				delete components;
 			}
+			delete control;
 		}
 	private: 
 		System::ComponentModel::IContainer^ components;
@@ -42,7 +51,7 @@ namespace TF1 {
 		Bitmap^ bmpPersonajeHumano;
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ map1;
-		Jugador* jugadorHumano;
+		Controladora* control;
 		System::Windows::Forms::Timer^ timer1;
 
 #pragma region Windows Form Designer generated code
@@ -65,7 +74,6 @@ namespace TF1 {
 			this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
 			this->Name = L"MenuForm";
 			this->Text = L"MenuForm";
-			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyDown);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyUp);
 			this->ResumeLayout(false);
@@ -75,39 +83,45 @@ namespace TF1 {
 	
 	private: 
 	System::Void MenuForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-
+		Jugador* jugadorPtr = control->getJugador();
 		switch (e->KeyCode)
 		{
 		case Keys::W:
-			jugadorHumano->setDireccion(Arriba);
+			jugadorPtr->setDireccion(Arriba);
 			break;
 		case Keys::A:
-			jugadorHumano->setDireccion(Izquierda);
+			jugadorPtr->setDireccion(Izquierda);
 			break;
 		case Keys::S:
-			jugadorHumano->setDireccion(Abajo);
+			jugadorPtr->setDireccion(Abajo);
 			break;
 		case Keys::D:
-			jugadorHumano->setDireccion(Derecha);
+			jugadorPtr->setDireccion(Derecha);
 			break;
 		default:
 			break;
 		}
-
 	}
+
+	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		control->getJugador()->setDireccion(Ninguna);
+	}
+
 	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 
-		buffer->Graphics->Clear(Color::White);
-		jugadorHumano->mover(buffer->Graphics, bmpPersonajeHumano);
-		buffer->Graphics->DrawImage(map1, 0, 0, map1->Width, map1->Height);
-		jugadorHumano->dibujar(buffer->Graphics, bmpPersonajeHumano);
+		Graphics^ gBuffer = buffer->Graphics;
+
+		gBuffer->Clear(Color::White);
+		gBuffer->DrawImage(map1, 0, 0, this->ClientRectangle.Width, this->ClientRectangle.Height);
+
+		control->moverJugador(gBuffer, bmpPersonajeHumano);
+		control->moverEnemigos(gBuffer, bmpEnemigoIA);
+
+
+		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA);
 
 		buffer->Render(g);
 	} 
-	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		jugadorHumano->setDireccion(Ninguna);
-	}
-	System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
-	}
-};
+
+	};
 }

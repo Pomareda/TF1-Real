@@ -21,18 +21,14 @@ public:
 
     //void borrar(int x, int y);
 
-    virtual void mover(Graphics^ g, Bitmap^ bmp) = 0;
+    virtual void mover() = 0;
     virtual void dibujar(Graphics^ g, Bitmap^ bmp);
 
     //getters y setters
     int getX() { return x; };
     int getY() { return y; };
 
-    //dibujos especificos
-    /*void dibujar_Humano();
-    void dibujar_IA();*/
-
-    virtual System::Drawing::Rectangle getRect() {
+        virtual System::Drawing::Rectangle getRect() {
         return System::Drawing::Rectangle(x, y, ancho, alto);
     }
 };
