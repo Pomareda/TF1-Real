@@ -23,7 +23,7 @@
     <ClInclude Include="Jugador.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="MenuForm.h">
+    <ClInclude Include="FormJuego.h">
       <Filter>Formularios</Filter>
     </ClInclude>
   </ItemGroup>

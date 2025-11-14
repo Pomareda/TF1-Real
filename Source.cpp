@@ -1,4 +1,4 @@
-#include "MenuForm.h"
+#include "FormJuego.h"
 using namespace TF1;
 
 int main() {

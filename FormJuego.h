@@ -24,6 +24,7 @@ namespace TF1 {
 			buffer = canvas->Allocate(g, this->ClientRectangle);
 			bmpPersonajeHumano = gcnew Bitmap("PersonajeHumano.png");
 			jugadorHumano = new Jugador(100, 100, bmpPersonajeHumano->Width / 6, bmpPersonajeHumano->Height / 6);
+			map1 = gcnew Bitmap("Mapa1.png");
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
 
 		}
@@ -52,9 +53,10 @@ namespace TF1 {
 		BufferedGraphicsContext^ canvas;
 		BufferedGraphics^ buffer;
 		Bitmap^ bmpPersonajeHumano;
+		Bitmap^ map1;
+		Jugador* jugadorHumano;
 	private: System::Windows::Forms::Timer^ timer1;
 
-		Jugador* jugadorHumano;
 		
 
 
@@ -78,7 +80,7 @@ namespace TF1 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(794, 536);
+			this->ClientSize = System::Drawing::Size(1200, 633);
 			this->Name = L"MenuForm";
 			this->Text = L"MenuForm";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyDown);
@@ -115,7 +117,9 @@ namespace TF1 {
 
 		buffer->Graphics->Clear(Color::White);
 		jugadorHumano->mover(buffer->Graphics, bmpPersonajeHumano);
+		buffer->Graphics->DrawImage(map1, 0, 0, map1->Width, map1->Height);
 		jugadorHumano->dibujar(buffer->Graphics, bmpPersonajeHumano);
+
 		buffer->Render(g);
 	}
 	private: System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
