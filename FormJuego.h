@@ -25,8 +25,8 @@ namespace TF1 {
 			bmpEnemigoIA = gcnew Bitmap("EnemigoIA.png");
 			
 			Jugador* jugadorPtr = control->getJugador();
-			Enemigo* enemigo1 = new Enemigo(300, 100, jugadorPtr, 2, 0);
-			
+
+			Enemigo* enemigo1 = new Enemigo(80, 180, 0, 0);
 			control->agregarEnemigo(enemigo1);
 
 			map1 = gcnew Bitmap("Mapa1.png");
@@ -45,6 +45,7 @@ namespace TF1 {
 		}
 	private: 
 		System::ComponentModel::IContainer^ components;
+		System::Windows::Forms::Timer^ timer1;
 		Graphics^ g;
 		BufferedGraphicsContext^ canvas;
 		BufferedGraphics^ buffer;
@@ -52,7 +53,6 @@ namespace TF1 {
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ map1;
 		Controladora* control;
-		System::Windows::Forms::Timer^ timer1;
 
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
@@ -71,9 +71,10 @@ namespace TF1 {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1600, 779);
-			this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MenuForm";
 			this->Text = L"MenuForm";
+			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyDown);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyUp);
 			this->ResumeLayout(false);
@@ -123,5 +124,7 @@ namespace TF1 {
 		buffer->Render(g);
 	} 
 
-	};
+	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }
