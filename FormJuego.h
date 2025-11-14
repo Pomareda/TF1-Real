@@ -10,9 +10,6 @@ namespace TF1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Resumen de MenuForm
-	/// </summary>
 	public ref class MenuForm : public System::Windows::Forms::Form
 	{
 	public:
@@ -30,9 +27,6 @@ namespace TF1 {
 		}
 
 	protected:
-		/// <summary>
-		/// Limpiar los recursos que se estén usando.
-		/// </summary>
 		~MenuForm()
 		{
 			if (components)
@@ -40,31 +34,18 @@ namespace TF1 {
 				delete components;
 			}
 		}
-	private: System::ComponentModel::IContainer^ components;
-	protected:
-
-	private:
-		/// <summary>
-		/// Variable del diseñador necesaria.
-		/// </summary>
-
-
+	private: 
+		System::ComponentModel::IContainer^ components;
 		Graphics^ g;
 		BufferedGraphicsContext^ canvas;
 		BufferedGraphics^ buffer;
 		Bitmap^ bmpPersonajeHumano;
+		Bitmap^ bmpEnemigoIA;
 		Bitmap^ map1;
 		Jugador* jugadorHumano;
-	private: System::Windows::Forms::Timer^ timer1;
-
-		
-
+		System::Windows::Forms::Timer^ timer1;
 
 #pragma region Windows Form Designer generated code
-		/// <summary>
-		/// Método necesario para admitir el Diseñador. No se puede modificar
-		/// el contenido de este método con el editor de código.
-		/// </summary>
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
@@ -78,18 +59,22 @@ namespace TF1 {
 			// 
 			// MenuForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1200, 633);
+			this->ClientSize = System::Drawing::Size(1600, 779);
+			this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
 			this->Name = L"MenuForm";
 			this->Text = L"MenuForm";
+			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyDown);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyUp);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-	private: System::Void MenuForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	
+	private: 
+	System::Void MenuForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 
 		switch (e->KeyCode)
 		{
@@ -105,15 +90,12 @@ namespace TF1 {
 		case Keys::D:
 			jugadorHumano->setDireccion(Derecha);
 			break;
-		
-
-
 		default:
 			break;
 		}
 
 	}
-	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 
 		buffer->Graphics->Clear(Color::White);
 		jugadorHumano->mover(buffer->Graphics, bmpPersonajeHumano);
@@ -121,9 +103,11 @@ namespace TF1 {
 		jugadorHumano->dibujar(buffer->Graphics, bmpPersonajeHumano);
 
 		buffer->Render(g);
-	}
-	private: System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	} 
+	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		jugadorHumano->setDireccion(Ninguna);
+	}
+	System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 };
 }
