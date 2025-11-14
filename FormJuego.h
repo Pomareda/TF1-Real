@@ -22,7 +22,7 @@ namespace TF1 {
 			g = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
-			bmpPersonajeHumano = gcnew Bitmap("PersonajeHumano.png");
+			bmpPersonajeHumano = gcnew Bitmap("PersonajeHuman.png");
 			jugadorHumano = new Jugador(100, 100, bmpPersonajeHumano->Width / 6, bmpPersonajeHumano->Height / 6);
 			map1 = gcnew Bitmap("Mapa1.png");
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
