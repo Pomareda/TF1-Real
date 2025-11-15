@@ -17,12 +17,14 @@ public:
 	void crearRecursos(Bitmap^ recurso);
 
 
+
 	void moverEnemigos(Graphics^ g, Bitmap^ bmp);
 	void moverJugador(Graphics^ g, Bitmap^ bmp);
 	void moverRecursos(Graphics^ g, Bitmap^ bmp);
 
 	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso);
-	bool colision(Graphics^ g);
+	bool colisionEnemigo(Graphics^ g);
+	bool colisionRecurso(Graphics^ g);
 	Jugador* getJugador() { return &jugador; }
 };
 
@@ -58,6 +60,7 @@ inline void Controladora::crearRecursos(Bitmap^ recurso)
 
 }
 
+
 inline void Controladora::moverEnemigos(Graphics^ g, Bitmap^ bmp) {
 	for (Enemigo* enemigo : enemigos) {
 		enemigo->mover();
@@ -70,9 +73,15 @@ inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp) {
 
 	jugador.mover();
 
-	if (colision(g)) {
+	if (colisionEnemigo(g)) {
 		jugador.SetX(posX_anterior);
 		jugador.SetY(posY_anterior);
+	}
+
+	if(colisionRecurso(g))
+	{
+		jugador.setConfianza(jugador.getConfianza() + 10);
+		
 	}
 }
 
@@ -92,17 +101,33 @@ inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmp
 	}
 	jugador.dibujar(g, bmp);
 
-
-
-	
 }
 
-inline bool Controladora::colision(Graphics^ g) {
+inline bool Controladora::colisionEnemigo(Graphics^ g) {
 	for (int i = 0; i < enemigos.size(); i++)
 	{
 		if (jugador.getRect().IntersectsWith(enemigos[i]->getRect())) {
 			return true;
 		}
+
 	}
+
+	
+
+	return false;
+}
+
+inline bool Controladora::colisionRecurso(Graphics^ g)
+{
+	for (int i = 0; i < recursos.size(); i++)
+	{
+		if (jugador.getRect().IntersectsWith(recursos[i]->getRect())) {
+			recursos[i]->setActivo(false);
+			recursos.erase(recursos.begin() + i);
+			return true;
+		}
+
+	}
+
 	return false;
 }

@@ -28,6 +28,8 @@ public:
     bool colision_IAsuprema();
     bool colisiona_aliado();
 
+	System::Drawing::Rectangle getRect();
+
     int getConfianza() { return confianza; };
 
     int getAncho() { return ancho; };
@@ -128,11 +130,15 @@ inline void Jugador::mover() {
 
 inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 	//Si se va hacer con opcion, faltaria eso aqui
-	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2+ dx, y + 12, (ancho - 7), (alto - 13));
+	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 33));
 	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
 
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 1.0, alto * 1.0);
+	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 0.9, alto * 0.9);
 	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);
 
+}
+
+inline System::Drawing::Rectangle Jugador::getRect() {
+	return System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 33));
 }

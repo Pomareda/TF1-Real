@@ -52,13 +52,16 @@ namespace TF1 {
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ bmpRecurso;
 		Bitmap^ map1;
-		Controladora* control;
+	private: System::Windows::Forms::ProgressBar^ BarraConfianza;
+
+		   Controladora* control;
 
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->BarraConfianza = (gcnew System::Windows::Forms::ProgressBar());
 			this->SuspendLayout();
 			// 
 			// timer1
@@ -66,12 +69,22 @@ namespace TF1 {
 			this->timer1->Enabled = true;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MenuForm::timer1_Tick);
 			// 
+			// BarraConfianza
+			// 
+			this->BarraConfianza->Enabled = false;
+			this->BarraConfianza->Location = System::Drawing::Point(240, 520);
+			this->BarraConfianza->Name = L"BarraConfianza";
+			this->BarraConfianza->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->BarraConfianza->Size = System::Drawing::Size(729, 28);
+			this->BarraConfianza->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
+			this->BarraConfianza->TabIndex = 0;
+			// 
 			// MenuForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1600, 779);
-			this->Margin = System::Windows::Forms::Padding(4);
+			this->ClientSize = System::Drawing::Size(1200, 633);
+			this->Controls->Add(this->BarraConfianza);
 			this->Name = L"MenuForm";
 			this->Text = L"MenuForm";
 			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
