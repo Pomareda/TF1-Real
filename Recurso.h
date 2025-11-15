@@ -19,7 +19,7 @@ public:
 		ancho = bmpRecurso->Width / 4;
 		alto = bmpRecurso->Height / 6;
 		x = rand->Next(1000);
-		y = rand->Next(600);
+		y = rand->Next(672);
 		idX = idY = 0;
 
 		activo = true;
