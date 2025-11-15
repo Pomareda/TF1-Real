@@ -31,6 +31,7 @@ namespace TF1 {
 			Jugador* jugadorPtr = control->getJugador();
 			Enemigo* enemigo1 = new Enemigo(80, 180, 0, 0);
 			control->agregarEnemigo(enemigo1);
+			cant_recursos = 0;
 		}
 
 	protected:
@@ -52,6 +53,7 @@ namespace TF1 {
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ bmpRecurso;
 		Bitmap^ map1;
+		int cant_recursos;
 
 	private: System::Windows::Forms::Panel^ verticalProgressBar;
 
@@ -128,12 +130,16 @@ namespace TF1 {
 		gBuffer->Clear(Color::White);
 		gBuffer->DrawImage(map1, 0, 0, this->ClientRectangle.Width, this->ClientRectangle.Height);
 		control->moverJugador(gBuffer, bmpPersonajeHumano, mapa1);
-		control->crearRecursos(bmpRecurso);
+		if (cant_recursos < 4) {
+			control->crearRecursos(bmpRecurso);
+		}
+
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
 		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso);
 		this->verticalProgressBar->Invalidate();
 		buffer->Render(g);
+		cant_recursos++;
 	} 
 
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {

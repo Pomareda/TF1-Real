@@ -2,6 +2,7 @@
 #include "Enemigo.h"
 #include "Jugador.h"
 #include "Recurso.h"
+#include "Mapas.h"
 #include <vector>
 
 class Controladora {
@@ -28,7 +29,7 @@ public:
 	Jugador* getJugador() { return &jugador; }
 };
 
-inline Controladora::Controladora(Bitmap ^bmp) : jugador(100, 80, bmp->Width/6, bmp->Height/6) {
+inline Controladora::Controladora(Bitmap ^bmp) : jugador(435, 80, bmp->Width/6, bmp->Height/6) {
 }
 
 inline Controladora::~Controladora() {
@@ -48,16 +49,8 @@ inline void Controladora::agregarRecurso(Recurso* recursito)
 
 inline void Controladora::crearRecursos(Bitmap^ recurso)
 {
-	static int contador  = 0;
-	if(contador >= 10)
-	{
 		Recurso* recursox = new Recurso(recurso);
-		recursos.push_back(recursox);
-		contador = 0;
-	}
-
-	contador++;
-
+		recursos.push_back(recursox);	
 }
 
 
@@ -92,7 +85,7 @@ inline void Controladora::moverRecursos(Graphics^ g, Bitmap^ bmp)
 
 inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso) {
 	for (Recurso* r : recursos) {
-		r->dibujar(g, bmpRecurso);
+		r->dibujar(g, bmpRecurso, mapa1);
 	}
 	for (Enemigo* enemigo : enemigos) {
 		enemigo->dibujar(g, bmpEnemigo);

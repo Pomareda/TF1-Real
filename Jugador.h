@@ -59,7 +59,7 @@ inline Jugador::~Jugador() {}
 inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 	//Si se va hacer con opcion, faltaria eso aqui
 
-	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 33));
+	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 37));
 	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
 
 
@@ -67,7 +67,7 @@ inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 	g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);*/
 
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 0.9, alto * 0.9);
+	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 0.85, alto * 0.85);
 	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);
 
 }
@@ -143,9 +143,8 @@ inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 		}
 		break;
 	}
-	System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 33));
+	System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 37));
 	g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
-	// Colisiones con el mapa Y FALTA ARREGLAR EL DY YU PINTAR BIEN EL MAPA
 	for (int i = 0; i < 84; i++)
 	{
 		X = 0;
@@ -171,8 +170,8 @@ inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 	}
 	x += dx;
 	y += dy;
-}
+}//nodeseo
 
 inline System::Drawing::Rectangle Jugador::getRect() {
-	return System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 33));
+	return System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 37));
 }
