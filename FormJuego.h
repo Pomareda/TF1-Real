@@ -76,6 +76,7 @@ namespace TF1 {
 			this->BarraConfianza->Name = L"BarraConfianza";
 			this->BarraConfianza->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
 			this->BarraConfianza->Size = System::Drawing::Size(729, 28);
+			this->BarraConfianza->Step = 1;
 			this->BarraConfianza->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->BarraConfianza->TabIndex = 0;
 			// 
@@ -131,6 +132,8 @@ namespace TF1 {
 		control->crearRecursos(bmpRecurso);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
+
+		BarraConfianza->Value = control->getJugador()->getConfianza() % 2 == 0 ? + 1 : +0;
 
 
 		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso);
