@@ -29,11 +29,16 @@ public:
     bool colisiona_aliado();
 
     int getConfianza() { return confianza; };
+
     int getAncho() { return ancho; };
     int getAlto() { return alto; };
+
     void setConfianza(int p) { confianza = p; };
+
 	void setDireccion(Direcciones d) { Direccion = d; }
+
 	Direcciones getUltima() { return Ultima; }
+
 	void SetDx(int newvalor) { dx = newvalor; }
 	void SetDy(int newvalor) { dy = newvalor; }
 	void SetX(int newX) { x = newX; }
@@ -122,9 +127,10 @@ inline void Jugador::mover() {
 }
 
 inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
-	
+	//Si se va hacer con opcion, faltaria eso aqui
 	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2+ dx, y + 12, (ancho - 7), (alto - 13));
 	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
+
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 1.0, alto * 1.0);
 	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);

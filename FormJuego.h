@@ -1,5 +1,6 @@
 #pragma once
 #include "Controladora.h"
+#include "Mapas.h"
 
 namespace TF1 {
 
@@ -22,6 +23,9 @@ namespace TF1 {
 			map1 = gcnew Bitmap("Mapa1.png");
 			bmpPersonajeHumano = gcnew Bitmap("PersonajeHuman.png");
 			bmpEnemigoIA = gcnew Bitmap("EnemigoIA.png");
+
+			bmpRecurso = gcnew Bitmap("Recurso.png");
+
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
 			control = new Controladora(bmpPersonajeHumano);
 			Jugador* jugadorPtr = control->getJugador();
@@ -46,6 +50,7 @@ namespace TF1 {
 		BufferedGraphics^ buffer;
 		Bitmap^ bmpPersonajeHumano;
 		Bitmap^ bmpEnemigoIA;
+		Bitmap^ bmpRecurso;
 		Bitmap^ map1;
 		Controladora* control;
 
@@ -110,10 +115,12 @@ namespace TF1 {
 		gBuffer->Clear(Color::White);
 		gBuffer->DrawImage(map1, 0, 0, this->ClientRectangle.Width, this->ClientRectangle.Height);
 		control->moverJugador(gBuffer, bmpPersonajeHumano);
+		control->crearRecursos(bmpRecurso);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
+		control->moverRecursos(gBuffer, bmpRecurso);
 
 
-		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA);
+		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso);
 
 		buffer->Render(g);
 	} 

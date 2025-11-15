@@ -120,6 +120,8 @@
     <ClInclude Include="FormJuego.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Mapas.h" />
+    <ClInclude Include="Recurso.h" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

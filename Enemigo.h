@@ -39,8 +39,8 @@ inline void Enemigo::mover() {
 
 	if (idY == 4 && idX < 4) { idY = 0; }
 	
-	x += dx;
-	y += dy;
+	/*x += dx;
+	y += dy;*/
 	
 }
 

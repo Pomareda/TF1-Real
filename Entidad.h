@@ -1,4 +1,5 @@
 #pragma once
+#include <ctime>
 
 enum Direcciones { Ninguna, Arriba, Abajo, Derecha, Izquierda };
 using namespace System::Drawing;
@@ -21,14 +22,14 @@ public:
 
     //void borrar(int x, int y);
 
-    virtual void mover() = 0;
+    virtual void mover() {};
     virtual void dibujar(Graphics^ g, Bitmap^ bmp);
 
     //getters y setters
     int getX() { return x; };
     int getY() { return y; };
 
-        virtual System::Drawing::Rectangle getRect() {
+    virtual System::Drawing::Rectangle getRect() {
         return System::Drawing::Rectangle(x, y, ancho, alto);
     }
 };
