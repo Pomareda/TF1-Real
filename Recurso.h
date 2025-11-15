@@ -3,7 +3,7 @@
 
 using namespace System;
 
-class Recurso
+ref class Recurso
 {
 private:
 
@@ -31,7 +31,7 @@ public:
 	void moverRecurso();
 
 
-	bool estaActivo() const { return activo; }
+	bool estaActivo() override { return activo; }
 
 	void setActivo(bool a) { activo = a; }
 

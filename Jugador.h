@@ -8,7 +8,7 @@ using namespace System::Drawing;
 using namespace System;
 using namespace std;
 
-class Jugador : public Entidad {
+ref class Jugador : public Entidad {
 protected:
     int confianza;
 	int opc; //1 humano, 2 IA. Dfine bmp a dibujar
@@ -20,15 +20,15 @@ public:
     ~Jugador();
 
     void mover(Graphics^ g, int mapa1[84][143]);
-	void dibujar(Graphics^ g, Bitmap^ bmp);
-    void mostrarConfianza();
+	void dibujar(Graphics^ g, Bitmap^ bmp) override;
+   /* void mostrarConfianza();
 
     bool colision_mapa();
     bool colision_enemigos();
     bool colision_IAsuprema();
-    bool colisiona_aliado();
+    bool colisiona_aliado();*/
 
-	System::Drawing::Rectangle getRect();
+	System::Drawing::Rectangle getRect() override;
 
     int getConfianza() { return confianza; };
 
@@ -61,10 +61,6 @@ inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 
 	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 37));
 	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
-
-
-	/*System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 33));
-	g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);*/
 
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 0.85, alto * 0.85);
@@ -153,11 +149,11 @@ inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 			System::Drawing::Rectangle  Rec1 = System::Drawing::Rectangle(X, Y, 8, 8);
 
 
-			if (mapa1[i][j] == 0)
-				g->DrawRectangle(System::Drawing::Pens::White, X, Y, 8, 8);
-
+			if (mapa1[i][j] == 0) {
+				g->DrawRectangle(System::Drawing::Pens::Transparent, X, Y, 8, 8);
+			}
 			else {
-				g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8);
+				//g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8); ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
 
 				if (getRect().IntersectsWith(Rec1))dx = 0;
 				if (Jugador2.IntersectsWith(Rec1)) {
@@ -170,7 +166,7 @@ inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 	}
 	x += dx;
 	y += dy;
-}//nodeseo
+}
 
 inline System::Drawing::Rectangle Jugador::getRect() {
 	return System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 37));

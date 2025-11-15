@@ -27,9 +27,9 @@ namespace TF1 {
 			bmpRecurso = gcnew Bitmap("Recurso.png");
 
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
-			control = new Controladora(bmpPersonajeHumano);
-			Jugador* jugadorPtr = control->getJugador();
-			Enemigo* enemigo1 = new Enemigo(80, 180, 0, 0);
+			control = gcnew Controladora(bmpPersonajeHumano);
+			Jugador^ jugadorPtr = control->getJugador();
+			Enemigo^ enemigo1 = gcnew Enemigo(80, 180, 0, 0);
 			control->agregarEnemigo(enemigo1);
 			cant_recursos = 0;
 		}
@@ -57,7 +57,7 @@ namespace TF1 {
 
 	private: System::Windows::Forms::Panel^ verticalProgressBar;
 
-		   Controladora* control;
+		   Controladora^ control;
 
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
@@ -76,7 +76,7 @@ namespace TF1 {
 			// 
 			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->verticalProgressBar->Location = System::Drawing::Point(1100, 32);
-			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
+			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(2);
 			this->verticalProgressBar->Name = L"verticalProgressBar";
 			this->verticalProgressBar->Size = System::Drawing::Size(42, 569);
 			this->verticalProgressBar->TabIndex = 1;
@@ -89,6 +89,7 @@ namespace TF1 {
 			this->ClientSize = System::Drawing::Size(1200, 633);
 			this->Controls->Add(this->verticalProgressBar);
 			this->Name = L"MenuForm";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MenuForm";
 			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyDown);
@@ -100,7 +101,7 @@ namespace TF1 {
 	
 	private: 
 	System::Void MenuForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		Jugador* jugadorPtr = control->getJugador();
+		Jugador^ jugadorPtr = control->getJugador();
 		switch (e->KeyCode)
 		{
 		case Keys::W:
@@ -115,8 +116,12 @@ namespace TF1 {
 		case Keys::D:
 			jugadorPtr->setDireccion(Derecha);
 			break;
-		default:
+		case Keys::E:		
+			control->dialogoConIA();
 			break;
+		
+		/*default:
+			break;*/
 		}
 	}
 	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
@@ -136,7 +141,7 @@ namespace TF1 {
 
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
-		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso);
+		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso, mapa1);
 		this->verticalProgressBar->Invalidate();
 		buffer->Render(g);
 		cant_recursos++;

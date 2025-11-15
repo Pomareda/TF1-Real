@@ -5,7 +5,7 @@ enum Direcciones { Ninguna, Arriba, Abajo, Derecha, Izquierda };
 using namespace System::Drawing;
 
 
-class Entidad {
+ref class Entidad {
 protected:
     int x, y;
 	int dx, dy;

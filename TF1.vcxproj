@@ -121,6 +121,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Mapas.h" />
+    <ClInclude Include="Dialogo.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Recurso.h" />
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +134,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MyDialogo.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Dialogo.resx">
+      <DependentUpon>Dialogo.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormJuego.resx">
       <DependentUpon>FormJuego.h</DependentUpon>
     </EmbeddedResource>

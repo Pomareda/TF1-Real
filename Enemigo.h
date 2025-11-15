@@ -3,7 +3,7 @@
 #include "Jugador.h"
 using namespace System::Drawing;
 
-class Enemigo : public Entidad {
+ref class Enemigo : public Entidad {
 protected:
 	int dx, dy;
 	bool activo;
@@ -15,8 +15,8 @@ public:
 	bool estaActivo() { return activo; }
 	void desactivar() { activo = false; }
 	
-	void mover();
-	void dibujar(Graphics^ g, Bitmap^ bmp);
+	void mover() override;
+	void dibujar(Graphics^ g, Bitmap^ bmp) override;
 	int getAncho() { return ancho; }
 	int getAlto() { return alto; }
 	System::Drawing::Rectangle getRect() override;
