@@ -19,6 +19,7 @@ public:
 	void dibujar(Graphics^ g, Bitmap^ bmp);
 	int getAncho() { return ancho; }
 	int getAlto() { return alto; }
+	System::Drawing::Rectangle getRect() override;
 };
 
 inline Enemigo::Enemigo(int x, int y, int dx, int dy) : Entidad(x, y, 64, 64) {
@@ -43,10 +44,12 @@ inline void Enemigo::mover() {
 	y += dy;
 	
 }
-
+inline System::Drawing::Rectangle Enemigo::getRect() {
+	return System::Drawing::Rectangle(x + 2 + dx + 10+5, y + 12, (ancho - 7-10), (alto - 13-9));
+}
 inline void Enemigo::dibujar(Graphics^ g, Bitmap^ bmp) {
 	if (!activo) return;
-	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx, y + 12, (ancho - 7), (alto - 13));
+	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx+10+5, y + 12, (ancho - 7-10), (alto - 13-9));
 	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x, y, ancho * 1.15, alto * 1.15);

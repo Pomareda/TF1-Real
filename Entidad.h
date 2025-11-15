@@ -28,8 +28,8 @@ public:
     int getX() { return x; };
     int getY() { return y; };
 
-        virtual System::Drawing::Rectangle getRect() {
-        return System::Drawing::Rectangle(x, y, ancho, alto);
+    virtual System::Drawing::Rectangle getRect() {
+		return System::Drawing::Rectangle(x + 2 + dx + 10, y + 12, (ancho - 7), (alto - 13));
     }
 };
 

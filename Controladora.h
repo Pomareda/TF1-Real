@@ -50,10 +50,11 @@ inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp) {
 }
 
 inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo) {
-	jugador.dibujar(g, bmp);
 	for (Enemigo* enemigo : enemigos) {
 		enemigo->dibujar(g, bmpEnemigo);
 	}
+	jugador.dibujar(g, bmp);
+	
 }
 
 inline bool Controladora::colision(Graphics^ g) {
