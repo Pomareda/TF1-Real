@@ -63,8 +63,8 @@ inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
 
 
-	//System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 33));
-	//g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
+	/*System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 33));
+	g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);*/
 
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 0.9, alto * 0.9);
@@ -143,7 +143,8 @@ inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 		}
 		break;
 	}
-
+	System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 33));
+	g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
 	// Colisiones con el mapa Y FALTA ARREGLAR EL DY YU PINTAR BIEN EL MAPA
 	for (int i = 0; i < 84; i++)
 	{
@@ -160,7 +161,9 @@ inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 				g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8);
 
 				if (getRect().IntersectsWith(Rec1))dx = 0;
-				if (getRect().IntersectsWith(Rec1))dy = 0; 
+				if (Jugador2.IntersectsWith(Rec1)) {
+					dy = 0;
+				}
 			}
 			X = X + 8;
 		}

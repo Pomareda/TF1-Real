@@ -60,9 +60,6 @@ inline void Recurso::moverRecurso()
 	if (idX == 3) { ++idY; idX = 0; }
 
 	if (idY == 5 && idX < 3) { idY = 0; }
-
-	
-
 	
 }
 

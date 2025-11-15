@@ -73,9 +73,9 @@ namespace TF1 {
 			// verticalProgressBar
 			// 
 			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->verticalProgressBar->Location = System::Drawing::Point(1467, 29);
+			this->verticalProgressBar->Location = System::Drawing::Point(1082, 12);
 			this->verticalProgressBar->Name = L"verticalProgressBar";
-			this->verticalProgressBar->Size = System::Drawing::Size(55, 720);
+			this->verticalProgressBar->Size = System::Drawing::Size(55, 592);
 			this->verticalProgressBar->TabIndex = 1;
 			this->verticalProgressBar->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MenuForm::verticalProgressBar_Paint);
 			// 
@@ -83,7 +83,7 @@ namespace TF1 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1600, 779);
+			this->ClientSize = System::Drawing::Size(1198, 625);
 			this->Controls->Add(this->verticalProgressBar);
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MenuForm";
