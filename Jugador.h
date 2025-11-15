@@ -48,7 +48,7 @@ public:
 };
 
 inline Jugador::Jugador(int x, int y, int ancho, int alto) : Entidad(x, y, ancho, alto) {
-	confianza = 100;
+	confianza = 0;
 	opc = 1; 
 	Ultima = Direcciones::Abajo;
 	Direccion = Direcciones::Ninguna;

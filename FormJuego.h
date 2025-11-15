@@ -52,7 +52,8 @@ namespace TF1 {
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ bmpRecurso;
 		Bitmap^ map1;
-	private: System::Windows::Forms::ProgressBar^ BarraConfianza;
+
+	private: System::Windows::Forms::Panel^ verticalProgressBar;
 
 		   Controladora* control;
 
@@ -61,7 +62,7 @@ namespace TF1 {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			this->BarraConfianza = (gcnew System::Windows::Forms::ProgressBar());
+			this->verticalProgressBar = (gcnew System::Windows::Forms::Panel());
 			this->SuspendLayout();
 			// 
 			// timer1
@@ -69,23 +70,22 @@ namespace TF1 {
 			this->timer1->Enabled = true;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MenuForm::timer1_Tick);
 			// 
-			// BarraConfianza
+			// verticalProgressBar
 			// 
-			this->BarraConfianza->Enabled = false;
-			this->BarraConfianza->Location = System::Drawing::Point(240, 520);
-			this->BarraConfianza->Name = L"BarraConfianza";
-			this->BarraConfianza->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
-			this->BarraConfianza->Size = System::Drawing::Size(729, 28);
-			this->BarraConfianza->Step = 1;
-			this->BarraConfianza->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
-			this->BarraConfianza->TabIndex = 0;
+			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->verticalProgressBar->Location = System::Drawing::Point(1410, 29);
+			this->verticalProgressBar->Name = L"verticalProgressBar";
+			this->verticalProgressBar->Size = System::Drawing::Size(54, 724);
+			this->verticalProgressBar->TabIndex = 1;
+			this->verticalProgressBar->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MenuForm::verticalProgressBar_Paint);
 			// 
 			// MenuForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1200, 633);
-			this->Controls->Add(this->BarraConfianza);
+			this->ClientSize = System::Drawing::Size(1600, 779);
+			this->Controls->Add(this->verticalProgressBar);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MenuForm";
 			this->Text = L"MenuForm";
 			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
@@ -121,7 +121,6 @@ namespace TF1 {
 	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		control->getJugador()->setDireccion(Ninguna);
 	}
-
 	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 
 		Graphics^ gBuffer = buffer->Graphics;
@@ -132,16 +131,19 @@ namespace TF1 {
 		control->crearRecursos(bmpRecurso);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
-
-		BarraConfianza->Value = control->getJugador()->getConfianza() % 2 == 0 ? + 1 : +0;
-
-
 		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso);
-
+		this->verticalProgressBar->Invalidate();
 		buffer->Render(g);
 	} 
 
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
+private: System::Void verticalProgressBar_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+	int altura = verticalProgressBar->Height;
+	int rellenar = control->getJugador()->getConfianza();
+
+	e->Graphics->FillRectangle(Brushes::LightGreen, 0, altura - rellenar,
+		verticalProgressBar->Width, rellenar);
+}
 };
 }

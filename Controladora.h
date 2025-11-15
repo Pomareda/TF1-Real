@@ -78,11 +78,10 @@ inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp) {
 		jugador.SetY(posY_anterior);
 	}
 
-	if(colisionRecurso(g))
-	{
-		jugador.setConfianza(jugador.getConfianza() + 10);
-		
+	if (colisionRecurso(g)) {
+		//pomactm
 	}
+	
 }
 
 inline void Controladora::moverRecursos(Graphics^ g, Bitmap^ bmp)
@@ -122,9 +121,9 @@ inline bool Controladora::colisionRecurso(Graphics^ g)
 	for (int i = 0; i < recursos.size(); i++)
 	{
 		if (jugador.getRect().IntersectsWith(recursos[i]->getRect())) {
+			jugador.setConfianza(jugador.getConfianza() + 30);
 			recursos[i]->setActivo(false);
 			recursos.erase(recursos.begin() + i);
-			return true;
 		}
 
 	}
