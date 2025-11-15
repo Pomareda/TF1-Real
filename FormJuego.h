@@ -73,9 +73,9 @@ namespace TF1 {
 			// verticalProgressBar
 			// 
 			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->verticalProgressBar->Location = System::Drawing::Point(1410, 29);
+			this->verticalProgressBar->Location = System::Drawing::Point(1467, 29);
 			this->verticalProgressBar->Name = L"verticalProgressBar";
-			this->verticalProgressBar->Size = System::Drawing::Size(54, 724);
+			this->verticalProgressBar->Size = System::Drawing::Size(55, 720);
 			this->verticalProgressBar->TabIndex = 1;
 			this->verticalProgressBar->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MenuForm::verticalProgressBar_Paint);
 			// 
@@ -117,17 +117,17 @@ namespace TF1 {
 			break;
 		}
 	}
-
 	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		control->getJugador()->setDireccion(Ninguna);
 	}
-	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 
+	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+		//logica del juego
 		Graphics^ gBuffer = buffer->Graphics;
 
 		gBuffer->Clear(Color::White);
 		gBuffer->DrawImage(map1, 0, 0, this->ClientRectangle.Width, this->ClientRectangle.Height);
-		control->moverJugador(gBuffer, bmpPersonajeHumano);
+		control->moverJugador(gBuffer, bmpPersonajeHumano, mapa1);
 		control->crearRecursos(bmpRecurso);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
@@ -138,12 +138,11 @@ namespace TF1 {
 
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-private: System::Void verticalProgressBar_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-	int altura = verticalProgressBar->Height;
-	int rellenar = control->getJugador()->getConfianza();
+	private: System::Void verticalProgressBar_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
+		int altura = verticalProgressBar->Height;
+		int rellenar = control->getJugador()->getConfianza();
 
-	e->Graphics->FillRectangle(Brushes::LightGreen, 0, altura - rellenar,
-		verticalProgressBar->Width, rellenar);
+		e->Graphics->FillRectangle(Brushes::LightGreen, 0, altura - rellenar, verticalProgressBar->Width, rellenar);
 }
 };
 }

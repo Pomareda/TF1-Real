@@ -19,7 +19,7 @@ public:
 
 
 	void moverEnemigos(Graphics^ g, Bitmap^ bmp);
-	void moverJugador(Graphics^ g, Bitmap^ bmp);
+	void moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]);
 	void moverRecursos(Graphics^ g, Bitmap^ bmp);
 
 	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso);
@@ -67,11 +67,11 @@ inline void Controladora::moverEnemigos(Graphics^ g, Bitmap^ bmp) {
 	}
 }
 
-inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp) {
+inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]) {
 	int posX_anterior = jugador.getX();
 	int posY_anterior = jugador.getY();
 
-	jugador.mover();
+	jugador.mover(g,  mapa1);
 
 	if (colisionEnemigo(g)) {
 		jugador.SetX(posX_anterior);
@@ -81,7 +81,6 @@ inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp) {
 	if (colisionRecurso(g)) {
 		//pomactm
 	}
-	
 }
 
 inline void Controladora::moverRecursos(Graphics^ g, Bitmap^ bmp)
@@ -108,11 +107,7 @@ inline bool Controladora::colisionEnemigo(Graphics^ g) {
 		if (jugador.getRect().IntersectsWith(enemigos[i]->getRect())) {
 			return true;
 		}
-
 	}
-
-	
-
 	return false;
 }
 

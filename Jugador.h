@@ -19,7 +19,7 @@ public:
 	Jugador(int x, int y, int ancho, int alto);
     ~Jugador();
 
-    void mover();
+    void mover(Graphics^ g, int mapa1[84][143]);
 	void dibujar(Graphics^ g, Bitmap^ bmp);
     void mostrarConfianza();
 
@@ -56,7 +56,26 @@ inline Jugador::Jugador(int x, int y, int ancho, int alto) : Entidad(x, y, ancho
 
 inline Jugador::~Jugador() {}
 
-inline void Jugador::mover() {
+inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
+	//Si se va hacer con opcion, faltaria eso aqui
+
+	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 33));
+	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
+
+
+	//System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 33));
+	//g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
+
+	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
+	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 0.9, alto * 0.9);
+	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);
+
+}
+
+inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
+	int X = 0, Y = 0;
+
+
 	switch (Direccion)
 	{
 	case Direcciones::Abajo:
@@ -124,19 +143,31 @@ inline void Jugador::mover() {
 		}
 		break;
 	}
+
+	// Colisiones con el mapa Y FALTA ARREGLAR EL DY YU PINTAR BIEN EL MAPA
+	for (int i = 0; i < 84; i++)
+	{
+		X = 0;
+		for (int j = 0; j < 143; j++)
+		{
+			System::Drawing::Rectangle  Rec1 = System::Drawing::Rectangle(X, Y, 8, 8);
+
+
+			if (mapa1[i][j] == 0)
+				g->DrawRectangle(System::Drawing::Pens::White, X, Y, 8, 8);
+
+			else {
+				g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8);
+
+				if (getRect().IntersectsWith(Rec1))dx = 0;
+				if (getRect().IntersectsWith(Rec1))dy = 0; 
+			}
+			X = X + 8;
+		}
+		Y = Y + 8;
+	}
 	x += dx;
 	y += dy;
-}
-
-inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
-	//Si se va hacer con opcion, faltaria eso aqui
-	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 33));
-	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
-
-	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x , y, ancho * 0.9, alto * 0.9);
-	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);
-
 }
 
 inline System::Drawing::Rectangle Jugador::getRect() {
