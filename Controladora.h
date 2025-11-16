@@ -5,6 +5,8 @@
 #include "Mapas.h"
 #include <vector>
 #include "Dialogo.h"
+#include "Aliado.h"
+#include "FormAliado.h"
 
 using namespace System::Collections::Generic;
 using namespace TF1;
@@ -14,24 +16,23 @@ private:
 	Jugador^ jugador;
 	List<Enemigo^>^ enemigos;
 	List <Recurso^>^ recursos;
+	Aliado^ aliado;
 public:
 	Controladora(Bitmap^ bmp);
 	~Controladora();
+
 	void agregarEnemigo(Enemigo^ enemigo);
 	void agregarRecurso(Recurso^ recursito);
 	void crearRecursos(Bitmap^ recurso);
-
-
-
 	void moverEnemigos(Graphics^ g, Bitmap^ bmp);
 	void moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]);
 	void moverRecursos(Graphics^ g, Bitmap^ bmp);
-
 	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso, int mapa1[84][143]);
+	void dialogoConIA();
+	void dibujarAliado(Graphics^ g, Bitmap^ bmp);
+	void colisionAliado();
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
-
-	void dialogoConIA();
 
 	Jugador^ getJugador() { return jugador; }
 };
@@ -40,6 +41,7 @@ inline Controladora::Controladora(Bitmap^ bmp) {
 	jugador = gcnew Jugador(435, 80, bmp->Width / 6, bmp->Height / 6);
 	enemigos = gcnew List<Enemigo^>();
 	recursos = gcnew List<Recurso^>();
+	aliado = gcnew Aliado(255, 560);
 }
 
 
@@ -125,7 +127,16 @@ inline bool Controladora::colisionRecurso(Graphics^ g)
 	return false;
 }
 
+inline void Controladora::dibujarAliado(Graphics^ g, Bitmap^ bmp) {
+	aliado->dibujar(g, bmp);
+}
 
+inline void Controladora::colisionAliado() {
+	if (jugador->getRect().IntersectsWith(aliado->getRect())) {
+		FormAliado^ FormA = gcnew FormAliado();
+		FormA->ShowDialog();
+	}
+}
 
 inline void Controladora::dialogoConIA()
 {

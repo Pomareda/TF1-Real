@@ -117,6 +117,9 @@
     <ClInclude Include="Controladora.h" />
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Entidad.h" />
+    <ClInclude Include="FormAliado.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="FormJuego.h">
       <FileType>CppForm</FileType>
@@ -135,12 +138,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Aliado.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dialogo.resx">
       <DependentUpon>Dialogo.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAliado.resx">
+      <DependentUpon>FormAliado.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormJuego.resx">
       <DependentUpon>FormJuego.h</DependentUpon>

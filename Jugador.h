@@ -70,8 +70,6 @@ inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 
 inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 	int X = 0, Y = 0;
-
-
 	switch (Direccion)
 	{
 	case Direcciones::Abajo:

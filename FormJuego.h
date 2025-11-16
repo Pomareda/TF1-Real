@@ -20,11 +20,12 @@ namespace TF1 {
 			g = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
+
 			map1 = gcnew Bitmap("Mapa1.png");
 			bmpPersonajeHumano = gcnew Bitmap("PersonajeHuman.png");
 			bmpEnemigoIA = gcnew Bitmap("EnemigoIA.png");
-
 			bmpRecurso = gcnew Bitmap("Recurso.png");
+			bmpAliado = gcnew Bitmap("Aliado.png");
 
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
 			control = gcnew Controladora(bmpPersonajeHumano);
@@ -53,6 +54,7 @@ namespace TF1 {
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ bmpRecurso;
 		Bitmap^ map1;
+		Bitmap^ bmpAliado;
 		int cant_recursos;
 
 	private: System::Windows::Forms::Panel^ verticalProgressBar;
@@ -75,19 +77,20 @@ namespace TF1 {
 			// verticalProgressBar
 			// 
 			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->verticalProgressBar->Location = System::Drawing::Point(1100, 32);
-			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(2);
+			this->verticalProgressBar->Location = System::Drawing::Point(1467, 39);
+			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->verticalProgressBar->Name = L"verticalProgressBar";
-			this->verticalProgressBar->Size = System::Drawing::Size(42, 569);
+			this->verticalProgressBar->Size = System::Drawing::Size(55, 700);
 			this->verticalProgressBar->TabIndex = 1;
 			this->verticalProgressBar->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MenuForm::verticalProgressBar_Paint);
 			// 
 			// MenuForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1200, 633);
+			this->ClientSize = System::Drawing::Size(1600, 779);
 			this->Controls->Add(this->verticalProgressBar);
+			this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
 			this->Name = L"MenuForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MenuForm";
@@ -118,6 +121,7 @@ namespace TF1 {
 			break;
 		case Keys::E:		
 			control->dialogoConIA();
+			control->colisionAliado();
 			break;
 		
 		/*default:
@@ -138,7 +142,7 @@ namespace TF1 {
 		if (cant_recursos < 4) {
 			control->crearRecursos(bmpRecurso);
 		}
-
+		control->dibujarAliado(gBuffer, bmpAliado);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
 		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso, mapa1);
