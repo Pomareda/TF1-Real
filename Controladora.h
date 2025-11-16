@@ -3,8 +3,8 @@
 #include "Jugador.h"
 #include "Recurso.h"
 #include "Mapas.h"
-#include <vector>
 #include "Dialogo.h"
+#include <vector>
 
 using namespace System::Collections::Generic;
 using namespace TF1;
@@ -41,7 +41,6 @@ inline Controladora::Controladora(Bitmap^ bmp) {
 	enemigos = gcnew List<Enemigo^>();
 	recursos = gcnew List<Recurso^>();
 }
-
 
 inline Controladora::~Controladora() { }
 
@@ -126,8 +125,7 @@ inline bool Controladora::colisionRecurso(Graphics^ g)
 	return false;
 }
 
-inline void Controladora::dialogoConIA()
-{
+inline void Controladora::dialogoConIA() {
 	Dialogo^ dialogoForm = gcnew Dialogo();
 	dialogoForm->ShowDialog();
 }
