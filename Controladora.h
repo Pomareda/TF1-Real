@@ -149,7 +149,7 @@ inline void Controladora::dialogoConIA()
 		int distanciaY = jugador->getY() - enemigos[i]->getRect().Y;
 
 		if ((distanciaX < 60 && distanciaX > -60) && (distanciaY < 70 && distanciaY > -70)) {
-			Dialogo^ dialogoForm = gcnew Dialogo();
+			Dialogo^ dialogoForm = gcnew Dialogo(jugador);
 			dialogoForm->ShowDialog();
 			return;
 		}
