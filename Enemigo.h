@@ -30,6 +30,7 @@ inline Enemigo::Enemigo(int x, int y, int dx, int dy) : Entidad(x, y, 64, 64) {
 
 inline Enemigo::~Enemigo() {}
 
+
 inline void Enemigo::mover() {
 	if (!activo) return;
 	//animacion idle

@@ -30,8 +30,18 @@ namespace TF1 {
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
 			control = gcnew Controladora(bmpPersonajeHumano);
 			Jugador^ jugadorPtr = control->getJugador();
-			Enemigo^ enemigo1 = gcnew Enemigo(80, 180, 0, 0);
+			Enemigo^ enemigo1 = gcnew Enemigo(170, 170, 0, 0);
+			Enemigo^ enemigo2 = gcnew Enemigo(10, 110, 0, 0);
+			Enemigo^ enemigo3 = gcnew Enemigo(470, 540, 0, 0);
+			Enemigo^ enemigo4 = gcnew Enemigo(655, 20, 0, 0);
+			Enemigo^ enemigo5= gcnew Enemigo(940, 390, 0, 0);
+
 			control->agregarEnemigo(enemigo1);
+			control->agregarEnemigo(enemigo2);
+			control->agregarEnemigo(enemigo3);
+			control->agregarEnemigo(enemigo4);
+			control->agregarEnemigo(enemigo5);
+
 			cant_recursos = 0;
 		}
 

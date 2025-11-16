@@ -70,12 +70,17 @@ inline void Controladora::moverEnemigos(Graphics^ g, Bitmap^ bmp) {
 }
 
 inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]) {
+	int posicionAnteriorX = jugador->getX();
+	int posicionAnteriorY = jugador->getY();
+
+	jugador->mover(g, mapa1);
 
 	if (colisionEnemigo(g)) {
+		jugador->SetX(posicionAnteriorX);
+		jugador->SetY(posicionAnteriorY);
 		return;
 	}
 
-	jugador->mover(g, mapa1);
 
 	if (colisionRecurso(g)) {
 		//pomactm
@@ -104,8 +109,6 @@ inline bool Controladora::colisionEnemigo(Graphics^ g) {
 	for (int i = 0; i < enemigos->Count; i++)
 	{
 		if (jugador->getRect().IntersectsWith(enemigos[i]->getRect())) {
-			jugador->SetDx(0);
-			jugador->SetDy(0);
 			return true;
 		}
 	}
@@ -140,17 +143,15 @@ inline void Controladora::colisionAliado() {
 
 inline void Controladora::dialogoConIA()
 {
-	//falta pulir este metodo
+	for (int i = 0; i < enemigos->Count; i++)
+	{
+		int distanciaX = jugador->getX() - enemigos[i]->getRect().X;
+		int distanciaY = jugador->getY() - enemigos[i]->getRect().Y;
 
-	int posX_anterior = jugador->getX();
-	int posY_anterior = jugador->getY();
-
-	if (colisionEnemigo(nullptr)) {
-
-		jugador->SetX(posX_anterior + 10);
-		jugador->SetY(posY_anterior + 10);
-		Dialogo^ dialogoForm = gcnew Dialogo();
-		dialogoForm->ShowDialog();
-
+		if ((distanciaX < 60 && distanciaX > -60) && (distanciaY < 70 && distanciaY > -70)) {
+			Dialogo^ dialogoForm = gcnew Dialogo();
+			dialogoForm->ShowDialog();
+			return;
+		}
 	}
 }
