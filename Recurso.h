@@ -27,7 +27,7 @@ public:
 	}
 	~Recurso() {}
 
-	void dibujar(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]);
+	void dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143]);
 	void moverRecurso();
 
 
@@ -41,7 +41,7 @@ public:
 };
 
 
-inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]) {
+inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143]) {
 	Random^ rand = gcnew Random();
 
 	System::Drawing::Rectangle r1 = System::Drawing::Rectangle(x + 10, y + 10, ancho - 100, alto - 88);

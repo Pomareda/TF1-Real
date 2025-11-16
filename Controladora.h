@@ -25,9 +25,9 @@ public:
 	void agregarRecurso(Recurso^ recursito);
 	void crearRecursos(Bitmap^ recurso);
 	void moverEnemigos(Graphics^ g, Bitmap^ bmp);
-	void moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]);
+	void moverJugador(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143]);
 	void moverRecursos(Graphics^ g, Bitmap^ bmp);
-	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso, int mapa1[84][143]);
+	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso, const int mapa1[84][143]);
 	void dialogoConIA();
 	void dibujarAliado(Graphics^ g, Bitmap^ bmp);
 	void colisionAliado();
@@ -69,7 +69,7 @@ inline void Controladora::moverEnemigos(Graphics^ g, Bitmap^ bmp) {
 	}
 }
 
-inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]) {
+inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143]) {
 	int posicionAnteriorX = jugador->getX();
 	int posicionAnteriorY = jugador->getY();
 
@@ -94,7 +94,7 @@ inline void Controladora::moverRecursos(Graphics^ g, Bitmap^ bmp)
 	}
 }
 
-inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso, int mapa1[84][143]) {
+inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso, const int mapa1[84][143]) {
 	for each (Recurso ^ r in recursos) {
 		r->dibujar(g, bmpRecurso, mapa1);
 	}

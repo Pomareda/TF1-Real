@@ -114,6 +114,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Aliado.h" />
+    <ClInclude Include="Animacion_instrucciones.h" />
     <ClInclude Include="Controladora.h" />
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Entidad.h" />
@@ -128,6 +129,15 @@
     <ClInclude Include="Dialogo.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Menu_Creditos.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Menu_Instrucciones.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Menu_Interactivo.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Recurso.h" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +148,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Menu_Creditos.cpp" />
+    <ClCompile Include="Menu_Instrucciones.cpp" />
+    <ClCompile Include="Menu_Interactivo.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +162,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormJuego.resx">
       <DependentUpon>FormJuego.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu_Creditos.resx">
+      <DependentUpon>Menu_Creditos.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu_Instrucciones.resx">
+      <DependentUpon>Menu_Instrucciones.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu_Interactivo.resx">
+      <DependentUpon>Menu_Interactivo.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

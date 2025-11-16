@@ -1,6 +1,6 @@
 #pragma once
 #include "Controladora.h"
-#include "Mapas.h"
+//#include "Mapas.h"
 
 namespace TF1 {
 
@@ -100,7 +100,7 @@ namespace TF1 {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1600, 779);
 			this->Controls->Add(this->verticalProgressBar);
-			this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MenuForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MenuForm";

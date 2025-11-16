@@ -19,7 +19,7 @@ public:
 	Jugador(int x, int y, int ancho, int alto);
     ~Jugador();
 
-    void mover(Graphics^ g, int mapa1[84][143]);
+    void mover(Graphics^ g, const int mapa1[84][143]);
 	void dibujar(Graphics^ g, Bitmap^ bmp) override;
    /* void mostrarConfianza();
 
@@ -68,7 +68,7 @@ inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 
 }
 
-inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
+inline void Jugador::mover(Graphics^ g,  const int mapa1[84][143]) {
 	int X = 0, Y = 0;
 	switch (Direccion)
 	{
@@ -151,7 +151,7 @@ inline void Jugador::mover(Graphics^ g,  int mapa1[84][143]) {
 				g->DrawRectangle(System::Drawing::Pens::Transparent, X, Y, 8, 8);
 			}
 			else {
-				//g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8); ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
+				//g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8); //ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
 
 				if (getRect().IntersectsWith(Rec1))dx = 0;
 				if (Jugador2.IntersectsWith(Rec1)) {
