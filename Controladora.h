@@ -3,8 +3,8 @@
 #include "Jugador.h"
 #include "Recurso.h"
 #include "Mapas.h"
-#include "Dialogo.h"
 #include <vector>
+#include "Dialogo.h"
 
 using namespace System::Collections::Generic;
 using namespace TF1;
@@ -15,7 +15,7 @@ private:
 	List<Enemigo^>^ enemigos;
 	List <Recurso^>^ recursos;
 public:
-	Controladora(Bitmap^bmp);
+	Controladora(Bitmap^ bmp);
 	~Controladora();
 	void agregarEnemigo(Enemigo^ enemigo);
 	void agregarRecurso(Recurso^ recursito);
@@ -42,7 +42,8 @@ inline Controladora::Controladora(Bitmap^ bmp) {
 	recursos = gcnew List<Recurso^>();
 }
 
-inline Controladora::~Controladora() { }
+
+inline Controladora::~Controladora() {}
 
 inline void Controladora::agregarEnemigo(Enemigo^ enemigo) {
 	enemigos->Add(enemigo);
@@ -56,26 +57,23 @@ inline void Controladora::agregarRecurso(Recurso^ recursito)
 inline void Controladora::crearRecursos(Bitmap^ recurso)
 {
 	Recurso^ recursox = gcnew Recurso(recurso);
-	recursos->Add(recursox);	
+	recursos->Add(recursox);
 }
 
 
 inline void Controladora::moverEnemigos(Graphics^ g, Bitmap^ bmp) {
-	for each (Enemigo^ enemigo in enemigos) {
+	for each (Enemigo ^ enemigo in enemigos) {
 		enemigo->mover();
 	}
 }
 
 inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][143]) {
-	int posX_anterior = jugador->getX();
-	int posY_anterior = jugador->getY();
-
-	jugador->mover(g,  mapa1);
 
 	if (colisionEnemigo(g)) {
-		jugador->SetX(posX_anterior);
-		jugador->SetY(posY_anterior);
+		return;
 	}
+
+	jugador->mover(g, mapa1);
 
 	if (colisionRecurso(g)) {
 		//pomactm
@@ -84,16 +82,16 @@ inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp, int mapa1[84][1
 
 inline void Controladora::moverRecursos(Graphics^ g, Bitmap^ bmp)
 {
-	for each (Recurso^ r in recursos) {
+	for each (Recurso ^ r in recursos) {
 		r->moverRecurso();
 	}
 }
 
 inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso, int mapa1[84][143]) {
-	for each (Recurso^ r in recursos) {
+	for each (Recurso ^ r in recursos) {
 		r->dibujar(g, bmpRecurso, mapa1);
 	}
-	for each (Enemigo^ enemigo in enemigos) {
+	for each (Enemigo ^ enemigo in enemigos) {
 		enemigo->dibujar(g, bmpEnemigo);
 	}
 	jugador->dibujar(g, bmp);
@@ -104,6 +102,8 @@ inline bool Controladora::colisionEnemigo(Graphics^ g) {
 	for (int i = 0; i < enemigos->Count; i++)
 	{
 		if (jugador->getRect().IntersectsWith(enemigos[i]->getRect())) {
+			jugador->SetDx(0);
+			jugador->SetDy(0);
 			return true;
 		}
 	}
@@ -125,7 +125,21 @@ inline bool Controladora::colisionRecurso(Graphics^ g)
 	return false;
 }
 
-inline void Controladora::dialogoConIA() {
-	Dialogo^ dialogoForm = gcnew Dialogo();
-	dialogoForm->ShowDialog();
+
+
+inline void Controladora::dialogoConIA()
+{
+	//falta pulir este metodo
+
+	int posX_anterior = jugador->getX();
+	int posY_anterior = jugador->getY();
+
+	if (colisionEnemigo(nullptr)) {
+
+		jugador->SetX(posX_anterior + 10);
+		jugador->SetY(posY_anterior + 10);
+		Dialogo^ dialogoForm = gcnew Dialogo();
+		dialogoForm->ShowDialog();
+
+	}
 }
