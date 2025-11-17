@@ -15,6 +15,12 @@ namespace TF1 {
 		FormAliado() {
 			InitializeComponent();
 			pnlAliado->BackColor = System::Drawing::Color::FromArgb(200, 50, 50, 50);//hace traslucido el panel
+			lblMensaje->BackColor = System::Drawing::Color::FromArgb(0, 50, 50, 50); //hace traslucido el mensaje del aliado
+			
+			lblMensaje->AutoSize = false;
+			lblMensaje->Width = 700;
+			lblMensaje->Height = 200;
+
 			timer1->Enabled = true;
 			dialogosAliado = gcnew cli::array<System::String^>(8) {
 				"...",
@@ -86,7 +92,6 @@ namespace TF1 {
 			this->pnlAliado->Name = L"pnlAliado";
 			this->pnlAliado->Size = System::Drawing::Size(932, 240);
 			this->pnlAliado->TabIndex = 0;
-			this->pnlAliado->Click += gcnew System::EventHandler(this, &FormAliado::pnlAliado_Click);
 			// 
 			// lblMensaje
 			// 
@@ -97,15 +102,6 @@ namespace TF1 {
 			this->lblMensaje->Name = L"lblMensaje";
 			this->lblMensaje->Size = System::Drawing::Size(0, 29);
 			this->lblMensaje->TabIndex = 1;
-			//re asigno pq no funciona por alguna razon
-			lblMensaje->BackColor = System::Drawing::Color::FromArgb(0, 50, 50, 50);
-			lblMensaje->AutoSize = false;
-			lblMensaje->Width = 800;
-			lblMensaje->Height = 500;
-			lblMensaje->Text = "";
-			lblMensaje->UseCompatibleTextRendering = true;
-			lblMensaje->ForeColor = Color::White;
-			//hasta aca
 			// 
 			// lblNombre
 			// 
@@ -135,6 +131,7 @@ namespace TF1 {
 			this->DoubleBuffered = true;
 			this->Name = L"FormAliado";
 			this->Text = L"FormAliado";
+			this->Click += gcnew System::EventHandler(this, &FormAliado::FormAliado_Click);
 			this->pnlAliado->ResumeLayout(false);
 			this->pnlAliado->PerformLayout();
 			this->ResumeLayout(false);
@@ -147,28 +144,29 @@ namespace TF1 {
 		mostrarDialogo(indice);
 	}
 
-	System::Void pnlAliado_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (dialogoCompleto) {
+	
+private: System::Void FormAliado_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (dialogoCompleto) {
 
-			indice++;
-			if (indice >= dialogosAliado->Length) {
-				//aumenta la confianza del jugador
-				this->Close();
-				return;
-			}
+		indice++;
+		if (indice >= dialogosAliado->Length) {
+			//aumenta la confianza del jugador
+			this->Close();
+			return;
+		}
 
-			//resetear
-			dialogoCompleto = false;
-			indiceChar = 0;
-			lblMensaje->Text = "";
-			timer1->Enabled = true;
-		}
-		else {
-			timer1->Enabled = false;
-			//mostrar todo el dialogo de una vez
-			lblMensaje->Text = dialogosAliado[indice];
-			dialogoCompleto = true;
-		}
+		//resetear
+		dialogoCompleto = false;
+		indiceChar = 0;
+		lblMensaje->Text = "";
+		timer1->Enabled = true;
 	}
+	else {
+		timer1->Enabled = false;
+		//mostrar todo el dialogo de una vez
+		lblMensaje->Text = dialogosAliado[indice];
+		dialogoCompleto = true;
+	}
+}
 };
 }
