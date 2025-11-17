@@ -15,7 +15,9 @@ ref class Aliado : public Entidad {
 	}
 
 	System::Drawing::Rectangle getRect() override {
-		return System::Drawing::Rectangle(x + 5, y + 5, ancho + 10, alto + 10);
+		return System::Drawing::Rectangle(x , y, ancho, alto);
+	}
+	System::Drawing::Rectangle getRectGrande() override {
+		return System::Drawing::Rectangle(x - 16, y - 16, ancho + 16, alto + 16);
 	}
 };
-

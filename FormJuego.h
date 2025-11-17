@@ -131,7 +131,7 @@ namespace TF1 {
 			break;
 		case Keys::E:		
 			control->dialogoConIA();
-			control->colisionAliado();
+			control->interactuarAliado();
 			break;
 		
 		/*default:

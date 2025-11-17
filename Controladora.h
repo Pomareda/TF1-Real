@@ -30,7 +30,8 @@ public:
 	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso, const int mapa1[84][143]);
 	void dialogoConIA();
 	void dibujarAliado(Graphics^ g, Bitmap^ bmp);
-	void colisionAliado();
+	void interactuarAliado();
+	bool colisionAliado();
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
 
@@ -47,6 +48,12 @@ inline Controladora::Controladora(Bitmap^ bmp) {
 
 inline Controladora::~Controladora() {}
 
+inline void Controladora::crearRecursos(Bitmap^ recurso)
+{
+	Recurso^ recursox = gcnew Recurso(recurso);
+	recursos->Add(recursox);
+}
+
 inline void Controladora::agregarEnemigo(Enemigo^ enemigo) {
 	enemigos->Add(enemigo);
 }
@@ -55,13 +62,6 @@ inline void Controladora::agregarRecurso(Recurso^ recursito)
 {
 	recursos->Add(recursito);
 }
-
-inline void Controladora::crearRecursos(Bitmap^ recurso)
-{
-	Recurso^ recursox = gcnew Recurso(recurso);
-	recursos->Add(recursox);
-}
-
 
 inline void Controladora::moverEnemigos(Graphics^ g, Bitmap^ bmp) {
 	for each (Enemigo ^ enemigo in enemigos) {
@@ -75,12 +75,11 @@ inline void Controladora::moverJugador(Graphics^ g, Bitmap^ bmp, const int mapa1
 
 	jugador->mover(g, mapa1);
 
-	if (colisionEnemigo(g)) {
+	if (colisionEnemigo(g) || colisionAliado()) {
 		jugador->SetX(posicionAnteriorX);
 		jugador->SetY(posicionAnteriorY);
 		return;
 	}
-
 
 	if (colisionRecurso(g)) {
 		//pomactm
@@ -103,6 +102,10 @@ inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmp
 	}
 	jugador->dibujar(g, bmp);
 
+}
+
+inline void Controladora::dibujarAliado(Graphics^ g, Bitmap^ bmp) {
+	aliado->dibujar(g, bmp);
 }
 
 inline bool Controladora::colisionEnemigo(Graphics^ g) {
@@ -130,12 +133,15 @@ inline bool Controladora::colisionRecurso(Graphics^ g)
 	return false;
 }
 
-inline void Controladora::dibujarAliado(Graphics^ g, Bitmap^ bmp) {
-	aliado->dibujar(g, bmp);
+inline bool Controladora::colisionAliado() {
+	if (jugador->getRect().IntersectsWith(aliado->getRect())) {
+		return true;
+	}
+	else return false;
 }
 
-inline void Controladora::colisionAliado() {
-	if (jugador->getRect().IntersectsWith(aliado->getRect())) {
+inline void Controladora::interactuarAliado() {
+	if (jugador->getRect().IntersectsWith(aliado->getRectGrande())) {
 		FormAliado^ FormA = gcnew FormAliado();
 		FormA->ShowDialog();
 	}

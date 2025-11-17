@@ -167,5 +167,5 @@ inline void Jugador::mover(Graphics^ g,  const int mapa1[84][143]) {
 }
 
 inline System::Drawing::Rectangle Jugador::getRect() {
-	return System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 37));
+	return System::Drawing::Rectangle(x + 2 + dx, y + 12 + 4, (ancho - 17), (alto - 37));
 }
