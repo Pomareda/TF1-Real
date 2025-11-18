@@ -23,7 +23,7 @@ namespace TF1 {
 			//
 			//
 
-			bmpFondo_creditos = gcnew Bitmap("Fondo_creditos_generico.jpg");
+			bmpFondo_creditos = gcnew Bitmap("Imagenes/Creditos/Fondo_creditos_generico.jpg");
 			this->Panel_Inicio->BackgroundImage = bmpFondo_creditos;
 			this->Panel_Inicio->BackgroundImageLayout = ImageLayout::Stretch;
 		}

@@ -21,11 +21,11 @@ namespace TF1 {
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
 
-			map1 = gcnew Bitmap("Mapa1.png");
-			bmpPersonajeHumano = gcnew Bitmap("PersonajeHuman.png");
-			bmpEnemigoIA = gcnew Bitmap("EnemigoIA.png");
-			bmpRecurso = gcnew Bitmap("Recurso.png");
-			bmpAliado = gcnew Bitmap("Aliado.png");
+			map1 = gcnew Bitmap("Imagenes/Mapa1.png");
+			bmpPersonajeHumano = gcnew Bitmap("Imagenes/PersonajeHuman.png");
+			bmpEnemigoIA = gcnew Bitmap("Imagenes/EnemigoIA.png");
+			bmpRecurso = gcnew Bitmap("Imagenes/Recurso.png");
+			bmpAliado = gcnew Bitmap("Imagenes/Aliado.png");
 
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
 			control = gcnew Controladora(bmpPersonajeHumano);

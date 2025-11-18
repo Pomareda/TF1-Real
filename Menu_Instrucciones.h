@@ -21,7 +21,7 @@ namespace TF1 {
 			//
 			//TODO: agregar código de constructor aquí
 			//
-			bmpFondo_instrucciones = gcnew Bitmap("sprite_fondo.png");
+			bmpFondo_instrucciones = gcnew Bitmap("Imagenes/Instrucciones/sprite_fondo.png");
 			instrucciones = gcnew Fondo_Instrucciones();
 			g1 = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;

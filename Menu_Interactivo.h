@@ -26,14 +26,14 @@ namespace TF1 {
 			g = Panel_Inicio->CreateGraphics();
 			space = BufferedGraphicsManager::Current;
 			buffer = space->Allocate(g, Panel_Inicio->ClientRectangle);
-			bmpFondo1 = gcnew Bitmap("1.png");
-			bmpFondo2 = gcnew Bitmap("2.png");
-			bmpFondo3 = gcnew Bitmap("3.png");
-			boton_credits = gcnew Bitmap("Boton_credits_verdadero.png");
+			bmpFondo1 = gcnew Bitmap("Imagenes/Menu/1.png");
+			bmpFondo2 = gcnew Bitmap("Imagenes/Menu/2.png");
+			bmpFondo3 = gcnew Bitmap("Imagenes/Menu/3.png");
+			boton_credits = gcnew Bitmap("Imagenes/Menu/Boton_credits_verdadero.png");
 			boton_credits->MakeTransparent(boton_credits->GetPixel(0, 0));
-			boton_jugar = gcnew Bitmap("Boton_sinfondo.png");
+			boton_jugar = gcnew Bitmap("Imagenes/Menu/Boton_sinfondo.png");
 			boton_jugar->MakeTransparent(boton_jugar->GetPixel(0, 0));
-			boton_rules = gcnew Bitmap("Boton_Rules_verdadero.png");
+			boton_rules = gcnew Bitmap("Imagenes/Menu/Boton_Rules_verdadero.png");
 			boton_rules->MakeTransparent(boton_rules->GetPixel(0, 0));
 		}
 

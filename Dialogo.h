@@ -27,8 +27,8 @@ namespace TF1 {
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
 
-			bmpDialogoIA = gcnew Bitmap("diddyDroid.png");
-			bmpDialogoProta = gcnew Bitmap("prota.png");
+			bmpDialogoIA = gcnew Bitmap("Imagenes/diddyDroid.png");
+			bmpDialogoProta = gcnew Bitmap("Imagenes/prota.png");
 
 			jugadorPtr = j;
 			Preguntas();
