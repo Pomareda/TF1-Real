@@ -88,11 +88,12 @@ namespace TF1 {
 			this->label1->AutoSize = true;
 			this->label1->BackColor = System::Drawing::Color::Transparent;
 			this->label1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Forte", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(577, 9);
+			this->label1->Location = System::Drawing::Point(433, 7);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(339, 32);
+			this->label1->Size = System::Drawing::Size(274, 29);
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"<<INSTRUCCIONES>> ";
 			// 
@@ -100,12 +101,13 @@ namespace TF1 {
 			// 
 			this->label2->AutoSize = true;
 			this->label2->BackColor = System::Drawing::Color::Transparent;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Forte", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label2->ForeColor = System::Drawing::Color::Black;
-			this->label2->Location = System::Drawing::Point(431, 54);
+			this->label2->Location = System::Drawing::Point(323, 44);
+			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(902, 220);
+			this->label2->Size = System::Drawing::Size(715, 200);
 			this->label2->TabIndex = 1;
 			this->label2->Text = resources->GetString(L"label2.Text");
 			// 
@@ -113,12 +115,13 @@ namespace TF1 {
 			// 
 			this->label3->AutoSize = true;
 			this->label3->BackColor = System::Drawing::Color::Transparent;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Forte", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label3->ForeColor = System::Drawing::Color::Black;
-			this->label3->Location = System::Drawing::Point(525, 303);
+			this->label3->Location = System::Drawing::Point(394, 246);
+			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(320, 100);
+			this->label3->Size = System::Drawing::Size(276, 96);
 			this->label3->TabIndex = 2;
 			this->label3->Text = L"            <<C O N T R O L E S>> \r\n Interactuar: [E]\r\n                          "
 				L"                W\r\nMovimiento/ seleccion: A S D";
@@ -127,28 +130,31 @@ namespace TF1 {
 			// 
 			this->label4->AutoSize = true;
 			this->label4->BackColor = System::Drawing::Color::Transparent;
-			this->label4->Font = (gcnew System::Drawing::Font(L"Forte", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 13.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label4->ForeColor = System::Drawing::SystemColors::ActiveBorder;
-			this->label4->Location = System::Drawing::Point(200, 274);
+			this->label4->Location = System::Drawing::Point(150, 223);
+			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(242, 25);
+			this->label4->Size = System::Drawing::Size(191, 24);
 			this->label4->TabIndex = 3;
 			this->label4->Text = L"Mira un pato bailando";
 			// 
 			// Menu_Instrucciones
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(1134, 548);
+			this->ClientSize = System::Drawing::Size(850, 445);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->label3);
 			this->DoubleBuffered = true;
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Menu_Instrucciones";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Menu_Instrucciones";
 			this->Load += gcnew System::EventHandler(this, &Menu_Instrucciones::Menu_Instrucciones_Load);
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Menu_Instrucciones::Menu_Instrucciones_Paint);

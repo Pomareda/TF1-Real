@@ -115,10 +115,9 @@ namespace TF1 {
 			this->Panel_Inicio->Controls->Add(this->pictureBox3);
 			this->Panel_Inicio->Controls->Add(this->pictureBox2);
 			this->Panel_Inicio->Controls->Add(this->pictureBox1);
-			this->Panel_Inicio->Location = System::Drawing::Point(-9, -23);
-			this->Panel_Inicio->Margin = System::Windows::Forms::Padding(4);
+			this->Panel_Inicio->Location = System::Drawing::Point(-7, -19);
 			this->Panel_Inicio->Name = L"Panel_Inicio";
-			this->Panel_Inicio->Size = System::Drawing::Size(855, 543);
+			this->Panel_Inicio->Size = System::Drawing::Size(641, 441);
 			this->Panel_Inicio->TabIndex = 2;
 			this->Panel_Inicio->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Menu_Creditos::Panel_Inicio_Paint);
 			// 
@@ -128,9 +127,10 @@ namespace TF1 {
 			this->label5->Font = (gcnew System::Drawing::Font(L"MS Gothic", 36, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->label5->ForeColor = System::Drawing::Color::Transparent;
-			this->label5->Location = System::Drawing::Point(122, 379);
+			this->label5->Location = System::Drawing::Point(92, 308);
+			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(614, 60);
+			this->label5->Size = System::Drawing::Size(495, 48);
 			this->label5->TabIndex = 16;
 			this->label5->Text = L"¡GRACIAS POR JUGAR!";
 			// 
@@ -141,9 +141,10 @@ namespace TF1 {
 			this->label2->Font = (gcnew System::Drawing::Font(L"MingLiU_MSCS-ExtB", 15, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label2->ForeColor = System::Drawing::Color::Transparent;
-			this->label2->Location = System::Drawing::Point(668, 323);
+			this->label2->Location = System::Drawing::Point(501, 262);
+			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(166, 25);
+			this->label2->Size = System::Drawing::Size(130, 20);
 			this->label2->TabIndex = 10;
 			this->label2->Text = L"Robert Poma";
 			// 
@@ -154,9 +155,10 @@ namespace TF1 {
 			this->label1->Font = (gcnew System::Drawing::Font(L"MingLiU_MSCS-ExtB", 15, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label1->ForeColor = System::Drawing::Color::Transparent;
-			this->label1->Location = System::Drawing::Point(457, 323);
+			this->label1->Location = System::Drawing::Point(343, 262);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(180, 25);
+			this->label1->Size = System::Drawing::Size(141, 20);
 			this->label1->TabIndex = 9;
 			this->label1->Text = L"Joaquin Luna";
 			// 
@@ -166,45 +168,49 @@ namespace TF1 {
 			this->label4->Font = (gcnew System::Drawing::Font(L"MS Gothic", 36, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Underline)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->label4->ForeColor = System::Drawing::Color::Transparent;
-			this->label4->Location = System::Drawing::Point(299, 48);
+			this->label4->Location = System::Drawing::Point(224, 39);
+			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(273, 60);
+			this->label4->Size = System::Drawing::Size(220, 48);
 			this->label4->TabIndex = 15;
 			this->label4->Text = L"CREDITOS";
 			// 
 			// textBox4
 			// 
 			this->textBox4->BackColor = System::Drawing::Color::DarkGoldenrod;
-			this->textBox4->Font = (gcnew System::Drawing::Font(L"Modern No. 20", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->textBox4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox4->Location = System::Drawing::Point(487, 133);
+			this->textBox4->Location = System::Drawing::Point(365, 108);
+			this->textBox4->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->textBox4->Multiline = true;
 			this->textBox4->Name = L"textBox4";
-			this->textBox4->Size = System::Drawing::Size(100, 23);
+			this->textBox4->Size = System::Drawing::Size(76, 19);
 			this->textBox4->TabIndex = 14;
 			this->textBox4->Text = L"      Tvpu";
 			// 
 			// textBox3
 			// 
 			this->textBox3->BackColor = System::Drawing::Color::Orange;
-			this->textBox3->Font = (gcnew System::Drawing::Font(L"Modern No. 20", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->textBox3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox3->Location = System::Drawing::Point(707, 133);
+			this->textBox3->Location = System::Drawing::Point(530, 108);
+			this->textBox3->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->textBox3->Multiline = true;
 			this->textBox3->Name = L"textBox3";
-			this->textBox3->Size = System::Drawing::Size(100, 23);
+			this->textBox3->Size = System::Drawing::Size(76, 19);
 			this->textBox3->TabIndex = 13;
 			this->textBox3->Text = L"   Pomareda";
 			// 
 			// textBox2
 			// 
 			this->textBox2->BackColor = System::Drawing::Color::Cyan;
-			this->textBox2->Font = (gcnew System::Drawing::Font(L"Modern No. 20", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->textBox2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox2->Location = System::Drawing::Point(269, 133);
+			this->textBox2->Location = System::Drawing::Point(202, 108);
+			this->textBox2->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->textBox2->Multiline = true;
 			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(100, 23);
+			this->textBox2->Size = System::Drawing::Size(76, 19);
 			this->textBox2->TabIndex = 12;
 			this->textBox2->TabStop = false;
 			this->textBox2->Text = L"  ElLisan23";
@@ -216,21 +222,23 @@ namespace TF1 {
 			this->label3->Font = (gcnew System::Drawing::Font(L"MingLiU_MSCS-ExtB", 15, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label3->ForeColor = System::Drawing::Color::Transparent;
-			this->label3->Location = System::Drawing::Point(210, 323);
+			this->label3->Location = System::Drawing::Point(158, 262);
+			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(222, 25);
+			this->label3->Size = System::Drawing::Size(174, 20);
 			this->label3->TabIndex = 11;
 			this->label3->Text = L"Lisander Concha";
 			// 
 			// textBox1
 			// 
 			this->textBox1->BackColor = System::Drawing::Color::DarkGoldenrod;
-			this->textBox1->Font = (gcnew System::Drawing::Font(L"Modern No. 20", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->textBox1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->textBox1->Location = System::Drawing::Point(51, 133);
+			this->textBox1->Location = System::Drawing::Point(38, 108);
+			this->textBox1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->textBox1->Multiline = true;
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(100, 23);
+			this->textBox1->Size = System::Drawing::Size(76, 19);
 			this->textBox1->TabIndex = 8;
 			this->textBox1->Text = L"    Elotezzz";
 			this->textBox1->TextChanged += gcnew System::EventHandler(this, &Menu_Creditos::textBox1_TextChanged);
@@ -242,9 +250,10 @@ namespace TF1 {
 			this->lbl1->Font = (gcnew System::Drawing::Font(L"MingLiU_MSCS-ExtB", 15, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl1->ForeColor = System::Drawing::Color::Transparent;
-			this->lbl1->Location = System::Drawing::Point(8, 323);
+			this->lbl1->Location = System::Drawing::Point(6, 262);
+			this->lbl1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl1->Name = L"lbl1";
-			this->lbl1->Size = System::Drawing::Size(208, 25);
+			this->lbl1->Size = System::Drawing::Size(163, 20);
 			this->lbl1->TabIndex = 7;
 			this->lbl1->Text = L"Khaled Loarte ";
 			this->lbl1->Click += gcnew System::EventHandler(this, &Menu_Creditos::label1_Click);
@@ -252,9 +261,10 @@ namespace TF1 {
 			// pictureBox4
 			// 
 			this->pictureBox4->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox4.Image")));
-			this->pictureBox4->Location = System::Drawing::Point(241, 152);
+			this->pictureBox4->Location = System::Drawing::Point(181, 124);
+			this->pictureBox4->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pictureBox4->Name = L"pictureBox4";
-			this->pictureBox4->Size = System::Drawing::Size(152, 168);
+			this->pictureBox4->Size = System::Drawing::Size(114, 136);
 			this->pictureBox4->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox4->TabIndex = 6;
 			this->pictureBox4->TabStop = false;
@@ -263,9 +273,10 @@ namespace TF1 {
 			// pictureBox3
 			// 
 			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			this->pictureBox3->Location = System::Drawing::Point(464, 152);
+			this->pictureBox3->Location = System::Drawing::Point(348, 124);
+			this->pictureBox3->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(152, 168);
+			this->pictureBox3->Size = System::Drawing::Size(114, 136);
 			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox3->TabIndex = 5;
 			this->pictureBox3->TabStop = false;
@@ -273,9 +284,10 @@ namespace TF1 {
 			// pictureBox2
 			// 
 			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			this->pictureBox2->Location = System::Drawing::Point(686, 152);
+			this->pictureBox2->Location = System::Drawing::Point(514, 124);
+			this->pictureBox2->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(136, 168);
+			this->pictureBox2->Size = System::Drawing::Size(102, 136);
 			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox2->TabIndex = 4;
 			this->pictureBox2->TabStop = false;
@@ -283,9 +295,10 @@ namespace TF1 {
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(33, 152);
+			this->pictureBox1->Location = System::Drawing::Point(25, 124);
+			this->pictureBox1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(136, 168);
+			this->pictureBox1->Size = System::Drawing::Size(102, 136);
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 3;
 			this->pictureBox1->TabStop = false;
@@ -293,12 +306,14 @@ namespace TF1 {
 			// 
 			// Menu_Creditos
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ActiveBorder;
-			this->ClientSize = System::Drawing::Size(837, 496);
+			this->ClientSize = System::Drawing::Size(631, 403);
 			this->Controls->Add(this->Panel_Inicio);
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Menu_Creditos";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Menu_Creditos";
 			this->Panel_Inicio->ResumeLayout(false);
 			this->Panel_Inicio->PerformLayout();

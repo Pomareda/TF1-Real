@@ -107,10 +107,10 @@ namespace TF1 {
 			   this->Panel_Inicio->Controls->Add(this->btn2);
 			   this->Panel_Inicio->Controls->Add(this->btn3);
 			   this->Panel_Inicio->Controls->Add(this->btn1);
-			   this->Panel_Inicio->Location = System::Drawing::Point(-22, 0);
-			   this->Panel_Inicio->Margin = System::Windows::Forms::Padding(4);
+			   this->Panel_Inicio->Cursor = System::Windows::Forms::Cursors::Default;
+			   this->Panel_Inicio->Location = System::Drawing::Point(-16, -11);
 			   this->Panel_Inicio->Name = L"Panel_Inicio";
-			   this->Panel_Inicio->Size = System::Drawing::Size(881, 556);
+			   this->Panel_Inicio->Size = System::Drawing::Size(647, 459);
 			   this->Panel_Inicio->TabIndex = 1;
 			   this->Panel_Inicio->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Menu_Interactivo::Panel_Inicio_Paint);
 			   // 
@@ -122,9 +122,10 @@ namespace TF1 {
 			   this->btn2->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Transparent;
 			   this->btn2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			   this->btn2->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			   this->btn2->Location = System::Drawing::Point(167, 335);
+			   this->btn2->Location = System::Drawing::Point(125, 272);
+			   this->btn2->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			   this->btn2->Name = L"btn2";
-			   this->btn2->Size = System::Drawing::Size(246, 94);
+			   this->btn2->Size = System::Drawing::Size(184, 76);
 			   this->btn2->TabIndex = 2;
 			   this->btn2->UseVisualStyleBackColor = false;
 			   this->btn2->Click += gcnew System::EventHandler(this, &Menu_Interactivo::button2_Click);
@@ -136,9 +137,10 @@ namespace TF1 {
 			   this->btn3->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Transparent;
 			   this->btn3->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Transparent;
 			   this->btn3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->btn3->Location = System::Drawing::Point(167, 434);
+			   this->btn3->Location = System::Drawing::Point(125, 353);
+			   this->btn3->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			   this->btn3->Name = L"btn3";
-			   this->btn3->Size = System::Drawing::Size(246, 94);
+			   this->btn3->Size = System::Drawing::Size(184, 76);
 			   this->btn3->TabIndex = 1;
 			   this->btn3->UseVisualStyleBackColor = false;
 			   this->btn3->Click += gcnew System::EventHandler(this, &Menu_Interactivo::button3_Click);
@@ -150,9 +152,10 @@ namespace TF1 {
 			   this->btn1->FlatAppearance->MouseDownBackColor = System::Drawing::Color::Transparent;
 			   this->btn1->FlatAppearance->MouseOverBackColor = System::Drawing::Color::Transparent;
 			   this->btn1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->btn1->Location = System::Drawing::Point(167, 235);
+			   this->btn1->Location = System::Drawing::Point(125, 191);
+			   this->btn1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			   this->btn1->Name = L"btn1";
-			   this->btn1->Size = System::Drawing::Size(246, 94);
+			   this->btn1->Size = System::Drawing::Size(184, 76);
 			   this->btn1->TabIndex = 0;
 			   this->btn1->UseVisualStyleBackColor = false;
 			   this->btn1->Click += gcnew System::EventHandler(this, &Menu_Interactivo::button1_Click);
@@ -165,12 +168,14 @@ namespace TF1 {
 			   // 
 			   // Menu_Interactivo
 			   // 
-			   this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->BackColor = System::Drawing::SystemColors::Control;
-			   this->ClientSize = System::Drawing::Size(829, 540);
+			   this->ClientSize = System::Drawing::Size(622, 439);
 			   this->Controls->Add(this->Panel_Inicio);
+			   this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			   this->Name = L"Menu_Interactivo";
+			   this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			   this->Text = L"Menu_Interactivo";
 			   this->Panel_Inicio->ResumeLayout(false);
 			   this->ResumeLayout(false);
