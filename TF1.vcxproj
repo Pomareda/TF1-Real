@@ -115,6 +115,7 @@
   <ItemGroup>
     <ClInclude Include="Aliado.h" />
     <ClInclude Include="Animacion_instrucciones.h" />
+    <ClInclude Include="Camara.h" />
     <ClInclude Include="Controladora.h" />
     <ClInclude Include="Didi_hablando.h" />
     <ClInclude Include="Enemigo.h" />

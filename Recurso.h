@@ -36,7 +36,7 @@ public:
 	void setActivo(bool a) { activo = a; }
 
 	System::Drawing::Rectangle getRect() {
-		return System::Drawing::Rectangle(x + 10, y + 10, ancho - 100, alto- 88);
+		return System::Drawing::Rectangle(x + 10, y + 10, ancho - 80, alto- 80);
 	}
 };
 
@@ -44,7 +44,7 @@ public:
 inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143]) {
 	Random^ rand = gcnew Random();
 
-	System::Drawing::Rectangle r1 = System::Drawing::Rectangle(x + 10, y + 10, ancho - 100, alto - 88);
+	System::Drawing::Rectangle r1 = System::Drawing::Rectangle(x + 10, y + 10, ancho - 80, alto - 80);
 	g->DrawRectangle(System::Drawing::Pens::Red, r1);
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x, y, ancho * 0.4, alto * 0.4);
@@ -64,7 +64,6 @@ inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143])
 					y = rand->Next(600);
 				}
 			}
-
 			X = X + 8;
 		}
 		Y = Y + 8;
@@ -73,7 +72,7 @@ inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143])
 // 4 de ancho y 6 de alto
 inline void Recurso::moverRecurso()
 {
-		if (!activo) return;
+	/*	if (!activo) return;*/
 		if (idX < 4) { ++idX; }
 		else { idX = 0; }
 

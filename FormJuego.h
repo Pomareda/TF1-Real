@@ -28,7 +28,7 @@ namespace TF1 {
 			bmpAliado = gcnew Bitmap("Imagenes/Aliado.png");
 
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
-			control = gcnew Controladora(bmpPersonajeHumano);
+			control = gcnew Controladora(bmpPersonajeHumano, this->ClientRectangle.Width, this->ClientRectangle.Height);
 			Jugador^ jugadorPtr = control->getJugador();
 			Enemigo^ enemigo1 = gcnew Enemigo(170, 170, 0, 0);
 			Enemigo^ enemigo2 = gcnew Enemigo(10, 110, 0, 0);
@@ -98,7 +98,7 @@ namespace TF1 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1600, 779);
+			this->ClientSize = System::Drawing::Size(1582, 753);
 			this->Controls->Add(this->verticalProgressBar);
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MenuForm";
@@ -147,7 +147,16 @@ namespace TF1 {
 		Graphics^ gBuffer = buffer->Graphics;
 
 		gBuffer->Clear(Color::White);
-		gBuffer->DrawImage(map1, 0, 0, this->ClientRectangle.Width, this->ClientRectangle.Height);
+
+		control->actualizarCamara();
+
+		System::Drawing::Drawing2D::GraphicsState^ estadoOriginal = gBuffer->Save();
+
+		control->getCamara()->aplicarTransformacion(gBuffer);
+		int mapaAncho = 143 * 8;
+		int mapaAlto = 84 * 8;
+
+		gBuffer->DrawImage(map1, 0, 0, mapaAncho, mapaAlto);
 		control->moverJugador(gBuffer, bmpPersonajeHumano, mapa1);
 		if (cant_recursos < 4) {
 			control->crearRecursos(bmpRecurso);
@@ -156,6 +165,7 @@ namespace TF1 {
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
 		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso, mapa1);
+		gBuffer->Restore(estadoOriginal);
 		this->verticalProgressBar->Invalidate();
 		buffer->Render(g);
 		cant_recursos++;

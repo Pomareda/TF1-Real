@@ -6,6 +6,7 @@
 #include <vector>
 #include "Dialogo.h"
 #include "Aliado.h"
+#include "Camara.h"
 #include "FormAliado.h"
 
 using namespace System::Collections::Generic;
@@ -18,9 +19,10 @@ private:
 	List<Recurso^>^ recursos;
 	Aliado^ aliado;
 	int contador = 0;
-	List<int>^ preguntasxd;
+	List<int>^ preguntas;
+	Camara^ camara;
 public:
-	Controladora(Bitmap^ bmp);
+	Controladora(Bitmap^ bmp, int anchoVentana, int altoVentana);
 	~Controladora();
 
 	void agregarEnemigo(Enemigo^ enemigo);
@@ -36,21 +38,27 @@ public:
 	bool colisionAliado();
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
+	void actualizarCamara();
 
 	Jugador^ getJugador() { return jugador; }
+	Camara^ getCamara() { return camara; }
 };
 
-inline Controladora::Controladora(Bitmap^ bmp) {
+inline Controladora::Controladora(Bitmap^ bmp, int anchoVentana, int altoVentana) {
 	jugador = gcnew Jugador(435, 80, bmp->Width / 6, bmp->Height / 6);
 	enemigos = gcnew List<Enemigo^>();
 	recursos = gcnew List<Recurso^>();
 	aliado = gcnew Aliado(255, 560);
-	preguntasxd = gcnew List<int>(); // inicializar la lista de preguntas
+	preguntas = gcnew List<int>(); // inicializar la lista de preguntas
+	camara = gcnew Camara(anchoVentana, altoVentana, 143 * 8, 672);
 }
 
 
 inline Controladora::~Controladora() {}
 
+inline void Controladora::actualizarCamara() {
+	camara->seguirJugador(jugador->getX(), jugador->getY(), jugador->getAncho(), jugador->getAlto());
+}
 inline void Controladora::crearRecursos(Bitmap^ recurso)
 {
 	Recurso^ recursox = gcnew Recurso(recurso);
@@ -169,7 +177,7 @@ inline void Controladora::dialogoConIA()
 			int a = r->Next(5);
 		
 			if (contador == 0) {
-				preguntasxd->Add(a);
+				preguntas->Add(a);
 				enemigos[i]->preguntaContestada();
 				Dialogo^ dialogoForm = gcnew Dialogo(jugador, a);
 				dialogoForm->ShowDialog();
@@ -177,11 +185,11 @@ inline void Controladora::dialogoConIA()
 			}
 			else {
 				// Generar una pregunta que no esté ya en la lista
-				while (preguntasxd->Contains(a)) {
+				while (preguntas->Contains(a)) {
 					a = r->Next(5);
 				}
 				
-				preguntasxd->Add(a);
+				preguntas->Add(a);
 				enemigos[i]->preguntaContestada();
 				Dialogo^ dialogoForm = gcnew Dialogo(jugador, a);
 				dialogoForm->ShowDialog();
