@@ -15,8 +15,10 @@ ref class Controladora {
 private:
 	Jugador^ jugador;
 	List<Enemigo^>^ enemigos;
-	List <Recurso^>^ recursos;
+	List<Recurso^>^ recursos;
 	Aliado^ aliado;
+	int contador = 0;
+	List<int>^ preguntasxd;
 public:
 	Controladora(Bitmap^ bmp);
 	~Controladora();
@@ -43,6 +45,7 @@ inline Controladora::Controladora(Bitmap^ bmp) {
 	enemigos = gcnew List<Enemigo^>();
 	recursos = gcnew List<Recurso^>();
 	aliado = gcnew Aliado(255, 560);
+	preguntasxd = gcnew List<int>(); // inicializar la lista de preguntas
 }
 
 
@@ -141,9 +144,11 @@ inline bool Controladora::colisionAliado() {
 }
 
 inline void Controladora::interactuarAliado() {
-	if (jugador->getRect().IntersectsWith(aliado->getRectGrande())) {
-		FormAliado^ FormA = gcnew FormAliado();
+	static int unavez = 0;
+	if (jugador->getRect().IntersectsWith(aliado->getRectGrande()) && unavez == 0) {
+		FormAliado^ FormA = gcnew FormAliado(jugador);
 		FormA->ShowDialog();
+		unavez = 1;
 	}
 }
 
@@ -151,13 +156,37 @@ inline void Controladora::dialogoConIA()
 {
 	for (int i = 0; i < enemigos->Count; i++)
 	{
+		if (enemigos[i]->verPregunta()) {
+			continue;
+		}
+
 		int distanciaX = jugador->getX() - enemigos[i]->getRect().X;
 		int distanciaY = jugador->getY() - enemigos[i]->getRect().Y;
 
+
 		if ((distanciaX < 60 && distanciaX > -60) && (distanciaY < 70 && distanciaY > -70)) {
-			Dialogo^ dialogoForm = gcnew Dialogo(jugador);
-			dialogoForm->ShowDialog();
-			return;
+			Random ^r = gcnew Random();
+			int a = r->Next(5);
+		
+			if (contador == 0) {
+				preguntasxd->Add(a);
+				enemigos[i]->preguntaContestada();
+				Dialogo^ dialogoForm = gcnew Dialogo(jugador, a);
+				dialogoForm->ShowDialog();
+				contador++;
+			}
+			else {
+				// Generar una pregunta que no esté ya en la lista
+				while (preguntasxd->Contains(a)) {
+					a = r->Next(5);
+				}
+				
+				preguntasxd->Add(a);
+				enemigos[i]->preguntaContestada();
+				Dialogo^ dialogoForm = gcnew Dialogo(jugador, a);
+				dialogoForm->ShowDialog();
+				return;
+			}
 		}
 	}
 }

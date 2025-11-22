@@ -7,11 +7,13 @@ ref class Enemigo : public Entidad {
 protected:
 	int dx, dy;
 	bool activo;
-
+	bool pregunta_contestada;
 public:
 	Enemigo(int x, int y, int dx, int dy);
 	~Enemigo();
 
+	bool verPregunta() { return pregunta_contestada; }
+	void preguntaContestada() { pregunta_contestada = true; }
 	bool estaActivo() { return activo; }
 	void desactivar() { activo = false; }
 
@@ -23,6 +25,7 @@ public:
 };
 
 inline Enemigo::Enemigo(int x, int y, int dx, int dy) : Entidad(x, y, 64, 64) {
+	pregunta_contestada = false;
 	activo = true;
 	this->dx = dx;
 	this->dy = dy;

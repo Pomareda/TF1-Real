@@ -151,7 +151,7 @@ inline void Jugador::mover(Graphics^ g,  const int mapa1[84][143]) {
 				g->DrawRectangle(System::Drawing::Pens::Transparent, X, Y, 8, 8);
 			}
 			else {
-				//g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8); //ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
+				g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8); //ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
 
 				if (getRect().IntersectsWith(Rec1))dx = 0;
 				if (Jugador2.IntersectsWith(Rec1)) {

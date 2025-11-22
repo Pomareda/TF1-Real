@@ -1,4 +1,5 @@
 #pragma once
+#include "Jugador.h"
 
 namespace TF1 {
 
@@ -11,8 +12,9 @@ namespace TF1 {
 
 	public ref class FormAliado : public System::Windows::Forms::Form
 	{
+		Jugador^ jugadorPtr;
 	public:
-		FormAliado() {
+		FormAliado(Jugador^ j) {
 			InitializeComponent();
 			pnlAliado->BackColor = System::Drawing::Color::FromArgb(200, 50, 50, 50);//hace traslucido el panel
 			lblMensaje->BackColor = System::Drawing::Color::FromArgb(0, 50, 50, 50); //hace traslucido el mensaje del aliado
@@ -21,16 +23,18 @@ namespace TF1 {
 			lblMensaje->Width = 700;
 			lblMensaje->Height = 200;
 
+			this->jugadorPtr = j;
+
 			timer1->Enabled = true;
 			dialogosAliado = gcnew cli::array<System::String^>(8) {
 				"...",
 					"Espera... ¿Eres... un humano?",
-					"Hace décadas que no veía uno.... tienes muy mala suerte de terminar acá.",
+					"Hace décadas que no veía uno.... tienes muy mala suerte de terminar aquí muchacho",
 					"Presumo que te dieron la misma misión que a mí... te deseo suerte",
-					"Lamentablemente no lo logré y me dejaron encerrado, vagando hasta mi muerte.",
-					"Para tu suerte, conozco lo que una de estas maquinas quiere escuchar.",
+					"Lamentablemente no lo logré y me dejaron encerrado aqui, vagando hasta mi muerte",
+					"Para tu suerte, conozco lo que una de estas maquinas quiere escuchar",
 					"Te daré la respuesta, espero que te sirva",
-					"Mucha suerte y escapa, chico."
+					"Mucha suerte y escapa, chico"
 			};
 		}
 
@@ -143,18 +147,19 @@ namespace TF1 {
 	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 		mostrarDialogo(indice);
 	}
-
 	
 private: System::Void FormAliado_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (dialogoCompleto) {
 
 		indice++;
 		if (indice >= dialogosAliado->Length) {
-			//aumenta la confianza del jugador
 			this->Close();
+			if (dialogoCompleto == true) {
+				jugadorPtr->setConfianza(jugadorPtr->getConfianza() + 120);
+			}
+
 			return;
 		}
-
 		//resetear
 		dialogoCompleto = false;
 		indiceChar = 0;

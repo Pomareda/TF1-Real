@@ -7,7 +7,7 @@ ref class Aliado : public Entidad {
 	~Aliado() {};
 
 	void dibujar(Graphics^ g, Bitmap^ bmp) override {
-		idX = 0; idY = 0; // no quiero que se mueva, se ve feo
+		idX = 0; idY = 0; // no quiero que se mueva, se ve feo, tu te ves feo daaaaaaaaaaa
 
 		System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 		System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x, y, ancho * 0.4, alto * 0.4);
