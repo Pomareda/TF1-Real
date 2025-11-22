@@ -1,4 +1,5 @@
 #pragma once
+#include "Barra_Confianza.h"
 #include "Enemigo.h"
 #include "Jugador.h"
 #include "Recurso.h"
@@ -39,6 +40,7 @@ public:
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
 	void actualizarCamara();
+	void barra_confianza();
 
 	Jugador^ getJugador() { return jugador; }
 	Camara^ getCamara() { return camara; }
@@ -150,7 +152,10 @@ inline bool Controladora::colisionAliado() {
 	}
 	else return false;
 }
-
+inline void Controladora::barra_confianza() {
+	Barra_Confianza^ barra = gcnew	Barra_Confianza(jugador);
+	barra->ShowDialog();
+}
 inline void Controladora::interactuarAliado() {
 	static int unavez = 0;
 	if (jugador->getRect().IntersectsWith(aliado->getRectGrande()) && unavez == 0) {

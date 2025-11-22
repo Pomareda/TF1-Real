@@ -62,6 +62,15 @@
     <ClInclude Include="Camara.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Barra_Confianza.h">
+      <Filter>Formularios</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialogo_IAsuprema.h">
+      <Filter>Formularios</Filter>
+    </ClInclude>
+    <ClInclude Include="IA_suprema_hablando.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -75,6 +84,12 @@
     </ClCompile>
     <ClCompile Include="Menu_Interactivo.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Barra_Confianza.cpp">
+      <Filter>Formularios</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialogo_IAsuprema.cpp">
+      <Filter>Formularios</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

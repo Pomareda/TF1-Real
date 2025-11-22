@@ -67,7 +67,7 @@ namespace TF1 {
 		Bitmap^ bmpAliado;
 		int cant_recursos;
 
-	private: System::Windows::Forms::Panel^ verticalProgressBar;
+
 
 		   Controladora^ control;
 
@@ -76,7 +76,6 @@ namespace TF1 {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			this->verticalProgressBar = (gcnew System::Windows::Forms::Panel());
 			this->SuspendLayout();
 			// 
 			// timer1
@@ -84,22 +83,11 @@ namespace TF1 {
 			this->timer1->Enabled = true;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MenuForm::timer1_Tick);
 			// 
-			// verticalProgressBar
-			// 
-			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->verticalProgressBar->Location = System::Drawing::Point(1467, 39);
-			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->verticalProgressBar->Name = L"verticalProgressBar";
-			this->verticalProgressBar->Size = System::Drawing::Size(55, 700);
-			this->verticalProgressBar->TabIndex = 1;
-			this->verticalProgressBar->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MenuForm::verticalProgressBar_Paint);
-			// 
 			// MenuForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1582, 753);
-			this->Controls->Add(this->verticalProgressBar);
 			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MenuForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -133,7 +121,9 @@ namespace TF1 {
 			control->dialogoConIA();
 			control->interactuarAliado();
 			break;
-		
+		case Keys::C:
+			control->barra_confianza();
+			break;
 		/*default:
 			break;*/
 		}
@@ -166,18 +156,11 @@ namespace TF1 {
 		control->moverRecursos(gBuffer, bmpRecurso);
 		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso, mapa1);
 		gBuffer->Restore(estadoOriginal);
-		this->verticalProgressBar->Invalidate();
 		buffer->Render(g);
 		cant_recursos++;
 	} 
 
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-	private: System::Void verticalProgressBar_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
-		int altura = verticalProgressBar->Height;
-		int rellenar = control->getJugador()->getConfianza();
-
-		e->Graphics->FillRectangle(Brushes::LightGreen, 0, altura - rellenar, verticalProgressBar->Width, rellenar);
-}
 };
 }

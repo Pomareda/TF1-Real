@@ -115,14 +115,21 @@
   <ItemGroup>
     <ClInclude Include="Aliado.h" />
     <ClInclude Include="Animacion_instrucciones.h" />
+    <ClInclude Include="Barra_Confianza.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Camara.h" />
     <ClInclude Include="Controladora.h" />
+    <ClInclude Include="Dialogo_IAsuprema.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Didi_hablando.h" />
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="Entidad.h" />
     <ClInclude Include="FormAliado.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="IA_suprema_hablando.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="FormJuego.h">
       <FileType>CppForm</FileType>
@@ -150,14 +157,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Barra_Confianza.cpp" />
+    <ClCompile Include="Dialogo_IAsuprema.cpp" />
     <ClCompile Include="Menu_Creditos.cpp" />
     <ClCompile Include="Menu_Instrucciones.cpp" />
     <ClCompile Include="Menu_Interactivo.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Barra_Confianza.resx">
+      <DependentUpon>Barra_Confianza.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogo.resx">
       <DependentUpon>Dialogo.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogo_IAsuprema.resx">
+      <DependentUpon>Dialogo_IAsuprema.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAliado.resx">
       <DependentUpon>FormAliado.h</DependentUpon>
