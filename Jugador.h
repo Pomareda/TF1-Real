@@ -144,23 +144,24 @@ inline void Jugador::mover(Graphics^ g,  const int mapa1[84][143]) {
 		X = 0;
 		for (int j = 0; j < 143; j++)
 		{
-			System::Drawing::Rectangle  Rec1 = System::Drawing::Rectangle(X, Y, 8, 8);
+			System::Drawing::Rectangle  Rec1 = System::Drawing::Rectangle(X, Y, 20, 20);
+
 
 
 			if (mapa1[i][j] == 0) {
-				g->DrawRectangle(System::Drawing::Pens::Transparent, X, Y, 8, 8);
+				g->DrawRectangle(System::Drawing::Pens::Black, X, Y, 20, 20); //LUEGO SE CAMBIA EL COLOR BLACK
 			}
 			else {
-				g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 8, 8); //ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
+				g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 20, 20); //ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
 
 				if (getRect().IntersectsWith(Rec1))dx = 0;
 				if (Jugador2.IntersectsWith(Rec1)) {
 					dy = 0;
 				}
 			}
-			X = X + 8;
+			X = X + 20;
 		}
-		Y = Y + 8;
+		Y = Y + 20;
 	}
 	x += dx;
 	y += dy;

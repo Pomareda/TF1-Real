@@ -51,7 +51,7 @@ inline Controladora::Controladora(Bitmap^ bmp, int anchoVentana, int altoVentana
 	enemigos = gcnew List<Enemigo^>();
 	recursos = gcnew List<Recurso^>();
 	aliado = gcnew Aliado(255, 560);
-	preguntas = gcnew List<int>(); // inicializar la lista de preguntas
+	preguntas = gcnew List<int>(); 
 	camara = gcnew Camara(anchoVentana, altoVentana, 143 * 8, 672);
 }
 
@@ -152,10 +152,12 @@ inline bool Controladora::colisionAliado() {
 	}
 	else return false;
 }
+
 inline void Controladora::barra_confianza() {
 	Barra_Confianza^ barra = gcnew	Barra_Confianza(jugador);
 	barra->ShowDialog();
 }
+
 inline void Controladora::interactuarAliado() {
 	static int unavez = 0;
 	if (jugador->getRect().IntersectsWith(aliado->getRectGrande()) && unavez == 0) {

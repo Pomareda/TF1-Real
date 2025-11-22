@@ -20,8 +20,7 @@ namespace TF1 {
 			g = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
-
-			map1 = gcnew Bitmap("Imagenes/Mapa1.png");
+			bmpMapa = gcnew Bitmap("Imagenes/Mapa1.png");
 			bmpPersonajeHumano = gcnew Bitmap("Imagenes/PersonajeHuman.png");
 			bmpEnemigoIA = gcnew Bitmap("Imagenes/EnemigoIA.png");
 			bmpRecurso = gcnew Bitmap("Imagenes/Recurso.png");
@@ -63,13 +62,11 @@ namespace TF1 {
 		Bitmap^ bmpPersonajeHumano;
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ bmpRecurso;
-		Bitmap^ map1;
+		Bitmap^ bmpMapa; 
 		Bitmap^ bmpAliado;
 		int cant_recursos;
 
-
-
-		   Controladora^ control;
+		Controladora^ control;
 
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
@@ -85,10 +82,9 @@ namespace TF1 {
 			// 
 			// MenuForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1582, 753);
-			this->Margin = System::Windows::Forms::Padding(4);
+			this->ClientSize = System::Drawing::Size(1084, 661);
 			this->Name = L"MenuForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MenuForm";
@@ -124,8 +120,6 @@ namespace TF1 {
 		case Keys::C:
 			control->barra_confianza();
 			break;
-		/*default:
-			break;*/
 		}
 	}
 	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
@@ -133,32 +127,58 @@ namespace TF1 {
 	}
 
 	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-		//logica del juego
+		// lógica del juego
 		Graphics^ gBuffer = buffer->Graphics;
-
 		gBuffer->Clear(Color::White);
 
-		control->actualizarCamara();
+		Jugador^ jugador = control->getJugador();
+		
+		int tamañoAncho = this->ClientSize.Width;
+		int tamañoAlto = this->ClientSize.Height;
+		int mapaAncho = 143 * 20; 
+		int mapaAlto = 84 * 20; 
+
+		int CentrarJX = jugador->getX() + jugador->getAncho() / 2;
+		int CentrarJY = jugador->getY() + jugador->getAlto() / 2;
+		int camX = tamañoAncho / 2 - CentrarJX;
+		int camY = tamañoAlto / 2 - CentrarJY;
+
+		// limitar cámara para no mostrar fuera del mapa
+		if (mapaAncho <= tamañoAncho) {
+			camX = (tamañoAncho - mapaAncho) / 2;
+		}
+		else {
+			int minCamX = tamañoAncho - mapaAncho; // valor negativo
+			if (camX > 0) camX = 0;
+			if (camX < minCamX) camX = minCamX;
+		}
+
+		if (mapaAlto <= tamañoAlto) {
+			camY = (tamañoAlto - mapaAlto) / 2;
+		}
+		else {
+			int minCamY = tamañoAlto - mapaAlto; // valor negativo
+			if (camY > 0) camY = 0;
+			if (camY < minCamY) camY = minCamY;
+		}
 
 		System::Drawing::Drawing2D::GraphicsState^ estadoOriginal = gBuffer->Save();
+		gBuffer->TranslateTransform((float)camX, (float)camY);
+		gBuffer->DrawImage(bmpMapa, 0, 0, mapaAncho, mapaAlto);
 
-		control->getCamara()->aplicarTransformacion(gBuffer);
-		int mapaAncho = 143 * 8;
-		int mapaAlto = 84 * 8;
-
-		gBuffer->DrawImage(map1, 0, 0, mapaAncho, mapaAlto);
-		control->moverJugador(gBuffer, bmpPersonajeHumano, mapa1);
+		control->moverJugador(gBuffer, bmpPersonajeHumano, ::mapa1);
 		if (cant_recursos < 4) {
 			control->crearRecursos(bmpRecurso);
 		}
 		control->dibujarAliado(gBuffer, bmpAliado);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
-		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso, mapa1);
+		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso, ::mapa1);
+
 		gBuffer->Restore(estadoOriginal);
 		buffer->Render(g);
 		cant_recursos++;
-	} 
+	}
 
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
