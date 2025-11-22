@@ -30,9 +30,11 @@ namespace TF1 {
 
 			jugadorPtr = j;
 			Preguntas();
+
 			mostrarPregunta();
 			fondo_didi = gcnew Fondo_Didi();
-
+			timer1->Enabled = true;
+		
 			// Configurar el panel para que sea translúcido
 			ConfigurarPanelTranslucido();
 		}
@@ -59,6 +61,8 @@ namespace TF1 {
 		Bitmap^ fondo;
 		Fondo_Didi^ fondo_didi;
 		Bitmap^ fondoCache; 
+		bool dialogoCompleto = false;
+		int indiceChar = 0;
 
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::Button^ button1;
@@ -68,9 +72,6 @@ namespace TF1 {
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Label^ label1;
-
-
-
 	private: System::ComponentModel::IContainer^ components;
 
 	// Método para configurar el panel translúcido
@@ -105,6 +106,45 @@ namespace TF1 {
 		button3->FlatAppearance->BorderColor = Color::FromArgb(150, 100, 100, 100);
 	}
 
+	// funcionan en el mismo bloque ---------------------------------------------------
+	private: bool numPregunta()
+	{
+		if (preguntas == nullptr || indicePregunta >= preguntas->Count) return false;
+		String^ textoCompleto = preguntas[indicePregunta];
+
+		if (indiceChar < textoCompleto->Length) {
+			label1->Text += textoCompleto[indiceChar];
+			indiceChar++;
+			return true;
+		}
+	}
+	private: void mostrarPregunta()
+	{
+		if (preguntas == nullptr || preguntas->Count == 0) { return; }
+		label1->Text = "";
+		indiceChar = 0;
+		dialogoCompleto = false;
+
+		List<String^>^ opts = respuestas[indicePregunta];
+		button1->Text = (opts->Count > 0) ? opts[0] : "";
+		button2->Text = (opts->Count > 1) ? opts[1] : "";
+		button3->Text = (opts->Count > 2) ? opts[2] : "";
+	}
+	// ------------------------------------------------------------------------------
+
+	private: void Respuesta(int respuesta)
+	{
+		if (jugadorPtr != nullptr && añadir != nullptr && indicePregunta >= 0 && indicePregunta < añadir->Count)
+		{
+			List<int>^ confianza = añadir[indicePregunta];
+			if (confianza != nullptr && respuesta >= 0 && respuesta < confianza->Count) {
+				int C = confianza[respuesta];
+				jugadorPtr->setConfianza(jugadorPtr->getConfianza() + C);
+			}
+		}
+		this->Close();
+	}
+
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
 		{
@@ -122,6 +162,7 @@ namespace TF1 {
 			// timer1
 			// 
 			this->timer1->Enabled = true;
+			/*this->timer1->Interval = 50;*/
 			this->timer1->Tick += gcnew System::EventHandler(this, &Dialogo::timer1_Tick);
 			// 
 			// button1
@@ -312,32 +353,7 @@ namespace TF1 {
 		}
 	}
 
-	private: void mostrarPregunta()
-	{
-		if (preguntas == nullptr || preguntas->Count == 0) { return; }
-
-		label1->Text = preguntas[indicePregunta];
-		List<String^>^ opts = respuestas[indicePregunta];
-
-		button1->Text = (opts->Count > 0) ? opts[0] : "";
-		button2->Text = (opts->Count > 1) ? opts[1] : "";
-		button3->Text = (opts->Count > 2) ? opts[2] : "";
-	}
-
-	private: void Respuesta(int respuesta)
-	{
-		if (jugadorPtr != nullptr && añadir != nullptr && indicePregunta >= 0 && indicePregunta < añadir->Count)
-		{
-			List<int>^ confianza = añadir[indicePregunta];
-			if (confianza != nullptr && respuesta >= 0 && respuesta < confianza->Count) {
-				int C = confianza[respuesta];
-				jugadorPtr->setConfianza(jugadorPtr->getConfianza() + C);
-			}
-		}
-
-		this->Close(); 
-	}
-
+	
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		Respuesta(0);
 	}
@@ -352,6 +368,8 @@ namespace TF1 {
 		if (this->IsDisposed || !this->IsHandleCreated || this->timer1 == nullptr || !this->timer1->Enabled)
 			return;
 
+		numPregunta();
+
 		if (fondoCache != nullptr) {
 			Graphics^ gCache = Graphics::FromImage(fondoCache);
 			gCache->Clear(Color::White);
@@ -365,6 +383,5 @@ namespace TF1 {
 		// Forzar redibujado del formulario
 		this->Invalidate();
 	}
-
 };
 }
