@@ -27,7 +27,7 @@ public:
 	}
 	~Recurso() {}
 
-	void dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143]);
+	void dibujar(Graphics^ g, Bitmap^ bmp);
 	void moverRecurso();
 
 
@@ -41,7 +41,7 @@ public:
 };
 
 
-inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143]) {
+inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp) {
 	Random^ rand = gcnew Random();
 
 	System::Drawing::Rectangle r1 = System::Drawing::Rectangle(x + 10, y + 10, ancho - 80, alto - 80);
@@ -57,13 +57,13 @@ inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, const int mapa1[84][143])
 		for (int j = 0; j < 143; j++)
 		{
 			System::Drawing::Rectangle  Rec1 = System::Drawing::Rectangle(X, Y, 8, 8);
-			if (mapa1[i][j] != 0) {
-				if (getRect().IntersectsWith(Rec1)) {
-					activo = false;
-					x = rand->Next(1000);
-					y = rand->Next(600);
-				}
+			
+			if (getRect().IntersectsWith(Rec1)) {
+				activo = false;
+				x = rand->Next(1000);
+				y = rand->Next(600);
 			}
+			
 			X = X + 8;
 		}
 		Y = Y + 8;

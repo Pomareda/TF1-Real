@@ -19,7 +19,7 @@ public:
 	Jugador(int x, int y, int ancho, int alto);
     ~Jugador();
 
-    void mover(Graphics^ g, const int mapa1[84][143]);
+    void mover(Graphics^ g);
 	void dibujar(Graphics^ g, Bitmap^ bmp) override;
    /* void mostrarConfianza();
 
@@ -59,7 +59,7 @@ inline Jugador::~Jugador() {}
 inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 	//Si se va hacer con opcion, faltaria eso aqui
 
-	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10, y + 12 + 10, (ancho - 17), (alto - 37));
+	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + dx + 5, y + 22, (ancho - 15), (alto - 30));
 	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
 
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
@@ -68,7 +68,7 @@ inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp) {
 
 }
 
-inline void Jugador::mover(Graphics^ g,  const int mapa1[84][143]) {
+inline void Jugador::mover(Graphics^ g) {
 	int X = 0, Y = 0;
 	switch (Direccion)
 	{
@@ -137,36 +137,13 @@ inline void Jugador::mover(Graphics^ g,  const int mapa1[84][143]) {
 		}
 		break;
 	}
-	System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 2 + 10, y + 12 + 10 + dy, (ancho - 17), (alto - 37));
+	System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 5, y + 22 + dy, (ancho - 15), (alto - 30));
 	g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
-	for (int i = 0; i < 84; i++)
-	{
-		X = 0;
-		for (int j = 0; j < 143; j++)
-		{
-			System::Drawing::Rectangle  Rec1 = System::Drawing::Rectangle(X, Y, 20, 20);
-
-
-
-			if (mapa1[i][j] == 0) {
-				g->DrawRectangle(System::Drawing::Pens::Black, X, Y, 20, 20); //LUEGO SE CAMBIA EL COLOR BLACK
-			}
-			else {
-				g->FillRectangle(System::Drawing::Brushes::Green, X, Y, 20, 20); //ESTO ES SOLO PARA VER COMO SON LA HITBOXS DEL MAPA
-
-				if (getRect().IntersectsWith(Rec1))dx = 0;
-				if (Jugador2.IntersectsWith(Rec1)) {
-					dy = 0;
-				}
-			}
-			X = X + 20;
-		}
-		Y = Y + 20;
-	}
+	
 	x += dx;
 	y += dy;
 }
 
 inline System::Drawing::Rectangle Jugador::getRect() {
-	return System::Drawing::Rectangle(x + 2 + dx, y + 12 + 4, (ancho - 17), (alto - 37));
+	return System::Drawing::Rectangle(x, y , ancho *0.85 , alto * 0.85);
 }
