@@ -1,10 +1,10 @@
-#include "Menu_Interactivo.h"
+#include "FormJuego.h"
 using namespace TF1;
 
 int main() {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	Application::Run(gcnew Menu_Interactivo());
+	Application::Run(gcnew MenuForm());
 
 	return 0;
 }

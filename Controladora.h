@@ -9,7 +9,7 @@
 #include "Aliado.h"
 #include "Camara.h"
 #include "FormAliado.h"
-
+#include "Dialogo_IAsuprema.h"
 using namespace System::Collections::Generic;
 using namespace TF1;
 

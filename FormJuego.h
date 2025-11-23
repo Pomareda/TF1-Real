@@ -1,5 +1,6 @@
 #pragma once
 #include "Controladora.h"
+#include "Dialogo_IAsuprema.h"
 //#include "Mapas.h"
 
 namespace TF1 {
@@ -82,9 +83,10 @@ namespace TF1 {
 			// 
 			// MenuForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1084, 661);
+			this->ClientSize = System::Drawing::Size(1445, 814);
+			this->Margin = System::Windows::Forms::Padding(4);
 			this->Name = L"MenuForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"MenuForm";
@@ -132,7 +134,6 @@ namespace TF1 {
 		gBuffer->Clear(Color::White);
 
 		Jugador^ jugador = control->getJugador();
-		
 		int tamañoAncho = this->ClientSize.Width;
 		int tamañoAlto = this->ClientSize.Height;
 		int mapaAncho = 143 * 20; 
@@ -164,12 +165,14 @@ namespace TF1 {
 
 		System::Drawing::Drawing2D::GraphicsState^ estadoOriginal = gBuffer->Save();
 		gBuffer->TranslateTransform((float)camX, (float)camY);
+
 		gBuffer->DrawImage(bmpMapa, 0, 0, mapaAncho, mapaAlto);
 
 		control->moverJugador(gBuffer, bmpPersonajeHumano, ::mapa1);
 		if (cant_recursos < 4) {
 			control->crearRecursos(bmpRecurso);
 		}
+
 		control->dibujarAliado(gBuffer, bmpAliado);
 		control->moverEnemigos(gBuffer, bmpEnemigoIA);
 		control->moverRecursos(gBuffer, bmpRecurso);
@@ -181,6 +184,11 @@ namespace TF1 {
 	}
 
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
+		this->timer1->Enabled = false;
+		Dialogo_IAsuprema^ dialogoIA = gcnew Dialogo_IAsuprema();
+		dialogoIA->ShowDialog();
+		this->timer1->Enabled = true;
+
 	}
 };
 }
