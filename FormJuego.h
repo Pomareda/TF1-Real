@@ -115,7 +115,7 @@ namespace TF1 {
 		case Keys::D:
 			jugadorPtr->setDireccion(Derecha);
 			break;
-		case Keys::E:		
+		case Keys::E:
 			control->dialogoConIA();
 			control->interactuarAliado();
 			break;
