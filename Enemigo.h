@@ -18,7 +18,7 @@ public:
 	void desactivar() { activo = false; }
 
 	void mover() override;
-	void dibujar(Graphics^ g, Bitmap^ bmp) override;
+	void dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY);
 	int getAncho() { return ancho; }
 	int getAlto() { return alto; }
 	System::Drawing::Rectangle getRect() override;
@@ -50,13 +50,21 @@ inline void Enemigo::mover() {
 }
 
 inline System::Drawing::Rectangle Enemigo::getRect() {
-	return System::Drawing::Rectangle(x + 2 + dx + 10 + 5, y + 12, (ancho - 7 - 10), (alto - 9));
+	return System::Drawing::Rectangle(x + 10 + 5, y + 12, (ancho - 32), (alto - 55));
 }
-inline void Enemigo::dibujar(Graphics^ g, Bitmap^ bmp) {
+inline void Enemigo::dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY) {
 	if (!activo) return;
-	System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + 2 + dx + 10 + 5, y + 12, (ancho - 7 - 10), (alto - 9));
-	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
-	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(x, y, ancho * 1.15, alto * 1.15);
-	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);
+
+	int pantallaX = x - scrollX;
+	int pantallaY = y - scrollY;
+
+	// NO dibujar si está fuera de la pantalla
+	if (pantallaX < -ancho || pantallaX > 1084 || pantallaY < -alto || pantallaY > 661) {
+		return;
+	}
+
+	System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
+	System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho, alto);
+
+	g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);
 }

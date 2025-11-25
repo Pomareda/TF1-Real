@@ -3,27 +3,28 @@
 #include "Enemigo.h"
 #include "Jugador.h"
 #include "Recurso.h"
-#include "Mapas.h"
 #include <vector>
 #include "Dialogo.h"
 #include "Aliado.h"
 #include "Camara.h"
 #include "FormAliado.h"
 #include "Dialogo_IAsuprema.h"
+#include "FormJuego.h"
 using namespace System::Collections::Generic;
 using namespace TF1;
 
 ref class Controladora {
 private:
 	Jugador^ jugador;
+	Camara^ camara;
 	List<Enemigo^>^ enemigos;
 	List<Recurso^>^ recursos;
 	Aliado^ aliado;
 	int contador = 0;
 	List<int>^ preguntas;
-	Camara^ camara;
+	//Camara^ camara;
 public:
-	Controladora(Bitmap^ bmp, int anchoVentana, int altoVentana);
+	Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, int altoVentana);
 	~Controladora();
 
 	void agregarEnemigo(Enemigo^ enemigo);
@@ -39,28 +40,32 @@ public:
 	bool colisionAliado();
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
-	void actualizarCamara();
+	//void actualizarCamara();
 	void barra_confianza();
 
+	
+
 	Jugador^ getJugador() { return jugador; }
-	Camara^ getCamara() { return camara; }
+	//Camara^ getCamara() { return camara; }
 };
 
-inline Controladora::Controladora(Bitmap^ bmp, int anchoVentana, int altoVentana) {
+inline Controladora::Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, int altoVentana) {
 	jugador = gcnew Jugador(435, 80, bmp->Width / 6, bmp->Height / 6);
 	enemigos = gcnew List<Enemigo^>();
 	recursos = gcnew List<Recurso^>();
 	aliado = gcnew Aliado(255, 560);
 	preguntas = gcnew List<int>(); 
-	camara = gcnew Camara(anchoVentana, altoVentana, 143 * 8, 672);
+	camara = cam;
+	//camara = gcnew Camara(anchoVentana, altoVentana, 143 * 8, 672);
 }
 
 
 inline Controladora::~Controladora() {}
 
-inline void Controladora::actualizarCamara() {
-	camara->seguirJugador(jugador->getX(), jugador->getY(), jugador->getAncho(), jugador->getAlto());
-}
+//inline void Controladora::actualizarCamara() {
+//	camara->seguirJugador(jugador->getX(), jugador->getY(), jugador->getAncho(), jugador->getAlto());
+//}
+
 inline void Controladora::crearRecursos(Bitmap^ recurso)
 {
 	Recurso^ recursox = gcnew Recurso(recurso);
@@ -108,17 +113,17 @@ inline void Controladora::moverRecursos(Graphics^ g, Bitmap^ bmp)
 
 inline void Controladora::dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso) {
 	for each (Recurso ^ r in recursos) {
-		r->dibujar(g, bmpRecurso);
+		r->dibujar(g, bmpRecurso, camara->getScrollX(), camara->getScrollY());
 	}
 	for each (Enemigo ^ enemigo in enemigos) {
-		enemigo->dibujar(g, bmpEnemigo);
+		enemigo->dibujar(g, bmpEnemigo, camara->getScrollX(), camara->getScrollY());
 	}
-	jugador->dibujar(g, bmp);
+	jugador->dibujar(g, bmp, camara->getScrollY(), camara->getScrollX());
 
 }
 
 inline void Controladora::dibujarAliado(Graphics^ g, Bitmap^ bmp) {
-	aliado->dibujar(g, bmp);
+	aliado->dibujar(g, bmp, camara->getScrollX(), camara->getScrollY());
 }
 
 inline bool Controladora::colisionEnemigo(Graphics^ g) {
@@ -157,6 +162,8 @@ inline void Controladora::barra_confianza() {
 	Barra_Confianza^ barra = gcnew	Barra_Confianza(jugador);
 	barra->ShowDialog();
 }
+
+
 
 inline void Controladora::interactuarAliado() {
 	static int unavez = 0;

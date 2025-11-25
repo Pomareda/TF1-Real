@@ -1,6 +1,7 @@
 #pragma once
 #include "Controladora.h"
 #include "Dialogo_IAsuprema.h"
+#include "Camara.h"
 
 namespace TF1 {
 
@@ -11,7 +12,7 @@ namespace TF1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::IO;
-	
+
 	public ref class MenuForm : public System::Windows::Forms::Form
 	{
 	public:
@@ -21,6 +22,7 @@ namespace TF1 {
 			g = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
+
 			bmpMapa = gcnew Bitmap("Imagenes/Mapa1.png");
 			bmpPersonajeHumano = gcnew Bitmap("Imagenes/PersonajeHuman.png");
 			bmpEnemigoIA = gcnew Bitmap("Imagenes/EnemigoIA.png");
@@ -28,16 +30,15 @@ namespace TF1 {
 			bmpAliado = gcnew Bitmap("Imagenes/Aliado.png");
 
 			bmpPersonajeHumano->MakeTransparent(bmpPersonajeHumano->GetPixel(0, 0));
-			control = gcnew Controladora(bmpPersonajeHumano, this->ClientRectangle.Width, this->ClientRectangle.Height);
-			Jugador^ jugadorPtr = control->getJugador();
-
+			camara = gcnew Camara();
+			control = gcnew Controladora(bmpPersonajeHumano, camara, this->ClientRectangle.Width, this->ClientRectangle.Height);
+			jugadorPtr = control->getJugador();
 
 			Enemigo^ enemigo1 = gcnew Enemigo(170, 170, 0, 0);
 			Enemigo^ enemigo2 = gcnew Enemigo(10, 110, 0, 0);
 			Enemigo^ enemigo3 = gcnew Enemigo(470, 540, 0, 0);
 			Enemigo^ enemigo4 = gcnew Enemigo(655, 20, 0, 0);
-			Enemigo^ enemigo5= gcnew Enemigo(940, 390, 0, 0);
-
+			Enemigo^ enemigo5 = gcnew Enemigo(940, 390, 0, 0);
 
 			control->agregarEnemigo(enemigo1);
 			control->agregarEnemigo(enemigo2);
@@ -46,11 +47,13 @@ namespace TF1 {
 			control->agregarEnemigo(enemigo5);
 
 			cant_recursos = 0;
-
+			contadorPlataformas = 0;
 			modoDebug = false;
 			creandoPlataforma = false;
+
+			// IMPORTANTE: Inicializar la lista ANTES de cargar
 			plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
-			cargarPlataformas();
+			cargarPlataformas(); // Esto carga y crea los PictureBox
 		}
 
 	protected:
@@ -62,7 +65,7 @@ namespace TF1 {
 			}
 			delete control;
 		}
-	private: 
+	private:
 		System::ComponentModel::IContainer^ components;
 		System::Windows::Forms::Timer^ timer1;
 		Graphics^ g;
@@ -71,8 +74,11 @@ namespace TF1 {
 		Bitmap^ bmpPersonajeHumano;
 		Bitmap^ bmpEnemigoIA;
 		Bitmap^ bmpRecurso;
-		Bitmap^ bmpMapa; 
+		Bitmap^ bmpMapa;
 		Bitmap^ bmpAliado;
+		Camara^ camara;
+
+		Jugador^ jugadorPtr;
 		int cant_recursos;
 
 		bool modoDebug;
@@ -81,8 +87,6 @@ namespace TF1 {
 		Point puntoActual;
 		int contadorPlataformas;
 		System::Collections::Generic::List<System::Drawing::Rectangle>^ plataformas;
-
-
 
 		Controladora^ control;
 
@@ -113,139 +117,99 @@ namespace TF1 {
 			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MenuForm::MenuForm_MouseMove);
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MenuForm::MenuForm_MouseUp);
 			this->ResumeLayout(false);
-
 		}
 #pragma endregion
-	
-	private: 
-	System::Void MenuForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		Jugador^ jugadorPtr = control->getJugador();
-		switch (e->KeyCode)
-		{
-		case Keys::W:
-			jugadorPtr->setDireccion(Arriba);
-			break;
-		case Keys::A:
-			jugadorPtr->setDireccion(Izquierda);
-			break;
-		case Keys::S:
-			jugadorPtr->setDireccion(Abajo);
-			break;
-		case Keys::D:
-			jugadorPtr->setDireccion(Derecha);
-			break;
-		case Keys::E:
-			control->dialogoConIA();
-			control->interactuarAliado();
-			break;
-		case Keys::C:
-			control->barra_confianza();
-			break;
-		case Keys::F1:  // Activar/desactivar modo debug
-			modoDebug = !modoDebug;
-			MessageBox::Show(modoDebug ? "Modo Dios Activado" : "Modo Dios Desactivado");
-			break;
-		case Keys::F2:  // Guardar plataformas
-			guardarPlataformas();
-			MessageBox::Show("Plataformas guardadas!");
-			break;
-		case Keys::F3:  // Recargar plataformas
-			cargarPlataformas();
-			MessageBox::Show("Plataformas recargadas!");
-			break;
-		case Keys::F4: // Limpiar plataformas
-			limpiarPlataformas();
-			guardarPlataformas();
-			MessageBox::Show("Plataformas eliminadas!");
-			break;
-		}
-	}
-	System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		control->getJugador()->setDireccion(Ninguna);
-	}
 
-	System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-		// lógica del juego
-		Graphics^ gBuffer = buffer->Graphics;
-		gBuffer->Clear(Color::White);
-
-		Jugador^ jugador = control->getJugador();
-		int tamañoAncho = this->ClientSize.Width;
-		int tamañoAlto = this->ClientSize.Height;
-
-
-		int mapaAncho = 143 * 20; 
-		int mapaAlto = 84 * 20; 
-
-		int CentrarJX = jugador->getX() + jugador->getAncho() / 2;
-		int CentrarJY = jugador->getY() + jugador->getAlto() / 2;
-		int camX = tamañoAncho / 2 - CentrarJX;
-		int camY = tamañoAlto / 2 - CentrarJY;
-
-		//CAMARA
-		if (mapaAncho <= tamañoAncho) {
-			camX = (tamañoAncho - mapaAncho) / 2;
-		}
-		else {
-			int minCamX = tamañoAncho - mapaAncho;
-			if (camX > 0) camX = 0;
-			if (camX < minCamX) camX = minCamX;
+	private:
+		System::Void MenuForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+			Jugador^ jugadorPtr = control->getJugador();
+			switch (e->KeyCode)
+			{
+			case Keys::W:
+				jugadorPtr->setDireccion(Arriba);
+				break;
+			case Keys::A:
+				jugadorPtr->setDireccion(Izquierda);
+				break;
+			case Keys::S:
+				jugadorPtr->setDireccion(Abajo);
+				break;
+			case Keys::D:
+				jugadorPtr->setDireccion(Derecha);
+				break;
+			case Keys::E:
+				control->dialogoConIA();
+				control->interactuarAliado();
+				break;
+			case Keys::C:
+				control->barra_confianza();
+				break;
+			case Keys::F1:
+				modoDebug = !modoDebug;
+				toggleVisibilidadPlataformas(modoDebug);
+				MessageBox::Show(modoDebug ? "Modo Debug Activado" : "Modo Debug Desactivado");
+				break;
+			case Keys::F2:
+				guardarPlataformas();
+				MessageBox::Show("Plataformas guardadas!");
+				break;
+			case Keys::F3:
+				cargarPlataformas();
+				MessageBox::Show("Plataformas recargadas!");
+				break;
+			case Keys::F4:
+				limpiarPlataformas();
+				MessageBox::Show("Plataformas eliminadas!");
+				break;
+			}
 		}
 
-		if (mapaAlto <= tamañoAlto) {
-			camY = (tamañoAlto - mapaAlto) / 2;
-		}
-		else {
-			int minCamY = tamañoAlto - mapaAlto;
-			if (camY > 0) camY = 0;
-			if (camY < minCamY) camY = minCamY;
+		System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+			control->getJugador()->setDireccion(Ninguna);
 		}
 
-		System::Drawing::Drawing2D::GraphicsState^ estadoOriginal = gBuffer->Save();
-		
+		System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+			Graphics^ gBuffer = buffer->Graphics;
+			//gBuffer->Clear(Color::White);
 
-		gBuffer->TranslateTransform((float)camX, (float)camY);
+			// CÁMARA
+			camara->actualizarCamaraYDibujar(jugadorPtr, this->ClientSize.Width, this->ClientSize.Height, bmpMapa->Width, bmpMapa->Height, gBuffer, bmpMapa);
+			moverPicturesBoxes(camara->getScrollY(), camara->getScrollX());
 
-		gBuffer->DrawImage(bmpMapa, 0, 0, mapaAncho, mapaAlto);
+			// COLISIONES CON PLATAFORMAS
+			verificarColisionesPlataformas();
 
+			control->moverJugador(gBuffer, bmpPersonajeHumano);
 
-		verificarColisionesPlataformas();
-		control->moverJugador(gBuffer, bmpPersonajeHumano);
+			if (cant_recursos < 4) {
+				control->crearRecursos(bmpRecurso);
+			}
+			control->dibujarAliado(gBuffer, bmpAliado);
+			control->moverEnemigos(gBuffer, bmpEnemigoIA);
+			control->moverRecursos(gBuffer, bmpRecurso);
+			control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso);
 
-		if (cant_recursos < 4) {
-			control->crearRecursos(bmpRecurso);
+			if (modoDebug) {
+				dibujarDebug(gBuffer);
+			}
+
+			//esto es esa cosa transparente que se ve al crear la plataforma
+			if (creandoPlataforma) {
+				int x = Math::Min(puntoInicio.X, puntoActual.X);
+				int y = Math::Min(puntoInicio.Y, puntoActual.Y);
+				int ancho = Math::Abs(puntoActual.X - puntoInicio.X);
+				int alto = Math::Abs(puntoActual.Y - puntoInicio.Y);
+
+				gBuffer->FillRectangle(
+					gcnew SolidBrush(Color::FromArgb(50, 255, 255, 255)),
+					x, y, ancho, alto
+				);
+				gBuffer->DrawRectangle(Pens::White, x, y, ancho, alto);
+			} 
+
+			buffer->Render(g);
+			cant_recursos++;
 		}
-		control->dibujarAliado(gBuffer, bmpAliado);
-		control->moverEnemigos(gBuffer, bmpEnemigoIA);
-		control->moverRecursos(gBuffer, bmpRecurso);
-		control->dibujarEntidades(gBuffer, bmpPersonajeHumano, bmpEnemigoIA, bmpRecurso);
-
-		dibujarPlataformas(gBuffer);
-
-		if (modoDebug) {
-			dibujarDebug(gBuffer);
-		}
-
-		if (creandoPlataforma) {
-			int x = Math::Min(puntoInicio.X, puntoActual.X);
-			int y = Math::Min(puntoInicio.Y, puntoActual.Y);
-			int ancho = Math::Abs(puntoActual.X - puntoInicio.X);
-			int alto = Math::Abs(puntoActual.Y - puntoInicio.Y);
-
-			gBuffer->FillRectangle(
-				gcnew SolidBrush(Color::FromArgb(50, 255, 255, 255)),
-				x, y, ancho, alto
-			);
-			gBuffer->DrawRectangle(Pens::White, x, y, ancho, alto);
-			
-		}
-
-
-
-		gBuffer->Restore(estadoOriginal);
-		buffer->Render(g);
-		cant_recursos++;
-	}
 
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		this->timer1->Enabled = false;
@@ -254,166 +218,112 @@ namespace TF1 {
 		this->timer1->Enabled = true;
 	}
 
-	
 	private: System::Void MenuForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Right) {
 			creandoPlataforma = true;
-			Jugador^ jugador = control->getJugador();
-			int tamañoAncho = this->ClientSize.Width;
-			int tamañoAlto = this->ClientSize.Height;
-			int mapaAncho = 143 * 20;
-			int mapaAlto = 84 * 20;
-
-			int CentrarJX = jugador->getX() + jugador->getAncho() / 2;
-			int CentrarJY = jugador->getY() + jugador->getAlto() / 2;
-			int camX = tamañoAncho / 2 - CentrarJX;
-			int camY = tamañoAlto / 2 - CentrarJY;
-
-			// Aplicar límites de cámara
-			if (mapaAncho <= tamañoAncho) {
-				camX = (tamañoAncho - mapaAncho) / 2;
-			}
-			else {
-				int minCamX = tamañoAncho - mapaAncho;
-				if (camX > 0) camX = 0;
-				if (camX < minCamX) camX = minCamX;
-			}
-
-			if (mapaAlto <= tamañoAlto) {
-				camY = (tamañoAlto - mapaAlto) / 2;
-			}
-			else {
-				int minCamY = tamañoAlto - mapaAlto;
-				if (camY > 0) camY = 0;
-				if (camY < minCamY) camY = minCamY;
-			}
-
-			// Convertir coordenadas de pantalla a coordenadas del mundo
-			puntoInicio = Point(e->Location.X - camX, e->Location.Y - camY);
-			puntoActual = puntoInicio;
+			puntoInicio = e->Location;
+			puntoActual = e->Location;
 		}
 	}
 
 	private: System::Void MenuForm_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (creandoPlataforma) {
-
-			Jugador^ jugador = control->getJugador();
-			int tamañoAncho = this->ClientSize.Width;
-			int tamañoAlto = this->ClientSize.Height;
-			int mapaAncho = 143 * 20;
-			int mapaAlto = 84 * 20;
-
-			int CentrarJX = jugador->getX() + jugador->getAncho() / 2;
-			int CentrarJY = jugador->getY() + jugador->getAlto() / 2;
-			int camX = tamañoAncho / 2 - CentrarJX;
-			int camY = tamañoAlto / 2 - CentrarJY;
-
-			if (mapaAncho <= tamañoAncho) {
-				camX = (tamañoAncho - mapaAncho) / 2;
-			}
-			else {
-				int minCamX = tamañoAncho - mapaAncho;
-				if (camX > 0) camX = 0;
-				if (camX < minCamX) camX = minCamX;
-			}
-
-			if (mapaAlto <= tamañoAlto) {
-				camY = (tamañoAlto - mapaAlto) / 2;
-			}
-			else {
-				int minCamY = tamañoAlto - mapaAlto;
-				if (camY > 0) camY = 0;
-				if (camY < minCamY) camY = minCamY;
-			}
-
-			// Convertir coordenadas de pantalla a coordenadas del mundo
-			puntoActual = Point(e->Location.X - camX, e->Location.Y - camY);
+			puntoActual = e->Location;
 		}
 	}
+
 	private: System::Void MenuForm_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (creandoPlataforma && e->Button == System::Windows::Forms::MouseButtons::Right) {
 			creandoPlataforma = false;
 
-			int x = Math::Min(puntoInicio.X, puntoActual.X);
-			int y = Math::Min(puntoInicio.Y, puntoActual.Y);
+			// Convertir coordenadas de pantalla a coordenadas del mundo
+			int x = Math::Min(puntoInicio.X, puntoActual.X) + camara->getScrollX();
+			int y = Math::Min(puntoInicio.Y, puntoActual.Y) + camara->getScrollY();
 			int ancho = Math::Abs(puntoActual.X - puntoInicio.X);
 			int alto = Math::Abs(puntoActual.Y - puntoInicio.Y);
 
+			// Crear solo si tiene tamaño
 			if (ancho > 5 && alto > 5) {
-				System::Drawing::Rectangle nuevaPlataforma = System::Drawing::Rectangle(x, y, ancho, alto);
-				plataformas->Add(nuevaPlataforma);
+				// Agregar el rectángulo en COORDENADAS DEL MUNDO
+				System::Drawing::Rectangle plataforma = System::Drawing::Rectangle(x, y, ancho, alto);
+				plataformas->Add(plataforma);
+
+				// Crear el PictureBox visual (en coordenadas de pantalla)
+				crearPictureBoxPlataforma(x, y, ancho, alto);
+
+				// Guardar inmediatamente
 				guardarPlataformas();
 			}
 		}
-
 	}
 
 
+
+
+
+
+		   // COLISIÓN ARREGLADA: Usa la List<Rectangle> en coordenadas del mundo
 	private: void verificarColisionesPlataformas() {
-		Jugador^ jugador = control->getJugador();
-		System::Drawing::Rectangle jugadorRect = jugador->getRect();
+		System::Drawing::Rectangle jugadorRect = jugadorPtr->getRect();
 
-		for each (System::Drawing::Rectangle plataforma in plataformas) {
-			if (plataforma.IntersectsWith(jugadorRect)) {
+		// Iterar sobre la lista de Rectangles (coordenadas del mundo)
+		for each (System::Drawing::Rectangle plat in plataformas) {
+			// Verificar intersección
+			if (!jugadorRect.IntersectsWith(plat))
+				continue;
 
-				// Calcular distancias desde cada lado
-				int distanciaArriba = Math::Abs(jugadorRect.Bottom - plataforma.Top);
-				int distanciaAbajo = Math::Abs(jugadorRect.Top - plataforma.Bottom);
-				int distanciaIzquierda = Math::Abs(jugadorRect.Right - plataforma.Left);
-				int distanciaDerecha = Math::Abs(jugadorRect.Left - plataforma.Right);
+			// Calcular penetraciones
+			int overlapLeft = jugadorRect.Right - plat.Left;
+			int overlapRight = plat.Right - jugadorRect.Left;
+			int overlapTop = jugadorRect.Bottom - plat.Top;
+			int overlapBottom = plat.Bottom - jugadorRect.Top;
 
-				// Encontrar la distancia mínima
-				int minDistancia = Math::Min(Math::Min(distanciaArriba, distanciaAbajo),
-					Math::Min(distanciaIzquierda, distanciaDerecha));
+			int penX = Math::Min(Math::Abs(overlapLeft), Math::Abs(overlapRight));
+			int penY = Math::Min(Math::Abs(overlapTop), Math::Abs(overlapBottom));
 
-				// Colisión desde arriba
-				if (minDistancia == distanciaArriba) {
-					jugador->SetY(plataforma.Top - jugadorRect.Height );
-					jugador->SetDy(0);
+			// Resolver colisión
+			if (penX < penY) {
+				// Colisión horizontal
+				if (Math::Abs(overlapLeft) < Math::Abs(overlapRight)) {
+					jugadorPtr->SetX(jugadorPtr->getX() - overlapLeft);
 				}
-				// Colisión desde abajo
-				else if (minDistancia == distanciaAbajo) {
-					jugador->SetY(plataforma.Bottom);
-					jugador->SetDy(0);
+				else {
+					jugadorPtr->SetX(jugadorPtr->getX() + overlapRight);
 				}
-				// Colisión desde la izquierda
-				else if (minDistancia == distanciaIzquierda) {
-					jugador->SetX(plataforma.Left - jugadorRect.Width );
-					jugador->SetDx(0);
-				}
-				// Colisión desde la derecha
-				else if (minDistancia == distanciaDerecha) {
-					jugador->SetX(plataforma.Right);
-					jugador->SetDx(0);
-				}
+				jugadorPtr->SetDx(0);
 			}
+			else {
+				// Colisión vertical
+				if (Math::Abs(overlapTop) < Math::Abs(overlapBottom)) {
+					jugadorPtr->SetY(jugadorPtr->getY() - overlapTop);
+				}
+				else {
+					jugadorPtr->SetY(jugadorPtr->getY() + overlapBottom);
+				}
+				jugadorPtr->SetDy(0);
+			}
+
+			jugadorRect = jugadorPtr->getRect();
 		}
 	}
 
-	// estas dos funcionas las hizo copilot, combine lo de poma aqui tmb ------------------
-	private: void dibujarPlataformas(Graphics^ g) {
-		if (!modoDebug) return;
-
-		for each (System::Drawing::Rectangle plat in plataformas) {
-			SolidBrush^ brushFill = gcnew SolidBrush(Color::FromArgb(50, 255, 255, 255));
-			g->FillRectangle(brushFill, plat);
-			g->DrawRectangle(Pens::White, plat);
-			delete brushFill;
-		}
-	}
 	private: void dibujarDebug(Graphics^ g) {
-		Jugador^ jugador = control->getJugador();
-		System::Drawing::Rectangle jugadorRect = jugador->getRect();
+		// Dibujar las plataformas en COORDENADAS DE PANTALLA
 		for each (System::Drawing::Rectangle plat in plataformas) {
-			g->DrawRectangle(Pens::White, plat);
+			int pantallaX = plat.X - camara->getScrollX();
+			int pantallaY = plat.Y - camara->getScrollY();
+
+			System::Drawing::Rectangle platPantalla = System::Drawing::Rectangle(
+				pantallaX, pantallaY, plat.Width, plat.Height
+			);
+
+			g->FillRectangle(gcnew SolidBrush(Color::FromArgb(100, 255, 0, 0)), platPantalla);
+			g->DrawRectangle(Pens::Red, platPantalla);
 		}
-
 	}
-	//------------------------------------------------------------------------------------
 
-		   //tal cual hermano
+		   // GUARDAR: Guarda los Rectangles (coordenadas del mundo)
 	private: void guardarPlataformas() {
-
 		StreamWriter^ writer = gcnew StreamWriter("plataformas.txt");
 
 		for each (System::Drawing::Rectangle plat in plataformas) {
@@ -425,13 +335,18 @@ namespace TF1 {
 		writer->Close();
 	}
 
-    private: void cargarPlataformas() {
-		
+		   // CARGAR: Lee el archivo y recrea TODO
+	private: void cargarPlataformas() {
+		// Limpiar todo primero
+		eliminarTodosPictureBoxes();
+
 		if (plataformas == nullptr) {
 			plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
 		}
 		plataformas->Clear();
+		contadorPlataformas = 0;
 
+		// Leer archivo si existe
 		if (System::IO::File::Exists("plataformas.txt")) {
 			StreamReader^ reader = gcnew StreamReader("plataformas.txt");
 			String^ linea;
@@ -445,23 +360,96 @@ namespace TF1 {
 					int ancho = Int32::Parse(datos[2]);
 					int alto = Int32::Parse(datos[3]);
 
+					// Agregar a la lista (coordenadas del mundo)
 					System::Drawing::Rectangle plataforma = System::Drawing::Rectangle(x, y, ancho, alto);
-				plataformas->Add(plataforma);
+					plataformas->Add(plataforma);
+
+					// Crear el PictureBox visual
+					crearPictureBoxPlataforma(x, y, ancho, alto);
 				}
 			}
 			reader->Close();
 		}
-    }
+	}
 
 	private: void limpiarPlataformas() {
+		eliminarTodosPictureBoxes();
+
 		if (plataformas != nullptr) {
 			plataformas->Clear();
 		}
+
 		guardarPlataformas();
+		contadorPlataformas = 0;
 	}
-private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void pictureBox1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-}
-};
+
+		   // Elimina todos los PictureBox de plataformas
+	private: void eliminarTodosPictureBoxes() {
+		System::Collections::Generic::List<Control^>^ aEliminar =
+			gcnew System::Collections::Generic::List<Control^>();
+
+		for each (Control ^ c in this->Controls) {
+			if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
+				aEliminar->Add(c);
+			}
+		}
+
+		for each (Control ^ c in aEliminar) {
+			this->Controls->Remove(c);
+			delete c;
+		}
+	}
+
+		   // Crea un PictureBox para visualización (recibe coordenadas del mundo)
+	private: void crearPictureBoxPlataforma(int xMundo, int yMundo, int ancho, int alto) {
+		PictureBox^ nuevaPlataforma = gcnew PictureBox();
+
+		// Convertir a coordenadas de pantalla para posicionamiento inicial
+		int xPantalla = xMundo - camara->getScrollX();
+		int yPantalla = yMundo - camara->getScrollY();
+
+		nuevaPlataforma->Location = Point(xPantalla, yPantalla);
+		nuevaPlataforma->Size = System::Drawing::Size(ancho, alto);
+		nuevaPlataforma->BackColor = Color::Transparent;
+		nuevaPlataforma->Tag = "plataforma";
+		nuevaPlataforma->Name = "plataforma" + contadorPlataformas++;
+		nuevaPlataforma->Visible = modoDebug;
+
+		// Guardar coordenadas originales del mundo en el Tag
+		cli::array<int>^ coordsMundo = gcnew cli::array<int>(2) { xMundo, yMundo };
+		nuevaPlataforma->Tag = "plataforma"; // Mantener el tag como string
+
+		this->Controls->Add(nuevaPlataforma);
+		nuevaPlataforma->BringToFront();
+	}
+
+	private: void toggleVisibilidadPlataformas(bool visible) {
+		for each (Control ^ x in this->Controls) {
+			if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
+				x->Visible = visible;
+			}
+		}
+	}
+
+		   // Mueve los PictureBox según el scroll de la cámara
+	private: void moverPicturesBoxes(int scrollY, int scrollX) {
+		static int lastScrollX = 0;
+		static int lastScrollY = 0;
+
+		int deltaX = scrollX - lastScrollX;
+		int deltaY = scrollY - lastScrollY;
+
+		for each (Control ^ c in this->Controls) {
+			if (c->Tag == nullptr) continue;
+			if (c->Tag->ToString() != "plataforma") continue;
+
+			// Mover al revés del scroll
+			c->Left -= deltaX;
+			c->Top -= deltaY;
+		}
+
+		lastScrollX = scrollX;
+		lastScrollY = scrollY;
+	}
+	};
 }

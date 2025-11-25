@@ -1,42 +1,77 @@
 #pragma once
+#include "Jugador.h"
 using namespace System::Drawing;
-ref class Camara {
+
+ref class Camara
+{
 private:
-    int x, y;
-    int ancho, alto;
-    int mapaAncho, mapaAlto;
+
+
+	Jugador^ jugador;
+	int scrollX;
+	int scrollY;
+	int cuantoScrollX;  //cuanto se movio el scroll, es la dif del scroll actual con el anterior
+	int cuantoScrollY;
+	int maxScrollX;
+	int maxScrollY;
+
+
+
 
 public:
-    Camara(int ancho, int alto, int mapaAncho, int mapaAlto) {
-        this->ancho = ancho;
-        this->alto = alto;
-        this->mapaAncho = mapaAncho;
-        this->mapaAlto = mapaAlto;
-        x = 0;
-        y = 0;
-    }
+	Camara();
+	~Camara();
 
-    ~Camara() {}
+	void actualizarCamaraYDibujar(Jugador^ jugador, int anchoVentana, int altoVentana, int altoMapa, int anchoMapa, Graphics^ g, Bitmap^ bmp);
 
-    void seguirJugador(int jugadorX, int jugadorY, int jugadorAncho, int jugadorAlto) {
-        // Centrar la cámara en el jugador
-        x = jugadorX + (jugadorAncho / 2) - (ancho / 2);
-        y = jugadorY + (jugadorAlto / 2) - (alto / 2);
 
-        // Limitar la cámara para que no se salga del mapa
-        if (x < 0) x = 0;
-        if (y < 0) y = 0;
-        if (x + ancho > mapaAncho) x = mapaAncho - ancho;
-        if (y + alto > mapaAlto) y = mapaAlto - alto;
-    }
-
-    int getX() { return x; }
-    int getY() { return y; }
-    int getAncho() { return ancho; }
-    int getAlto() { return alto; }
-
-    // Convierte coordenadas del mundo a coordenadas de pantalla
-    void aplicarTransformacion(Graphics^ g) {
-        g->TranslateTransform(-x, -y);
-    }
+	int getScrollX() { return scrollX; };
+	int getScrollY() { return scrollY; };
 };
+
+Camara::Camara()
+{
+}
+
+Camara::~Camara()
+{
+}
+
+inline void Camara::actualizarCamaraYDibujar(Jugador^ jugador, int anchoVentana, int altoVentana, int anchoMapa, int altoMapa, Graphics^ g, Bitmap^ bmp)
+{
+	int posicionJugadorY = jugador->getY();
+	int posicionJugadorX = jugador->getX();
+	scrollY = posicionJugadorY - altoVentana  / 2;
+	scrollX = posicionJugadorX - anchoVentana  / 2;
+
+	int maxScrollY = altoMapa - altoVentana ;
+	int maxScrollX = anchoMapa - anchoVentana;
+
+	if (scrollY > maxScrollY) scrollY = maxScrollY;
+	if (scrollY < 0) scrollY = 0;
+
+	if (scrollX > maxScrollX) scrollX = maxScrollX;
+	if (scrollX < 0) scrollX = 0;
+
+	System::Drawing::Rectangle porcionImagen = System::Drawing::Rectangle(
+		scrollX,
+		scrollY,
+		anchoVentana,
+		altoVentana
+	);
+
+
+	System::Drawing::Rectangle destinoPantalla = System::Drawing::Rectangle(
+		0, 0,
+		anchoVentana,
+		altoVentana
+	);
+
+	g->DrawImage(
+		bmp, //deberia ser el background del mapa para el mundo 2 (yaveoeso) paramtro?
+		destinoPantalla,
+		porcionImagen,
+		GraphicsUnit::Pixel
+	);
+
+}

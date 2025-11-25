@@ -134,7 +134,6 @@
     <ClInclude Include="FormJuego.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Mapas.h" />
     <ClInclude Include="Dialogo.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -157,11 +156,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Barra_Confianza.cpp" />
-    <ClCompile Include="Dialogo_IAsuprema.cpp" />
-    <ClCompile Include="Menu_Creditos.cpp" />
-    <ClCompile Include="Menu_Instrucciones.cpp" />
-    <ClCompile Include="Menu_Interactivo.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
