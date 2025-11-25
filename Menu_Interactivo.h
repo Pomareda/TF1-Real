@@ -2,7 +2,6 @@
 #include "Menu_Creditos.h"
 #include "FormJuego.h"
 #include "Menu_Instrucciones.h"
-#include "FormJuego2.h"
 namespace TF1 {
 
 	using namespace System;
@@ -215,8 +214,8 @@ namespace TF1 {
 	private: System::Void Panel_Inicio_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		MenuForm^ juego = gcnew MenuForm();
-		juego->Show();
+		MenuForm^ mundo1 = gcnew MenuForm();
+		mundo1->Show();
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 		Menu_Instrucciones^ Instrucciones = gcnew Menu_Instrucciones();

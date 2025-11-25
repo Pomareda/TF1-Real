@@ -61,7 +61,7 @@ namespace TF1 {
             // 
             this->pictureBox1->Location = System::Drawing::Point(0, -1);
             this->pictureBox1->Name = L"pictureBox1";
-            this->pictureBox1->Size = System::Drawing::Size(294, 547);
+            this->pictureBox1->Size = System::Drawing::Size(1084, 662);
             this->pictureBox1->TabIndex = 0;
             this->pictureBox1->TabStop = false;
             this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDown);
@@ -72,12 +72,13 @@ namespace TF1 {
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(294, 544);
+            this->ClientSize = System::Drawing::Size(1084, 661);
             this->Controls->Add(this->pictureBox1);
             this->DoubleBuffered = true;
             this->MaximizeBox = false;
             this->Name = L"MyForm";
-            this->Text = L"Prueba Salto";
+            this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+            this->Text = L"Mundo 2";
             this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
             this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
             this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyUp);
@@ -160,7 +161,7 @@ namespace TF1 {
 
     private: System::Void MyForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
         switch (e->KeyCode) {
-        case Keys::W:
+        case Keys::Space:
             jugador->empezarCarga();
             break;
         case Keys::A:
@@ -182,18 +183,13 @@ namespace TF1 {
             cargarPlataformas();
             MessageBox::Show("Plataformas cargadas!");
             break;
-        case Keys::F12:
-            limpiarPlataformas();
-            guardarPlataformas();
-            MessageBox::Show("Plataformas eliminadas!");
-            break;
         }
     }
 
     private: System::Void MyForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
         switch (e->KeyCode)
         {
-        case Keys::W:
+        case Keys::Space:
             jugador->liberarSalto();
             break;
         case Keys::A:

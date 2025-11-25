@@ -18,8 +18,8 @@ public:
 		Random^ rand = gcnew Random();
 		ancho = bmpRecurso->Width / 4;
 		alto = bmpRecurso->Height / 6;
-		x = rand->Next(1000);
-		y = rand->Next(672);
+		x = rand->Next(2600 + 100);
+		y = rand->Next(1600 + 100);
 		idX = idY = 0;
 
 		activo = true;
@@ -49,27 +49,18 @@ inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY)
 	int pantallaX = x - scrollX;
 	int pantallaY = y - scrollY;
 
-	// Sección del sprite
 	System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-
-	// Tamaño visual final del recurso
 	System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.5, alto * 0.5);
 
-	// Dibujar el recurso
 	g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);
 }
-// 4 de ancho y 6 de alto
+
 inline void Recurso::moverRecurso()
 {
-	/*	if (!activo) return;*/
-		if (idX < 4) { ++idX; }
-		else { idX = 0; }
+	if (idX < 4) { ++idX; }
+	else { idX = 0; }
 
-		if (idX == 4) { ++idY; idX = 0; }
-
-		if (idY == 6 && idX <= 4) { idY = 0; }
+	if (idX == 4) { ++idY; idX = 0; }
+	if (idY == 6 && idX <= 4) { idY = 0; }
 	
 }
-
-
-

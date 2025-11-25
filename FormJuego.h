@@ -2,6 +2,7 @@
 #include "Controladora.h"
 #include "Dialogo_IAsuprema.h"
 #include "Camara.h"
+#include "FormJuego2.h"
 
 namespace TF1 {
 
@@ -33,6 +34,7 @@ namespace TF1 {
 			camara = gcnew Camara();
 			control = gcnew Controladora(bmpPersonajeHumano, camara, this->ClientRectangle.Width, this->ClientRectangle.Height);
 			jugadorPtr = control->getJugador();
+
 
 			Enemigo^ enemigo1 = gcnew Enemigo(1760, 100, 0, 0);
 			Enemigo^ enemigo2 = gcnew Enemigo(1300, 1510, 0, 0);
@@ -76,6 +78,8 @@ namespace TF1 {
 		Bitmap^ bmpMapa;
 		Bitmap^ bmpAliado;
 		Camara^ camara;
+		
+		List<Enemigo^>^ enemigos;
 
 		Jugador^ jugadorPtr;
 		int cant_recursos;
@@ -108,7 +112,7 @@ namespace TF1 {
 			this->ClientSize = System::Drawing::Size(1084, 661);
 			this->Name = L"MenuForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"MenuForm";
+			this->Text = L"Mundo 1";
 			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyDown);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyUp);
@@ -116,6 +120,7 @@ namespace TF1 {
 			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MenuForm::MenuForm_MouseMove);
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MenuForm::MenuForm_MouseUp);
 			this->ResumeLayout(false);
+
 		}
 #pragma endregion
 
@@ -156,7 +161,6 @@ namespace TF1 {
 				cargarPlataformas();
 				MessageBox::Show("Plataformas recargadas!");
 				break;
-			
 			case Keys::F6:
 				eliminarUltimaPlataforma();
 				MessageBox::Show("Plataforma eliminada!");
@@ -170,7 +174,6 @@ namespace TF1 {
 
 		System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 			Graphics^ gBuffer = buffer->Graphics;
-			//gBuffer->Clear(Color::White);
 
 			// CÁMARA
 			camara->actualizarCamaraYDibujar(jugadorPtr, this->ClientSize.Width, this->ClientSize.Height, bmpMapa->Width, bmpMapa->Height, gBuffer, bmpMapa);
@@ -193,7 +196,6 @@ namespace TF1 {
 				dibujarDebug(gBuffer);
 			}
 
-			//esto es esa cosa transparente que se ve al crear la plataforma
 			if (creandoPlataforma) {
 				int x = Math::Min(puntoInicio.X, puntoActual.X);
 				int y = Math::Min(puntoInicio.Y, puntoActual.Y);
@@ -206,11 +208,35 @@ namespace TF1 {
 				);
 				gBuffer->DrawRectangle(Pens::White, x, y, ancho, alto);
 			} 
-
 			buffer->Render(g);
 			cant_recursos++;
-		}
 
+			
+			//DESCOMENTAR ESTO LUEGO, esta es la logica que se usa de vrd
+			//if (jugadorPtr->getConfianza() > 10 && control->contestadaLaIA() ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
+			//{
+					
+			//	this->timer1->Enabled = false;
+			//	this->Close();
+			//	MyForm^ Mapa2 = gcnew MyForm();
+			//	Mapa2->Show();
+				
+			//}
+
+			// Aqui solo estoy usando esto para poder probar, luego se bora
+			if (jugadorPtr->getConfianza() > 10) {
+
+				this->timer1->Enabled = false;
+				this->Close();
+				MyForm^ Mapa2 = gcnew MyForm();
+				Mapa2->Show();
+
+			}
+			
+
+
+		}
+	
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
 		this->timer1->Enabled = false;
 		Dialogo_IAsuprema^ dialogoIA = gcnew Dialogo_IAsuprema();
@@ -338,7 +364,6 @@ namespace TF1 {
 		   // CARGAR: Lee el archivo y recrea TODO
 	private: void cargarPlataformas() {
 		// Limpiar todo primero
-		eliminarTodosPictureBoxes();
 
 		if (plataformas == nullptr) {
 			plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
@@ -372,33 +397,7 @@ namespace TF1 {
 		}
 	}
 
-	private: void limpiarPlataformas() {
-		eliminarTodosPictureBoxes();
 
-		if (plataformas != nullptr) {
-			plataformas->Clear();
-		}
-
-		guardarPlataformas();
-		contadorPlataformas = 0;
-	}
-
-		   // Elimina todos los PictureBox de plataformas
-	private: void eliminarTodosPictureBoxes() {
-		System::Collections::Generic::List<Control^>^ aEliminar =
-			gcnew System::Collections::Generic::List<Control^>();
-
-		for each (Control ^ c in this->Controls) {
-			if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
-				aEliminar->Add(c);
-			}
-		}
-
-		for each (Control ^ c in aEliminar) {
-			this->Controls->Remove(c);
-			delete c;
-		}
-	}
 
 		   // Crea un PictureBox para visualización (recibe coordenadas del mundo)
 	private: void crearPictureBoxPlataforma(int xMundo, int yMundo, int ancho, int alto) {

@@ -68,10 +68,10 @@ namespace TF1 {
 			// verticalProgressBar
 			// 
 			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->verticalProgressBar->Location = System::Drawing::Point(44, 11);
-			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->verticalProgressBar->Location = System::Drawing::Point(33, 9);
+			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->verticalProgressBar->Name = L"verticalProgressBar";
-			this->verticalProgressBar->Size = System::Drawing::Size(55, 430);
+			this->verticalProgressBar->Size = System::Drawing::Size(42, 350);
 			this->verticalProgressBar->TabIndex = 2;
 			this->verticalProgressBar->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Barra_Confianza::verticalProgressBar_Paint);
 			// 
@@ -82,13 +82,15 @@ namespace TF1 {
 			// 
 			// Barra_Confianza
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(498, 452);
+			this->ClientSize = System::Drawing::Size(374, 367);
 			this->Controls->Add(this->verticalProgressBar);
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Barra_Confianza";
 			this->Text = L"Barra_Confianza";
 			this->Load += gcnew System::EventHandler(this, &Barra_Confianza::Barra_Confianza_Load);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Barra_Confianza::Barra_Confianza_KeyDown);
 			this->ResumeLayout(false);
 
 		}
@@ -108,6 +110,11 @@ namespace TF1 {
 		int altura = verticalProgressBar->Height;
 		int rellenar = jug->getConfianza()*0.5;
 		e->Graphics->FillRectangle(Brushes::LightGreen, 0, altura - rellenar, verticalProgressBar->Width, rellenar);
+	}
+	private: System::Void Barra_Confianza_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (e->KeyCode == Keys::C) {
+			this->Close();
+		}
 	}
 	};
 }

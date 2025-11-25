@@ -35,18 +35,19 @@ public:
 	void moverRecursos(Graphics^ g, Bitmap^ bmp);
 	void dibujarEntidades(Graphics^ g, Bitmap^ bmp, Bitmap^ bmpEnemigo, Bitmap^ bmpRecurso);
 	void dialogoConIA();
+	bool contestadaLaIA();
 	void dibujarAliado(Graphics^ g, Bitmap^ bmp);
 	void interactuarAliado();
 	bool colisionAliado();
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
-	//void actualizarCamara();
+
 	void barra_confianza();
 
-	
+	int getContestadaLaIA();
+	int getTotalIAs();
 
 	Jugador^ getJugador() { return jugador; }
-	//Camara^ getCamara() { return camara; }
 };
 
 inline Controladora::Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, int altoVentana) {
@@ -192,9 +193,9 @@ inline void Controladora::dialogoConIA()
 		
 			if (contador == 0) {
 				preguntas->Add(a);
-				enemigos[i]->preguntaContestada();
 				Dialogo^ dialogoForm = gcnew Dialogo(jugador, a);
 				dialogoForm->ShowDialog();
+				enemigos[i]->preguntaContestada();
 				contador++;
 			}
 			else {
@@ -204,11 +205,33 @@ inline void Controladora::dialogoConIA()
 				}
 				
 				preguntas->Add(a);
-				enemigos[i]->preguntaContestada();
 				Dialogo^ dialogoForm = gcnew Dialogo(jugador, a);
 				dialogoForm->ShowDialog();
+				enemigos[i]->preguntaContestada();
 				return;
 			}
 		}
 	}
+}
+
+inline bool Controladora::contestadaLaIA() {
+	for (int i = 0; i < enemigos->Count; i++) {
+		if (!enemigos[i]->verPregunta()) {
+			return false; 
+		}
+	}
+	return true; 
+}
+
+inline int Controladora::getContestadaLaIA() {
+	int contestadas = 0;
+	for (int i = 0; i < enemigos->Count; i++) {
+		if (enemigos[i]->verPregunta()) {
+			contestadas++;
+		}
+	}
+	return contestadas;
+}
+inline int Controladora::getTotalIAs() {
+	return enemigos->Count;
 }
