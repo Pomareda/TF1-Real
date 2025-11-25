@@ -17,13 +17,13 @@ ref class Aliado : public Entidad {
 		}
 
 		System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-		System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.9, alto * 0.9);
+		System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.8, alto * 0.8);
 
 		g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);
 	}
 
 	System::Drawing::Rectangle getRect() override {
-		return System::Drawing::Rectangle(x , y, ancho *0, alto * 0);
+		return System::Drawing::Rectangle(x , y, ancho * 0.6, alto * 0.4);
 	}
 	System::Drawing::Rectangle getRectGrande() override {
 		return System::Drawing::Rectangle(x - 5, y - 5, ancho + 10, alto + 10);

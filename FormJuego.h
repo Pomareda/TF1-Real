@@ -34,11 +34,11 @@ namespace TF1 {
 			control = gcnew Controladora(bmpPersonajeHumano, camara, this->ClientRectangle.Width, this->ClientRectangle.Height);
 			jugadorPtr = control->getJugador();
 
-			Enemigo^ enemigo1 = gcnew Enemigo(170, 170, 0, 0);
-			Enemigo^ enemigo2 = gcnew Enemigo(10, 110, 0, 0);
-			Enemigo^ enemigo3 = gcnew Enemigo(470, 540, 0, 0);
-			Enemigo^ enemigo4 = gcnew Enemigo(655, 20, 0, 0);
-			Enemigo^ enemigo5 = gcnew Enemigo(940, 390, 0, 0);
+			Enemigo^ enemigo1 = gcnew Enemigo(1760, 100, 0, 0);
+			Enemigo^ enemigo2 = gcnew Enemigo(1300, 1510, 0, 0);
+			Enemigo^ enemigo3 = gcnew Enemigo(500, 540, 0, 0);
+			Enemigo^ enemigo4 = gcnew Enemigo(2550, 1150, 0, 0);
+			Enemigo^ enemigo5 = gcnew Enemigo(490, 1330, 0, 0);
 			control->agregarEnemigo(enemigo1);
 			control->agregarEnemigo(enemigo2);
 			control->agregarEnemigo(enemigo3);

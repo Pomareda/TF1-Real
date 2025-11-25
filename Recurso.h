@@ -53,7 +53,7 @@ inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY)
 	System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 
 	// Tamaño visual final del recurso
-	System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.4, alto * 0.4);
+	System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.5, alto * 0.5);
 
 	// Dibujar el recurso
 	g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);

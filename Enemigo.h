@@ -50,7 +50,7 @@ inline void Enemigo::mover() {
 }
 
 inline System::Drawing::Rectangle Enemigo::getRect() {
-	return System::Drawing::Rectangle(x + 10 + 5, y + 12, (ancho - 32), (alto - 55));
+	return System::Drawing::Rectangle(x + 20, y + 5, (ancho +15), (alto - 10));
 }
 inline void Enemigo::dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY) {
 	if (!activo) return;
@@ -59,12 +59,12 @@ inline void Enemigo::dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY)
 	int pantallaY = y - scrollY;
 
 	// NO dibujar si está fuera de la pantalla
-	if (pantallaX < -ancho || pantallaX > 1084 || pantallaY < -alto || pantallaY > 661) {
+	if (pantallaX < -ancho || pantallaX > 2750 || pantallaY < -alto || pantallaY > 1730) {
 		return;
 	}
 
 	System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-	System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho, alto);
+	System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho*2, alto*2);
 
 	g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);
 }

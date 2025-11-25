@@ -50,10 +50,10 @@ public:
 };
 
 inline Controladora::Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, int altoVentana) {
-	jugador = gcnew Jugador(435, 80, bmp->Width / 6, bmp->Height / 6);
+	jugador = gcnew Jugador(1310, 350, bmp->Width / 6, bmp->Height / 6);
 	enemigos = gcnew List<Enemigo^>();
 	recursos = gcnew List<Recurso^>();
-	aliado = gcnew Aliado(255, 560);
+	aliado = gcnew Aliado(760, 1600);
 	preguntas = gcnew List<int>(); 
 	camara = cam;
 	//camara = gcnew Camara(anchoVentana, altoVentana, 143 * 8, 672);
@@ -184,7 +184,9 @@ inline void Controladora::dialogoConIA()
 		int distanciaY = jugador->getY() - enemigos[i]->getRect().Y;
 
 
-		if ((distanciaX < 60 && distanciaX > -60) && (distanciaY < 70 && distanciaY > -70)) {
+
+
+		if ((distanciaX < 100 && distanciaX > -100) && (distanciaY < 90 && distanciaY > -120)) {
 			Random ^r = gcnew Random();
 			int a = r->Next(5);
 		
