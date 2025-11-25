@@ -2,6 +2,7 @@
 #include "Menu_Creditos.h"
 #include "FormJuego.h"
 #include "Menu_Instrucciones.h"
+#include "FormJuego2.h"
 namespace TF1 {
 
 	using namespace System;

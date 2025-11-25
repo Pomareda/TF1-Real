@@ -129,6 +129,9 @@
     <ClInclude Include="FormAliado.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="FormJuego2.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="IA_suprema_hablando.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="FormJuego.h">
@@ -137,6 +140,7 @@
     <ClInclude Include="Dialogo.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="JugadorIA.h" />
     <ClInclude Include="Menu_Creditos.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -173,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormJuego.resx">
       <DependentUpon>FormJuego.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormJuego2.resx">
+      <DependentUpon>FormJuego2.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu_Creditos.resx">
       <DependentUpon>Menu_Creditos.h</DependentUpon>
