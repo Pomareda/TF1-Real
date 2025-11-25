@@ -59,14 +59,14 @@ inline Jugador::~Jugador() {}
 inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp, int scrollY, int scrollX) {
 	//Si se va hacer con opcion, faltaria eso aqui
 
-	/*System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + dx + 5, y + 22, (ancho - 15), (alto - 30));
-	g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);*/
+	// System::Drawing::Rectangle  Jugador1 = System::Drawing::Rectangle(x + dx + 5, y + 22, (ancho - 15), (alto - 30));
+	// g->DrawRectangle(System::Drawing::Pens::Red, Jugador1);
 
 	int pantallaY = y - scrollY;
 	int pantallaX = x - scrollX;
 
 	System::Drawing::Rectangle sectionShow = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.85, alto * 0.85);
+	System::Drawing::Rectangle zoom = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 1.3 , alto * 1.3);
 	g->DrawImage(bmp, zoom, sectionShow, GraphicsUnit::Pixel);
 
 }
@@ -140,13 +140,13 @@ inline void Jugador::mover(Graphics^ g) {
 		}
 		break;
 	}
-	//System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 5, y + 22 + dy, (ancho - 15), (alto - 30));
-	//g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
+	// System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 5, y + 22 + dy, (ancho - 15), (alto - 30));
+	// g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
 	
 	x += dx;
 	y += dy;
 }
 
 inline System::Drawing::Rectangle Jugador::getRect() {
-	return System::Drawing::Rectangle(x, y , ancho *0.85 , alto * 0.85);
+	return System::Drawing::Rectangle(x, y , ancho *1.3 , alto * 1.3);
 }

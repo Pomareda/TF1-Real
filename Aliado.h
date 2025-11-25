@@ -17,15 +17,15 @@ ref class Aliado : public Entidad {
 		}
 
 		System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
-		System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.4, alto * 0.4);
+		System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho * 0.9, alto * 0.9);
 
 		g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);
 	}
 
 	System::Drawing::Rectangle getRect() override {
-		return System::Drawing::Rectangle(x , y, ancho * 0.4, alto * 0.4);
+		return System::Drawing::Rectangle(x , y, ancho * 3, alto * 3);
 	}
 	System::Drawing::Rectangle getRectGrande() override {
-		return System::Drawing::Rectangle(x - 16, y - 16, ancho + 16, alto + 16);
+		return System::Drawing::Rectangle(x - 5, y - 5, ancho + 10, alto + 10);
 	}
 };

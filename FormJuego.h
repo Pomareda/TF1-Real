@@ -39,7 +39,6 @@ namespace TF1 {
 			Enemigo^ enemigo3 = gcnew Enemigo(470, 540, 0, 0);
 			Enemigo^ enemigo4 = gcnew Enemigo(655, 20, 0, 0);
 			Enemigo^ enemigo5 = gcnew Enemigo(940, 390, 0, 0);
-
 			control->agregarEnemigo(enemigo1);
 			control->agregarEnemigo(enemigo2);
 			control->agregarEnemigo(enemigo3);
@@ -157,9 +156,10 @@ namespace TF1 {
 				cargarPlataformas();
 				MessageBox::Show("Plataformas recargadas!");
 				break;
-			case Keys::F4:
-				limpiarPlataformas();
-				MessageBox::Show("Plataformas eliminadas!");
+			
+			case Keys::F6:
+				eliminarUltimaPlataforma();
+				MessageBox::Show("Plataforma eliminada!");
 				break;
 			}
 		}
@@ -451,5 +451,34 @@ namespace TF1 {
 		lastScrollX = scrollX;
 		lastScrollY = scrollY;
 	}
+	private: void eliminarUltimaPlataforma() {
+			// Quitar el último rectángulo del mundo si existe
+			if (plataformas != nullptr && plataformas->Count > 0) {
+				plataformas->RemoveAt(plataformas->Count - 1);
+			}
+
+			// Buscar el último control con Tag == "plataforma"
+			Control^ ultimo = nullptr;
+			for (int i = this->Controls->Count - 1; i >= 0; --i) {
+				Control^ c = this->Controls[i];
+				if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
+					ultimo = c;
+					break;
+				}
+			}
+
+			if (ultimo != nullptr) {
+				this->Controls->Remove(ultimo);
+				delete ultimo;
+				if (contadorPlataformas > 0) --contadorPlataformas;
+				guardarPlataformas();
+			}
+			else {
+				MessageBox::Show("No hay plataformas para eliminar");
+			}
+		}
+
+
+
 	};
 }

@@ -163,8 +163,6 @@ inline void Controladora::barra_confianza() {
 	barra->ShowDialog();
 }
 
-
-
 inline void Controladora::interactuarAliado() {
 	static int unavez = 0;
 	if (jugador->getRect().IntersectsWith(aliado->getRectGrande()) && unavez == 0) {
