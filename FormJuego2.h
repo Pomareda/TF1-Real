@@ -19,7 +19,14 @@ namespace TF1 {
             InitializeComponent();
             jugador = gcnew JugadorIA(gcnew Bitmap("Imagenes/personajeIA.png"));
             scrollY = 0;
-            cargarPlataformas();
+
+            contadorPlataformas = 0;
+            modoDebug = false;
+            creandoPlataforma = false;
+
+            // IMPORTANTE: Inicializar la lista ANTES de cargar
+            plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
+            cargarPlataformas(); // Esto carga y crea los PictureBox
         }
 
     protected:
@@ -42,6 +49,8 @@ namespace TF1 {
         Point puntoActual;
         int contadorPlataformas = 0;
 
+        System::Collections::Generic::List<System::Drawing::Rectangle>^ plataformas;
+
 #pragma region Windows Form Designer generated code
         void InitializeComponent(void)
         {
@@ -61,7 +70,7 @@ namespace TF1 {
             // 
             this->pictureBox1->Location = System::Drawing::Point(0, -1);
             this->pictureBox1->Name = L"pictureBox1";
-            this->pictureBox1->Size = System::Drawing::Size(1084, 662);
+            this->pictureBox1->Size = System::Drawing::Size(294, 547);
             this->pictureBox1->TabIndex = 0;
             this->pictureBox1->TabStop = false;
             this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDown);
@@ -72,13 +81,12 @@ namespace TF1 {
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(1084, 661);
+            this->ClientSize = System::Drawing::Size(294, 544);
             this->Controls->Add(this->pictureBox1);
             this->DoubleBuffered = true;
             this->MaximizeBox = false;
             this->Name = L"MyForm";
-            this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-            this->Text = L"Mundo 2";
+            this->Text = L"Prueba Salto";
             this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
             this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
             this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyUp);
@@ -161,7 +169,7 @@ namespace TF1 {
 
     private: System::Void MyForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
         switch (e->KeyCode) {
-        case Keys::Space:
+        case Keys::W:
             jugador->empezarCarga();
             break;
         case Keys::A:
@@ -173,15 +181,20 @@ namespace TF1 {
         case Keys::F1:
             modoDebug = !modoDebug;
             toggleVisibilidadPlataformas(modoDebug);
+            MessageBox::Show(modoDebug ? "Modo Debug Activado" : "Modo Debug Desactivado");
             break;
-        case Keys::F5:
+        case Keys::F2:
             guardarPlataformas();
             MessageBox::Show("Plataformas guardadas!");
             break;
-        case Keys::F9:
-            limpiarPlataformas();
+        case Keys::F3:
             cargarPlataformas();
-            MessageBox::Show("Plataformas cargadas!");
+            MessageBox::Show("Plataformas recargadas!");
+            break;
+
+        case Keys::F6:
+            eliminarUltimaPlataforma();
+            MessageBox::Show("Plataforma eliminada!");
             break;
         }
     }
@@ -189,7 +202,7 @@ namespace TF1 {
     private: System::Void MyForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
         switch (e->KeyCode)
         {
-        case Keys::Space:
+        case Keys::W:
             jugador->liberarSalto();
             break;
         case Keys::A:
@@ -407,5 +420,33 @@ namespace TF1 {
             }
         }
     }
-};
+    private: void eliminarUltimaPlataforma() {
+        // Quitar el último rectángulo del mundo si existe
+        if (plataformas != nullptr && plataformas->Count > 0) {
+            plataformas->RemoveAt(plataformas->Count - 1);
+        }
+
+        // Buscar el último control con Tag == "plataforma"
+        Control^ ultimo = nullptr;
+        for (int i = this->Controls->Count - 1; i >= 0; --i) {
+            Control^ c = this->Controls[i];
+            if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
+                ultimo = c;
+                break;
+            }
+        }
+
+        if (ultimo != nullptr) {
+            this->Controls->Remove(ultimo);
+            delete ultimo;
+            if (contadorPlataformas > 0) --contadorPlataformas;
+            guardarPlataformas();
+        }
+        else {
+            MessageBox::Show("No hay plataformas para eliminar");
+        }
+    }
+
+
+    };
 }
