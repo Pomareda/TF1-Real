@@ -132,6 +132,9 @@
     <ClInclude Include="FormJuego2.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Game_Over.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="IA_suprema_hablando.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="FormJuego.h">
@@ -160,6 +163,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game_Over.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormJuego2.resx">
       <DependentUpon>FormJuego2.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game_Over.resx">
+      <DependentUpon>Game_Over.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu_Creditos.resx">
       <DependentUpon>Menu_Creditos.h</DependentUpon>

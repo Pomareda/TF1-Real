@@ -21,6 +21,7 @@ public:
 	void dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY);
 	int getAncho() { return ancho; }
 	int getAlto() { return alto; }
+	bool getActivo() { return activo; }
 	System::Drawing::Rectangle getRect() override;
 };
 

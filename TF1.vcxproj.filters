@@ -74,10 +74,16 @@
     <ClInclude Include="FormJuego2.h">
       <Filter>Formularios</Filter>
     </ClInclude>
+    <ClInclude Include="Game_Over.h">
+      <Filter>Formularios</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Game_Over.cpp">
+      <Filter>Formularios</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
