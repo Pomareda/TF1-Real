@@ -11,6 +11,50 @@ namespace TF1 {
     using namespace System::Drawing;
     using namespace System::IO;
 
+    ref class Plataforma {
+    public:
+        int x, y, ancho, alto;
+        int velocidad;
+        Bitmap^ imagen;
+
+        Plataforma(int _x, int _y, int _ancho, int _alto) {
+            x = _x;
+            y = _y;
+            ancho = _ancho;
+            alto = _alto;
+            velocidad = 5;
+
+            try {
+                imagen = gcnew Bitmap("Imagenes/piso2.png");
+                imagen->MakeTransparent(Color::White);
+            }
+            catch (...) {
+                imagen = nullptr;
+            }
+        }
+
+        void mover(int anchoVentana) {
+            if (x + ancho >= anchoVentana || x <= 0) {
+                velocidad *= -1;
+            }
+            x += velocidad;
+        }
+
+        void dibujar(Graphics^ g, int scrollY) {
+            if (imagen != nullptr) {
+                g->DrawImage(imagen, x, y - scrollY, ancho, alto);
+            }
+            else {
+                g->FillRectangle(Brushes::Brown, x, y - scrollY, ancho, alto);
+            }
+        }
+
+        System::Drawing::Rectangle getRect() {
+            return System::Drawing::Rectangle(x, y, ancho, alto);
+        }
+    };
+   
+
     public ref class MyForm : public System::Windows::Forms::Form
     {
     public:
@@ -24,9 +68,8 @@ namespace TF1 {
             modoDebug = false;
             creandoPlataforma = false;
 
-            plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
-            velocidadesPlataformas = gcnew System::Collections::Generic::Dictionary<Control^, int>();
-            cargarPlataformas(); // Esto carga y crea los PictureBox
+            plataformas = gcnew System::Collections::Generic::List<Plataforma^>();
+            cargarPlataformas();
         }
 
     protected:
@@ -41,7 +84,6 @@ namespace TF1 {
         System::Windows::Forms::PictureBox^ pictureBox1;
         JugadorIA^ jugador;
 
-
         int scrollY;
         bool modoDebug = false;
         bool creandoPlataforma = false;
@@ -49,9 +91,7 @@ namespace TF1 {
         Point puntoActual;
         int contadorPlataformas = 0;
 
-        System::Collections::Generic::List<System::Drawing::Rectangle>^ plataformas;
-        System::Collections::Generic::Dictionary<Control^, int>^ velocidadesPlataformas;
-
+        System::Collections::Generic::List<Plataforma^>^ plataformas;
 
 #pragma region Windows Form Designer generated code
         void InitializeComponent(void)
@@ -94,12 +134,10 @@ namespace TF1 {
             this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyUp);
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
             this->ResumeLayout(false);
-
         }
 #pragma endregion
 
     private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-
         if (pictureBox1->BackgroundImage == nullptr) {
             return;
         }
@@ -124,11 +162,6 @@ namespace TF1 {
         if (scrollY > maxScroll) scrollY = maxScroll;
         if (scrollY < 0) scrollY = 0;
 
-        int deltaScroll = scrollY - scrollYAnterior;
-        if (deltaScroll != 0) {
-            moverElementos(deltaScroll);
-        }
-
         System::Drawing::Rectangle porcionImagen = System::Drawing::Rectangle(
             0, scrollY, pictureBox1->Width, pictureBox1->Height
         );
@@ -137,6 +170,7 @@ namespace TF1 {
             0, 0, pictureBox1->Width, pictureBox1->Height
         );
 
+        // Dibujar fondo
         Canvas->Graphics->DrawImage(
             pictureBox1->BackgroundImage,
             destinoPantalla,
@@ -144,6 +178,12 @@ namespace TF1 {
             GraphicsUnit::Pixel
         );
 
+        // Dibujar plataformas
+        for each (Plataforma ^ p in plataformas) {
+            p->dibujar(Canvas->Graphics, scrollY);
+        }
+
+        // Dibujar jugador
         jugador->dibujarConScroll(Canvas->Graphics, scrollY);
 
         if (modoDebug) {
@@ -182,7 +222,6 @@ namespace TF1 {
             break;
         case Keys::F1:
             modoDebug = !modoDebug;
-            toggleVisibilidadPlataformas(modoDebug);
             MessageBox::Show(modoDebug ? "Modo Debug Activado" : "Modo Debug Desactivado");
             break;
         case Keys::F2:
@@ -193,7 +232,6 @@ namespace TF1 {
             cargarPlataformas();
             MessageBox::Show("Plataformas recargadas!");
             break;
-
         case Keys::F6:
             eliminarUltimaPlataforma();
             MessageBox::Show("Plataforma eliminada!");
@@ -231,14 +269,9 @@ namespace TF1 {
     }
 
     private: Void crearPlataforma(int x, int y, int ancho, int alto) {
-        PictureBox^ nuevaPlataforma = gcnew PictureBox();
-        nuevaPlataforma->Location = Point(x, y);
-        nuevaPlataforma->Size = System::Drawing::Size(ancho, alto);
-        nuevaPlataforma->BackColor = Color::Transparent;
-        nuevaPlataforma->Tag = "plataforma";
-        nuevaPlataforma->Name = "plataforma" + contadorPlataformas++;
-        this->Controls->Add(nuevaPlataforma);
-        nuevaPlataforma->BringToFront();
+        Plataforma^ nueva = gcnew Plataforma(x, y, ancho, alto);
+        plataformas->Add(nueva);
+        contadorPlataformas++;
     }
 
     private: System::Void MyForm_MouseUp(System::Object^ sender, MouseEventArgs^ e) {
@@ -251,7 +284,7 @@ namespace TF1 {
             int alto = Math::Abs(puntoActual.Y - puntoInicio.Y);
 
             if (ancho > 5 && alto > 5) {
-                crearPlataforma(x, y, ancho, alto);
+                crearPlataforma(x, y + scrollY, ancho, alto);
                 guardarPlataformas();
             }
         }
@@ -262,49 +295,42 @@ namespace TF1 {
             return;
         }
 
-        Control^ plataformaActual = nullptr;
+        Plataforma^ plataformaActual = nullptr;
 
-        for each (Control ^ x in this->Controls) {
-            if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
-                int plataformaYMundo = x->Top + scrollY;
+        for each (Plataforma ^ p in plataformas) {
+            System::Drawing::Rectangle plataformaMundo = p->getRect();
+            System::Drawing::Rectangle jugadorRect = jugador->getRect();
 
-                System::Drawing::Rectangle plataformaMundo = System::Drawing::Rectangle(
-                    x->Left, plataformaYMundo, x->Width, x->Height
-                );
+            if (plataformaMundo.IntersectsWith(jugadorRect)) {
+                int distanciaArriba = Math::Abs(jugadorRect.Bottom - plataformaMundo.Top);
+                int distanciaAbajo = Math::Abs(jugadorRect.Top - plataformaMundo.Bottom);
+                int distanciaIzquierda = Math::Abs(jugadorRect.Right - plataformaMundo.Left);
+                int distanciaDerecha = Math::Abs(jugadorRect.Left - plataformaMundo.Right);
 
-                System::Drawing::Rectangle jugadorRect = jugador->getRect();
+                int minDistancia = Math::Min(Math::Min(distanciaArriba, distanciaAbajo),
+                    Math::Min(distanciaIzquierda, distanciaDerecha));
 
-                if (plataformaMundo.IntersectsWith(jugadorRect)) {
-                    int distanciaArriba = Math::Abs(jugadorRect.Bottom - plataformaMundo.Top);
-                    int distanciaAbajo = Math::Abs(jugadorRect.Top - plataformaMundo.Bottom);
-                    int distanciaIzquierda = Math::Abs(jugadorRect.Right - plataformaMundo.Left);
-                    int distanciaDerecha = Math::Abs(jugadorRect.Left - plataformaMundo.Right);
-
-                    int minDistancia = Math::Min(Math::Min(distanciaArriba, distanciaAbajo),
-                        Math::Min(distanciaIzquierda, distanciaDerecha));
-
-                    if (minDistancia == distanciaArriba && jugador->getVelY() >= 0) {
-                        jugador->setY(plataformaMundo.Top - jugadorRect.Height);
-                        jugador->setVelY(0);
-                        jugador->setEnSuelo(true);
-						plataformaActual = x;
-                    }
-                    else if (minDistancia == distanciaAbajo && jugador->getVelY() < 0) {
-                        jugador->setY(plataformaMundo.Bottom);
-                        jugador->setVelY(0);
-                    }
-                    else if (minDistancia == distanciaIzquierda) {
-                        jugador->setX(plataformaMundo.Left - jugadorRect.Width);
-                    }
-                    else if (minDistancia == distanciaDerecha) {
-                        jugador->setX(plataformaMundo.Right);
-                    }
+                if (minDistancia == distanciaArriba && jugador->getVelY() >= 0) {
+                    jugador->setY(plataformaMundo.Top - jugadorRect.Height + 10);
+                    jugador->setVelY(0);
+                    jugador->setEnSuelo(true);
+                    plataformaActual = p;
+                }
+                else if (minDistancia == distanciaAbajo && jugador->getVelY() < 0) {
+                    jugador->setY(plataformaMundo.Bottom);
+                    jugador->setVelY(0);
+                }
+                else if (minDistancia == distanciaIzquierda) {
+                    jugador->setX(plataformaMundo.Left - jugadorRect.Width);
+                }
+                else if (minDistancia == distanciaDerecha) {
+                    jugador->setX(plataformaMundo.Right);
                 }
             }
         }
 
-        if (plataformaActual != nullptr && velocidadesPlataformas->ContainsKey(plataformaActual)) {
-            jugador->setX(jugador->getX() + velocidadesPlataformas[plataformaActual]);
+        if (plataformaActual != nullptr) {
+            jugador->setX(jugador->getX() + plataformaActual->velocidad);
         }
 
         int altoTotal = pictureBox1->BackgroundImage->Height;
@@ -317,14 +343,6 @@ namespace TF1 {
         }
     }
 
-    private: Void moverElementos(int deltaScroll) {
-        for each (Control ^ x in this->Controls) {
-            if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
-                x->Top -= deltaScroll;
-            }
-        }
-    }
-
     private: Void dibujarColisiones(Graphics^ g) {
         System::Drawing::Rectangle jugadorRect = jugador->getRect();
         int jugadorPantallaY = jugadorRect.Y - scrollY;
@@ -333,27 +351,22 @@ namespace TF1 {
         );
         g->DrawRectangle(Pens::Lime, jugadorPantalla);
 
-        for each (Control ^ x in this->Controls) {
-            if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
-                g->DrawRectangle(Pens::Red, x->Bounds);
-                g->DrawLine(Pens::Yellow, x->Left, x->Top, x->Right, x->Top);
-            }
+        for each (Plataforma ^ p in plataformas) {
+            System::Drawing::Rectangle platRect = p->getRect();
+            int platY = platRect.Y - scrollY;
+            g->DrawRectangle(Pens::Red, platRect.X, platY, platRect.Width, platRect.Height);
+            g->DrawLine(Pens::Yellow, platRect.X, platY, platRect.Right, platY);
         }
     }
 
     private: Void guardarPlataformas() {
         try {
             StreamWriter^ writer = gcnew StreamWriter("plataformas2.txt");
-
-            for each (Control ^ x in this->Controls) {
-                if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
-                    int yMundo = x->Top + scrollY;
-                    String^ linea = String::Format("{0},{1},{2},{3}",
-                        x->Left, yMundo, x->Width, x->Height);
-                    writer->WriteLine(linea);
-                }
+            for each (Plataforma ^ p in plataformas) {
+                String^ linea = String::Format("{0},{1},{2},{3}",
+                    p->x, p->y, p->ancho, p->alto);
+                writer->WriteLine(linea);
             }
-
             writer->Close();
         }
         catch (Exception^ ex) {
@@ -363,25 +376,21 @@ namespace TF1 {
 
     private: Void cargarPlataformas() {
         try {
+            plataformas->Clear();
             if (System::IO::File::Exists("plataformas2.txt")) {
                 StreamReader^ reader = gcnew StreamReader("plataformas2.txt");
                 String^ linea;
-
                 while ((linea = reader->ReadLine()) != nullptr) {
                     cli::array<String^>^ datos = linea->Split(',');
-
                     if (datos->Length == 4) {
                         int x = Int32::Parse(datos[0]);
-                        int yMundo = Int32::Parse(datos[1]);
+                        int y = Int32::Parse(datos[1]);
                         int ancho = Int32::Parse(datos[2]);
                         int alto = Int32::Parse(datos[3]);
-
-                        int yPantalla = yMundo - scrollY;
-
-                        crearPlataforma(x, yPantalla, ancho, alto);
+                        Plataforma^ p = gcnew Plataforma(x, y, ancho, alto);
+                        plataformas->Add(p);
                     }
                 }
-
                 reader->Close();
             }
         }
@@ -390,82 +399,23 @@ namespace TF1 {
         }
     }
 
-    private: Void limpiarPlataformas() {
-        System::Collections::Generic::List<Control^>^ aEliminar =
-            gcnew System::Collections::Generic::List<Control^>();
-
-        for each (Control ^ x in this->Controls) {
-            if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
-                aEliminar->Add(x);
-            }
-        }
-
-        for each (Control ^ x in aEliminar) {
-            this->Controls->Remove(x);
-            delete x;
-        }
-    }
-
-    private: Void toggleVisibilidadPlataformas(bool visible) {
-        for each (Control ^ x in this->Controls) {
-            if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
-                x->Visible = visible;
-            }
-        }
-    }
     private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
         try {
             this->pictureBox1->BackgroundImage = gcnew Bitmap("Imagenes/posibleMapa2.jpg");
         }
         catch (...) {
-            // Si falla, intenta con otra ruta
             try {
                 this->pictureBox1->BackgroundImage = gcnew Bitmap("posibleMapa2.jpg");
             }
             catch (...) {
-                MessageBox::Show("Error al cargar imagen: ");
+                MessageBox::Show("Error al cargar imagen");
             }
         }
-
-        if (this->Controls != nullptr) {
-
-            for each(Control ^ c in this->Controls) {
-                if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
-                    PictureBox^ plat = dynamic_cast<PictureBox^>(c); // lo convierto a picture box para usar el strectch
-                    if (plat != nullptr) {
-                        Bitmap^ imgPiso = gcnew Bitmap("Imagenes/piso2.png");
-
-                        imgPiso->MakeTransparent(Color::White);
-                        plat->Image = imgPiso;
-                        plat->SizeMode = PictureBoxSizeMode::StretchImage;
-                        plat->BackColor = Color::Transparent;
-
-                    }
-                }
-            }
-
-        }
-        
     }
+
     private: void eliminarUltimaPlataforma() {
-        // Quitar el último rectángulo del mundo si existe
         if (plataformas != nullptr && plataformas->Count > 0) {
             plataformas->RemoveAt(plataformas->Count - 1);
-        }
-
-        // Buscar el último control con Tag == "plataforma"
-        Control^ ultimo = nullptr;
-        for (int i = this->Controls->Count - 1; i >= 0; --i) {
-            Control^ c = this->Controls[i];
-            if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
-                ultimo = c;
-                break;
-            }
-        }
-
-        if (ultimo != nullptr) {
-            this->Controls->Remove(ultimo);
-            delete ultimo;
             if (contadorPlataformas > 0) --contadorPlataformas;
             guardarPlataformas();
         }
@@ -474,24 +424,10 @@ namespace TF1 {
         }
     }
 
-    
     private: void moverPlataformasHorizontalmente() {
-        for each (Control ^ x in this->Controls) {
-            if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
-                if (!velocidadesPlataformas->ContainsKey(x)) {
-                    velocidadesPlataformas[x] = 5; 
-                }
-
-                if (x->Left + x->Width >= this->ClientSize.Width || x->Left <= 0) {
-                    velocidadesPlataformas[x] *= -1;
-                }
-
-                x->Left += velocidadesPlataformas[x];
-            }
+        for each (Plataforma ^ p in plataformas) {
+            p->mover(this->pictureBox1->Width);
         }
     }
-       
-
-    
     };
 }

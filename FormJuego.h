@@ -110,6 +110,7 @@ namespace TF1 {
 			// timer1
 			// 
 			this->timer1->Enabled = true;
+			this->timer1->Interval = 17;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MenuForm::timer1_Tick);
 			// 
 			// MenuForm
@@ -133,20 +134,19 @@ namespace TF1 {
 
 	private:
 		System::Void MenuForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-			Jugador^ jugadorPtr = control->getJugador();
 			switch (e->KeyCode)
 			{
 			case Keys::W:
-				jugadorPtr->setDireccion(Arriba);
+				jugadorPtr->setArriba(true);
 				break;
 			case Keys::A:
-				jugadorPtr->setDireccion(Izquierda);
+				jugadorPtr->setIzquierda(true);
 				break;
 			case Keys::S:
-				jugadorPtr->setDireccion(Abajo);
+				jugadorPtr->setAbajo(true);
 				break;
 			case Keys::D:
-				jugadorPtr->setDireccion(Derecha);
+				jugadorPtr->setDerecha(true);
 				break;
 			case Keys::E:
 				control->dialogoConIA();
@@ -176,7 +176,21 @@ namespace TF1 {
 		}
 
 		System::Void MenuForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-			control->getJugador()->setDireccion(Ninguna);
+			switch (e->KeyCode)
+			{
+			case Keys::W:
+				jugadorPtr->setArriba(false);
+				break;
+			case Keys::A:
+				jugadorPtr->setIzquierda(false);
+				break;
+			case Keys::S:
+				jugadorPtr->setAbajo(false);
+				break;
+			case Keys::D:
+				jugadorPtr->setDerecha(false);
+				break;
+			}
 		}
 
 		System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
@@ -196,7 +210,7 @@ namespace TF1 {
 			// COLISIONES CON PLATAFORMAS
 			verificarColisionesPlataformas();
 
-			control->moverJugador(gBuffer, bmpPersonajeHumano);
+			control->moverJugador(gBuffer, bmpPersonajeHumano, bmpMapa->Width, bmpMapa->Height);
 			if (cant_recursos < 4) {
 				control->crearRecursos(bmpRecurso);
 			}
@@ -225,7 +239,7 @@ namespace TF1 {
 			cant_recursos++;
 			contador++;
 			
-			if (jugadorPtr->getConfianza() > 100 && control->contestadaLaIA() ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
+			if (jugadorPtr->getConfianza() > 1 /*&& control->contestadaLaIA()*/ ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
 			{
 					
 				this->timer1->Enabled = false;
@@ -318,7 +332,7 @@ namespace TF1 {
 				else {
 					jugadorPtr->SetX(jugadorPtr->getX() + overlapRight);
 				}
-				jugadorPtr->SetDx(0);
+				//jugadorPtr->SetDx(0);
 			}
 			else {
 				// Colisión vertical
@@ -328,7 +342,7 @@ namespace TF1 {
 				else {
 					jugadorPtr->SetY(jugadorPtr->getY() + overlapBottom);
 				}
-				jugadorPtr->SetDy(0);
+				//jugadorPtr->SetDy(0);
 			}
 
 			jugadorRect = jugadorPtr->getRect();

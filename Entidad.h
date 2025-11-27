@@ -15,7 +15,7 @@ public:
     Entidad(int x, int y, int ancho, int alto) : x(x), y(y), ancho(ancho), alto(alto) 
     {
 		idX = idY = 0;
-		dx = dy = 0;
+		dx = dy = 10;
         
     }
     ~Entidad() {};

@@ -12,14 +12,17 @@ ref class Jugador : public Entidad {
 protected:
     int confianza;
 	int opc; //1 humano, 2 IA. Dfine bmp a dibujar
+	bool izq, der, arr,abajo;
 	Direcciones Ultima;
 	Direcciones Direccion;
+	int contadorAnimacion;  
+	int velocidadAnimacion;
 
 public:
 	Jugador(int x, int y, int ancho, int alto);
     ~Jugador();
 
-    void mover(Graphics^ g);
+    void mover(Graphics^ g, int an, int al);
 	void dibujar(Graphics^ g, Bitmap^ bmp, int scrollY, int scrollX);
    /* void mostrarConfianza();
 
@@ -34,6 +37,21 @@ public:
 
     int getAncho() { return ancho; };
     int getAlto() { return alto; };
+
+	void setIzquierda(bool v) { izq = v; }
+	void setDerecha(bool v) { der = v; }
+	void setArriba(bool v) { arr = v; }
+	void setAbajo(bool v) { abajo = v; }
+
+	void setY(int nuevaY) { y = nuevaY; }
+	void setX(int nuevaX) { x = nuevaX; }
+
+	int getY() { return y; }
+	int getX() { return x; }
+
+	bool getIzquierda() { return izq; }
+	bool getDerecha() { return der; }
+	
 
     void setConfianza(int p) { confianza = p; };
 
@@ -52,6 +70,9 @@ inline Jugador::Jugador(int x, int y, int ancho, int alto) : Entidad(x, y, ancho
 	opc = 1; 
 	Ultima = Direcciones::Abajo;
 	Direccion = Direcciones::Ninguna;
+	izq = der = arr = abajo = false;
+	contadorAnimacion = 0;
+	velocidadAnimacion = 3;
 }
 
 inline Jugador::~Jugador() {}
@@ -71,80 +92,128 @@ inline void Jugador::dibujar(Graphics^ g, Bitmap^ bmp, int scrollY, int scrollX)
 
 }
 
-inline void Jugador::mover(Graphics^ g) {
-	int X = 0, Y = 0;
-	switch (Direccion)
-	{
-	case Direcciones::Abajo:
-		idY = 0;  // Fila 0 - mirando abajo
-		if (idX >= 0 && idX < 5)
-			++idX;
-		else
-			idX = 0;
-		dx = 0;
-		dy = 20;
-		Ultima = Abajo;
-		break;
-	case Direcciones::Arriba:
-		idY = 2;  // Fila 2 - mirando arriba
-		if (idX >= 0 && idX < 5)
-			++idX;
-		else
-			idX = 0;
-		dx = 0;
-		dy = -20;
-		Ultima = Arriba;
-		break;
-	case Direcciones::Derecha:
-		idY = 1;  // Fila 1 - derecha mirando abajo
-		if (idX >= 0 && idX < 5)
-			++idX;
-		else
-			idX = 0;
-		dx = 20;
-		dy = 0;
-		Ultima = Derecha;
-		break;
-	case Direcciones::Izquierda:
-		idY = 4;  // Fila 4 - izquierda mirando abajo
-		if (idX >= 0 && idX < 5)
-			++idX;
-		else
-			idX = 0;
-		dx = -20;
-		dy = 0;
+inline void Jugador::mover(Graphics^ g, int an, int al) {
+
+
+	bool seMovio = false;
+
+	if (izq && x > 0) {
+		x -= dx;
+		idY = 5;
 		Ultima = Izquierda;
-		break;
-	case Direcciones::Ninguna:
-		dx = dy = 0;
-		switch (Ultima)
-		{
-		case Direcciones::Abajo:
-			idY = 0;
-			idX = 0;
-			break;
-		case Direcciones::Arriba:
-			idY = 2;
-			idX = 0;
-			break;
-		case Direcciones::Derecha:
-			idY = 1;
-			idX = 0;
-			break;
-		case Direcciones::Izquierda:
-			idY = 4;
-			idX = 0;
-			break;
-		default:
-			break;
-		}
-		break;
+		seMovio = true;
 	}
-	// System::Drawing::Rectangle  Jugador2 = System::Drawing::Rectangle(x + 5, y + 22 + dy, (ancho - 15), (alto - 30));
-	// g->DrawRectangle(System::Drawing::Pens::Blue, Jugador2);
-	
-	x += dx;
-	y += dy;
+	if (der && x + ancho * 1.3 < an) {
+		x += dx;
+		idY = 3;
+		Ultima = Derecha;
+		seMovio = true;
+	}
+
+	if (arr && y > 0) {
+		y -= dy;
+		if (!izq && !der) {
+			idY = 2;
+			Ultima = Arriba;
+		}
+		seMovio = true;
+	}
+	if (abajo && y + alto * 1.3 < al) {
+		y += dy;
+		if (!izq && !der) {
+			idY = 0;
+			Ultima = Abajo;
+		}
+		seMovio = true;
+	}
+
+	if (seMovio) {
+		contadorAnimacion++;
+		if (contadorAnimacion >= velocidadAnimacion) {
+			contadorAnimacion = 0;
+			idX++;
+			if (idX > 5) idX = 0;
+		}
+	}
+	else {
+		contadorAnimacion = 0;
+		idX = 0; 
+	}
+
+
+
+	//int X = 0, Y = 0;
+	//switch (Direccion)
+	//{
+	//case Direcciones::Abajo:
+	//	idY = 0;  // Fila 0 - mirando abajo
+	//	if (idX >= 0 && idX < 5)
+	//		++idX;
+	//	else
+	//		idX = 0;
+	//	dx = 0;
+	//	dy = 20;
+	//	Ultima = Abajo;
+	//	break;
+	//case Direcciones::Arriba:
+	//	idY = 2;  // Fila 2 - mirando arriba
+	//	if (idX >= 0 && idX < 5)
+	//		++idX;
+	//	else
+	//		idX = 0;
+	//	dx = 0;
+	//	dy = -20;
+	//	Ultima = Arriba;
+	//	break;
+	//case Direcciones::Derecha:
+	//	idY = 1;  // Fila 1 - derecha mirando abajo
+	//	if (idX >= 0 && idX < 5)
+	//		++idX;
+	//	else
+	//		idX = 0;
+	//	dx = 20;
+	//	dy = 0;
+	//	Ultima = Derecha;
+	//	break;
+	//case Direcciones::Izquierda:
+	//	idY = 4;  // Fila 4 - izquierda mirando abajo
+	//	if (idX >= 0 && idX < 5)
+	//		++idX;
+	//	else
+	//		idX = 0;
+	//	dx = -20;
+	//	dy = 0;
+	//	Ultima = Izquierda;
+	//	break;
+	//case Direcciones::Ninguna:
+	//	dx = dy = 0;
+	//	switch (Ultima)
+	//	{
+	//	case Direcciones::Abajo:
+	//		idY = 0;
+	//		idX = 0;
+	//		break;
+	//	case Direcciones::Arriba:
+	//		idY = 2;
+	//		idX = 0;
+	//		break;
+	//	case Direcciones::Derecha:
+	//		idY = 1;
+	//		idX = 0;
+	//		break;
+	//	case Direcciones::Izquierda:
+	//		idY = 4;
+	//		idX = 0;
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//	break;
+	//}
+
+	//
+	//x += dx;
+	//y += dy;
 }
 
 inline System::Drawing::Rectangle Jugador::getRect() {
