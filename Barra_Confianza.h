@@ -224,7 +224,7 @@ namespace TF1 {
 		minimapa->dibujar(e->Graphics);
 	}
 	private: System::Void Barra_Confianza_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		if (e->KeyCode == Keys::C) {
+		if (e->KeyCode == Keys::Tab) {
 			this->Close();
 		}
 	}

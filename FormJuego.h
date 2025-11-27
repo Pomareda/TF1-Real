@@ -152,7 +152,7 @@ namespace TF1 {
 				control->dialogoConIA();
 				control->interactuarAliado();
 				break;
-			case Keys::C:
+			case Keys::Tab:
 				control->barra_confianza();
 				break;
 			case Keys::F1:
