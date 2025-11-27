@@ -24,13 +24,6 @@ public:
 
     void mover(Graphics^ g, int an, int al);
 	void dibujar(Graphics^ g, Bitmap^ bmp, int scrollY, int scrollX);
-   /* void mostrarConfianza();
-
-    bool colision_mapa();
-    bool colision_enemigos();
-    bool colision_IAsuprema();
-    bool colisiona_aliado();*/
-
 	System::Drawing::Rectangle getRect() override;
 
     int getConfianza() { return confianza; };
@@ -99,13 +92,13 @@ inline void Jugador::mover(Graphics^ g, int an, int al) {
 
 	if (izq && x > 0) {
 		x -= dx;
-		idY = 5;
+		idY = 4;
 		Ultima = Izquierda;
 		seMovio = true;
 	}
 	if (der && x + ancho * 1.3 < an) {
 		x += dx;
-		idY = 3;
+		idY = 1;
 		Ultima = Derecha;
 		seMovio = true;
 	}
@@ -139,81 +132,6 @@ inline void Jugador::mover(Graphics^ g, int an, int al) {
 		contadorAnimacion = 0;
 		idX = 0; 
 	}
-
-
-
-	//int X = 0, Y = 0;
-	//switch (Direccion)
-	//{
-	//case Direcciones::Abajo:
-	//	idY = 0;  // Fila 0 - mirando abajo
-	//	if (idX >= 0 && idX < 5)
-	//		++idX;
-	//	else
-	//		idX = 0;
-	//	dx = 0;
-	//	dy = 20;
-	//	Ultima = Abajo;
-	//	break;
-	//case Direcciones::Arriba:
-	//	idY = 2;  // Fila 2 - mirando arriba
-	//	if (idX >= 0 && idX < 5)
-	//		++idX;
-	//	else
-	//		idX = 0;
-	//	dx = 0;
-	//	dy = -20;
-	//	Ultima = Arriba;
-	//	break;
-	//case Direcciones::Derecha:
-	//	idY = 1;  // Fila 1 - derecha mirando abajo
-	//	if (idX >= 0 && idX < 5)
-	//		++idX;
-	//	else
-	//		idX = 0;
-	//	dx = 20;
-	//	dy = 0;
-	//	Ultima = Derecha;
-	//	break;
-	//case Direcciones::Izquierda:
-	//	idY = 4;  // Fila 4 - izquierda mirando abajo
-	//	if (idX >= 0 && idX < 5)
-	//		++idX;
-	//	else
-	//		idX = 0;
-	//	dx = -20;
-	//	dy = 0;
-	//	Ultima = Izquierda;
-	//	break;
-	//case Direcciones::Ninguna:
-	//	dx = dy = 0;
-	//	switch (Ultima)
-	//	{
-	//	case Direcciones::Abajo:
-	//		idY = 0;
-	//		idX = 0;
-	//		break;
-	//	case Direcciones::Arriba:
-	//		idY = 2;
-	//		idX = 0;
-	//		break;
-	//	case Direcciones::Derecha:
-	//		idY = 1;
-	//		idX = 0;
-	//		break;
-	//	case Direcciones::Izquierda:
-	//		idY = 4;
-	//		idX = 0;
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//	break;
-	//}
-
-	//
-	//x += dx;
-	//y += dy;
 }
 
 inline System::Drawing::Rectangle Jugador::getRect() {

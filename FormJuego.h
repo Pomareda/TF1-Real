@@ -48,17 +48,28 @@ namespace TF1 {
 			control->agregarEnemigo(enemigo4);
 			control->agregarEnemigo(enemigo5);
 
+
+			Recurso^ recurso1 = gcnew Recurso(700, 300);
+			Recurso^ recurso2 = gcnew Recurso(945, 1050);
+			Recurso^ recurso3 = gcnew Recurso(1600, 1370);
+			Recurso^ recurso4 = gcnew Recurso(2345, 500);
+			Recurso^ recurso5 = gcnew Recurso(1540, 100);
+			control->agregarRecurso(recurso1);
+			control->agregarRecurso(recurso2);
+			control->agregarRecurso(recurso3);
+			control->agregarRecurso(recurso4);
+			control->agregarRecurso(recurso5);
+
 			cant_recursos = 0;
 			contadorPlataformas = 0;
 			modoDebug = false;
 			creandoPlataforma = false;
 
-			// IMPORTANTE: Inicializar la lista ANTES de cargar
 			plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
 			cargarPlataformas(); // Esto carga y crea los PictureBox
 
 			gameover = gcnew Game_Over();
-			    mostrarDialogoInicial = true;
+			mostrarDialogoInicial = true;
 
 		}
 	protected:
@@ -78,7 +89,9 @@ namespace TF1 {
 		BufferedGraphics^ buffer;
 		Bitmap^ bmpPersonajeHumano;
 		Bitmap^ bmpEnemigoIA;
+
 		Bitmap^ bmpRecurso;
+
 		Bitmap^ bmpMapa;
 		Bitmap^ bmpAliado;
 		Camara^ camara;
@@ -211,9 +224,6 @@ namespace TF1 {
 			verificarColisionesPlataformas();
 
 			control->moverJugador(gBuffer, bmpPersonajeHumano, bmpMapa->Width, bmpMapa->Height);
-			if (cant_recursos < 4) {
-				control->crearRecursos(bmpRecurso);
-			}
 			control->dibujarAliado(gBuffer, bmpAliado);
 			control->moverEnemigos(gBuffer, bmpEnemigoIA);
 			control->moverRecursos(gBuffer, bmpRecurso);
@@ -239,7 +249,7 @@ namespace TF1 {
 			cant_recursos++;
 			contador++;
 			
-			if (jugadorPtr->getConfianza() > 1 /*&& control->contestadaLaIA()*/ ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
+			if (jugadorPtr->getConfianza() > 30 /*&& control->contestadaLaIA()*/ ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
 			{
 					
 				this->timer1->Enabled = false;
@@ -289,32 +299,21 @@ namespace TF1 {
 			int ancho = Math::Abs(puntoActual.X - puntoInicio.X);
 			int alto = Math::Abs(puntoActual.Y - puntoInicio.Y);
 
-			// Crear solo si tiene tamaño
 			if (ancho > 5 && alto > 5) {
-				// Agregar el rectángulo en COORDENADAS DEL MUNDO
 				System::Drawing::Rectangle plataforma = System::Drawing::Rectangle(x, y, ancho, alto);
 				plataformas->Add(plataforma);
-
-				// Crear el PictureBox visual (en coordenadas de pantalla)
 				crearPictureBoxPlataforma(x, y, ancho, alto);
-
-				// Guardar inmediatamente
 				guardarPlataformas();
 			}
 		}
 	}
 
-		   // COLISIÓN ARREGLADA: Usa la List<Rectangle> en coordenadas del mundo
 	private: void verificarColisionesPlataformas() {
 		System::Drawing::Rectangle jugadorRect = jugadorPtr->getRect();
 
-		// Iterar sobre la lista de Rectangles (coordenadas del mundo)
 		for each (System::Drawing::Rectangle plat in plataformas) {
-			// Verificar intersección
 			if (!jugadorRect.IntersectsWith(plat))
 				continue;
-
-			// Calcular penetraciones
 			int overlapLeft = jugadorRect.Right - plat.Left;
 			int overlapRight = plat.Right - jugadorRect.Left;
 			int overlapTop = jugadorRect.Bottom - plat.Top;
@@ -323,7 +322,6 @@ namespace TF1 {
 			int penX = Math::Min(Math::Abs(overlapLeft), Math::Abs(overlapRight));
 			int penY = Math::Min(Math::Abs(overlapTop), Math::Abs(overlapBottom));
 
-			// Resolver colisión
 			if (penX < penY) {
 				// Colisión horizontal
 				if (Math::Abs(overlapLeft) < Math::Abs(overlapRight)) {
@@ -332,7 +330,7 @@ namespace TF1 {
 				else {
 					jugadorPtr->SetX(jugadorPtr->getX() + overlapRight);
 				}
-				//jugadorPtr->SetDx(0);
+				
 			}
 			else {
 				// Colisión vertical
@@ -342,7 +340,7 @@ namespace TF1 {
 				else {
 					jugadorPtr->SetY(jugadorPtr->getY() + overlapBottom);
 				}
-				//jugadorPtr->SetDy(0);
+				
 			}
 
 			jugadorRect = jugadorPtr->getRect();
@@ -350,7 +348,6 @@ namespace TF1 {
 	}
 
 	private: void dibujarDebug(Graphics^ g) {
-		// Dibujar las plataformas en COORDENADAS DE PANTALLA
 		for each (System::Drawing::Rectangle plat in plataformas) {
 			int pantallaX = plat.X - camara->getScrollX();
 			int pantallaY = plat.Y - camara->getScrollY();
@@ -364,7 +361,6 @@ namespace TF1 {
 		}
 	}
 	
-		   // GUARDAR: Guarda los Rectangles (coordenadas del mundo)
 	private: void guardarPlataformas() {
 		StreamWriter^ writer = gcnew StreamWriter("plataformas.txt");
 
@@ -377,9 +373,7 @@ namespace TF1 {
 		writer->Close();
 	}
 
-		   // CARGAR: Lee el archivo y recrea TODO
 	private: void cargarPlataformas() {
-		// Limpiar todo primero
 
 		if (plataformas == nullptr) {
 			plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
@@ -387,7 +381,6 @@ namespace TF1 {
 		plataformas->Clear();
 		contadorPlataformas = 0;
 
-		// Leer archivo si existe
 		if (System::IO::File::Exists("plataformas.txt")) {
 			StreamReader^ reader = gcnew StreamReader("plataformas.txt");
 			String^ linea;
@@ -404,8 +397,6 @@ namespace TF1 {
 					// Agregar a la lista (coordenadas del mundo)
 					System::Drawing::Rectangle plataforma = System::Drawing::Rectangle(x, y, ancho, alto);
 					plataformas->Add(plataforma);
-
-					// Crear el PictureBox visual
 					crearPictureBoxPlataforma(x, y, ancho, alto);
 				}
 			}
@@ -415,11 +406,9 @@ namespace TF1 {
 
 
 
-		   // Crea un PictureBox para visualización (recibe coordenadas del mundo)
 	private: void crearPictureBoxPlataforma(int xMundo, int yMundo, int ancho, int alto) {
 		PictureBox^ nuevaPlataforma = gcnew PictureBox();
 
-		// Convertir a coordenadas de pantalla para posicionamiento inicial
 		int xPantalla = xMundo - camara->getScrollX();
 		int yPantalla = yMundo - camara->getScrollY();
 
@@ -430,9 +419,8 @@ namespace TF1 {
 		nuevaPlataforma->Name = "plataforma" + contadorPlataformas++;
 		nuevaPlataforma->Visible = modoDebug;
 
-		// Guardar coordenadas originales del mundo en el Tag
 		cli::array<int>^ coordsMundo = gcnew cli::array<int>(2) { xMundo, yMundo };
-		nuevaPlataforma->Tag = "plataforma"; // Mantener el tag como string
+		nuevaPlataforma->Tag = "plataforma"; 
 
 		this->Controls->Add(nuevaPlataforma);
 		nuevaPlataforma->BringToFront();
@@ -446,7 +434,6 @@ namespace TF1 {
 		}
 	}
 
-		   // Mueve los PictureBox según el scroll de la cámara
 	private: void moverPicturesBoxes(int scrollY, int scrollX) {
 		static int lastScrollX = 0;
 		static int lastScrollY = 0;
@@ -457,8 +444,6 @@ namespace TF1 {
 		for each (Control ^ c in this->Controls) {
 			if (c->Tag == nullptr) continue;
 			if (c->Tag->ToString() != "plataforma") continue;
-
-			// Mover al revés del scroll
 			c->Left -= deltaX;
 			c->Top -= deltaY;
 		}
@@ -467,12 +452,10 @@ namespace TF1 {
 		lastScrollY = scrollY;
 	}
 	private: void eliminarUltimaPlataforma() {
-			// Quitar el último rectángulo del mundo si existe
 			if (plataformas != nullptr && plataformas->Count > 0) {
 				plataformas->RemoveAt(plataformas->Count - 1);
 			}
 
-			// Buscar el último control con Tag == "plataforma"
 			Control^ ultimo = nullptr;
 			for (int i = this->Controls->Count - 1; i >= 0; --i) {
 				Control^ c = this->Controls[i];

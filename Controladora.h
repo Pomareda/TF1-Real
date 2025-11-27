@@ -32,7 +32,6 @@ public:
 
 	void agregarEnemigo(Enemigo^ enemigo);
 	void agregarRecurso(Recurso^ recursito);
-	void crearRecursos(Bitmap^ recurso);
 	void moverEnemigos(Graphics^ g, Bitmap^ bmp);
 	void moverJugador(Graphics^ g, Bitmap^ bmp, int an, int al);
 	void moverRecursos(Graphics^ g, Bitmap^ bmp);
@@ -44,7 +43,6 @@ public:
 	bool colisionAliado();
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
-	//void game_over();
 	void barra_confianza();
 
 	int getContestadaLaIA();
@@ -62,40 +60,14 @@ inline Controladora::Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, in
 	preguntas = gcnew List<int>(); 
 	camara = cam;
 	minimapa = gcnew Minimapa(0, 0);
-	//camara = gcnew Camara(anchoVentana, altoVentana, 143 * 8, 672);
 }
 
 
 inline Controladora::~Controladora() {}
 
-//inline void Controladora::actualizarCamara() {
-//	camara->seguirJugador(jugador->getX(), jugador->getY(), jugador->getAncho(), jugador->getAlto());
-//}
-
-inline void Controladora::crearRecursos(Bitmap^ recurso)
-{
-	Recurso^ recursox = gcnew Recurso(recurso);
-	recursos->Add(recursox);
-}
-
 inline void Controladora::agregarEnemigo(Enemigo^ enemigo) {
 	enemigos->Add(enemigo);
 }
-//
-//inline void Controladora::game_over() {
-//		Game_Over^ gameover = gcnew Game_Over();
-//		if (gameover->GetCondicion() == 1) {
-//			for (int i = 0; i < enemigos->Count; i++) {
-//
-//				if (enemigos[i]->getActivo() == true) {
-//					return;
-//				}
-//			}
-//			gameover->Close();
-//			MenuForm^ formjuego = gcnew MenuForm();
-//			formjuego->ShowDialog();
-//		}
-//}
 
 inline void Controladora::agregarRecurso(Recurso^ recursito)
 {
@@ -186,7 +158,10 @@ inline void Controladora::barra_confianza() {
 
 inline void Controladora::interactuarAliado() {
 	static int unavez = 0;
-	if (jugador->getRect().IntersectsWith(aliado->getRectGrande()) && unavez == 0) {
+	int distanciaX = jugador->getX() - aliado->getRect().X;
+	int distanciaY = jugador->getY() - aliado->getRect().Y;
+
+	if ((distanciaX < 100 && distanciaX > -100) && (distanciaY < 90 && distanciaY > -120) && unavez == 0) {
 		FormAliado^ FormA = gcnew FormAliado(jugador);
 		FormA->ShowDialog();
 		unavez = 1;
@@ -219,7 +194,6 @@ inline void Controladora::dialogoConIA()
 				contador++;
 			}
 			else {
-				// Generar una pregunta que no esté ya en la lista
 				while (preguntas->Contains(a)) {
 					a = r->Next(5);
 				}

@@ -1,9 +1,9 @@
 #pragma once
-//#include "Entidad.h"
+#include "Entidad.h"
 
 using namespace System;
 
-ref class Recurso
+ref class Recurso : public Entidad
 {
 private:
 
@@ -13,18 +13,7 @@ private:
 	int idY = 0;
 
 public:
-	Recurso(Bitmap^ bmpRecurso)
-	{
-		Random^ rand = gcnew Random();
-		ancho = bmpRecurso->Width / 4;
-		alto = bmpRecurso->Height / 6;
-		x = rand->Next(2600 + 100);
-		y = rand->Next(1600 + 100);
-		idX = idY = 0;
-
-		activo = true;
-
-	}
+	Recurso(int x, int y);
 	~Recurso() {}
 
 	void dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY);
@@ -35,11 +24,21 @@ public:
 
 	void setActivo(bool a) { activo = a; }
 
-	System::Drawing::Rectangle getRect() {
+	System::Drawing::Rectangle getRect() override {
 		return System::Drawing::Rectangle(x + 10, y + 10, ancho - 80, alto- 80);
 	}
 };
 
+inline Recurso::Recurso(int x, int y) : Entidad(x, y, 448/4, 624/6) {
+	this->x = x;
+	this->y = y;
+	ancho = 448 / 4;
+	alto = 624 / 6;
+	activo = true;
+	idX = 0;
+	idY = 0;
+
+}
 
 inline void Recurso::dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY) {
 

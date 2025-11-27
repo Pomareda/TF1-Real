@@ -84,10 +84,10 @@ namespace TF1 {
 			// verticalProgressBar
 			// 
 			this->verticalProgressBar->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->verticalProgressBar->Location = System::Drawing::Point(44, 11);
-			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->verticalProgressBar->Location = System::Drawing::Point(33, 9);
+			this->verticalProgressBar->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->verticalProgressBar->Name = L"verticalProgressBar";
-			this->verticalProgressBar->Size = System::Drawing::Size(55, 430);
+			this->verticalProgressBar->Size = System::Drawing::Size(42, 350);
 			this->verticalProgressBar->TabIndex = 2;
 			this->verticalProgressBar->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Barra_Confianza::verticalProgressBar_Paint);
 			// 
@@ -102,52 +102,58 @@ namespace TF1 {
 			this->panelMinimapa->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panelMinimapa.BackgroundImage")));
 			this->panelMinimapa->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->panelMinimapa->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->panelMinimapa->Location = System::Drawing::Point(127, 12);
+			this->panelMinimapa->Location = System::Drawing::Point(95, 10);
+			this->panelMinimapa->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->panelMinimapa->Name = L"panelMinimapa";
-			this->panelMinimapa->Size = System::Drawing::Size(580, 404);
+			this->panelMinimapa->Size = System::Drawing::Size(436, 329);
 			this->panelMinimapa->TabIndex = 3;
 			this->panelMinimapa->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Barra_Confianza::panelMinimapa_Paint);
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(773, 54);
+			this->label1->Location = System::Drawing::Point(580, 44);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(106, 16);
+			this->label1->Size = System::Drawing::Size(86, 13);
 			this->label1->TabIndex = 4;
 			this->label1->Text = L"JUGADOR (TU):";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(773, 159);
+			this->label2->Location = System::Drawing::Point(580, 129);
+			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(81, 16);
+			this->label2->Size = System::Drawing::Size(67, 13);
 			this->label2->TabIndex = 5;
 			this->label2->Text = L"ENEMIGOS:";
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(773, 272);
+			this->label3->Location = System::Drawing::Point(580, 221);
+			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(55, 16);
+			this->label3->Size = System::Drawing::Size(46, 13);
 			this->label3->TabIndex = 6;
 			this->label3->Text = L"ALIADO";
 			// 
 			// Barra_Confianza
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1025, 452);
+			this->BackColor = System::Drawing::SystemColors::ButtonHighlight;
+			this->ClientSize = System::Drawing::Size(769, 367);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->panelMinimapa);
 			this->Controls->Add(this->verticalProgressBar);
-			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Barra_Confianza";
-			this->Text = L"Barra_Confianza";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+			this->Text = L"Minimapa";
 			this->Load += gcnew System::EventHandler(this, &Barra_Confianza::Barra_Confianza_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Barra_Confianza::Barra_Confianza_KeyDown);
 			this->ResumeLayout(false);
