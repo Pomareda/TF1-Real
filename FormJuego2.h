@@ -24,8 +24,8 @@ namespace TF1 {
             modoDebug = false;
             creandoPlataforma = false;
 
-            // IMPORTANTE: Inicializar la lista ANTES de cargar
             plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
+            velocidadesPlataformas = gcnew System::Collections::Generic::Dictionary<Control^, int>();
             cargarPlataformas(); // Esto carga y crea los PictureBox
         }
 
@@ -50,6 +50,8 @@ namespace TF1 {
         int contadorPlataformas = 0;
 
         System::Collections::Generic::List<System::Drawing::Rectangle>^ plataformas;
+        System::Collections::Generic::Dictionary<Control^, int>^ velocidadesPlataformas;
+
 
 #pragma region Windows Form Designer generated code
         void InitializeComponent(void)
@@ -70,7 +72,7 @@ namespace TF1 {
             // 
             this->pictureBox1->Location = System::Drawing::Point(0, -1);
             this->pictureBox1->Name = L"pictureBox1";
-            this->pictureBox1->Size = System::Drawing::Size(294, 547);
+            this->pictureBox1->Size = System::Drawing::Size(501, 547);
             this->pictureBox1->TabIndex = 0;
             this->pictureBox1->TabStop = false;
             this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDown);
@@ -81,7 +83,7 @@ namespace TF1 {
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(294, 544);
+            this->ClientSize = System::Drawing::Size(498, 544);
             this->Controls->Add(this->pictureBox1);
             this->DoubleBuffered = true;
             this->MaximizeBox = false;
@@ -98,7 +100,6 @@ namespace TF1 {
 
     private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 
-        // VALIDACIÓN CRÍTICA
         if (pictureBox1->BackgroundImage == nullptr) {
             return;
         }
@@ -114,6 +115,7 @@ namespace TF1 {
         jugador->aumentarCarga();
         jugador->mover();
         colisiones();
+        moverPlataformasHorizontalmente();
 
         int posicionJugador = jugador->getY();
         scrollY = posicionJugador - pictureBox1->Height / 2;
@@ -260,7 +262,7 @@ namespace TF1 {
             return;
         }
 
-        jugador->setEnSuelo(false);
+        Control^ plataformaActual = nullptr;
 
         for each (Control ^ x in this->Controls) {
             if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
@@ -285,6 +287,7 @@ namespace TF1 {
                         jugador->setY(plataformaMundo.Top - jugadorRect.Height);
                         jugador->setVelY(0);
                         jugador->setEnSuelo(true);
+						plataformaActual = x;
                     }
                     else if (minDistancia == distanciaAbajo && jugador->getVelY() < 0) {
                         jugador->setY(plataformaMundo.Bottom);
@@ -298,6 +301,10 @@ namespace TF1 {
                     }
                 }
             }
+        }
+
+        if (plataformaActual != nullptr && velocidadesPlataformas->ContainsKey(plataformaActual)) {
+            jugador->setX(jugador->getX() + velocidadesPlataformas[plataformaActual]);
         }
 
         int altoTotal = pictureBox1->BackgroundImage->Height;
@@ -408,17 +415,37 @@ namespace TF1 {
     }
     private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
         try {
-            this->pictureBox1->BackgroundImage = gcnew Bitmap("Imagenes/jumpkingmap.jpg");
+            this->pictureBox1->BackgroundImage = gcnew Bitmap("Imagenes/posibleMapa2.jpg");
         }
         catch (...) {
             // Si falla, intenta con otra ruta
             try {
-                this->pictureBox1->BackgroundImage = gcnew Bitmap("jumpkingmap.jpg");
+                this->pictureBox1->BackgroundImage = gcnew Bitmap("posibleMapa2.jpg");
             }
             catch (...) {
                 MessageBox::Show("Error al cargar imagen: ");
             }
         }
+
+        if (this->Controls != nullptr) {
+
+            for each(Control ^ c in this->Controls) {
+                if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
+                    PictureBox^ plat = dynamic_cast<PictureBox^>(c); // lo convierto a picture box para usar el strectch
+                    if (plat != nullptr) {
+                        Bitmap^ imgPiso = gcnew Bitmap("Imagenes/piso2.png");
+
+                        imgPiso->MakeTransparent(Color::White);
+                        plat->Image = imgPiso;
+                        plat->SizeMode = PictureBoxSizeMode::StretchImage;
+                        plat->BackColor = Color::Transparent;
+
+                    }
+                }
+            }
+
+        }
+        
     }
     private: void eliminarUltimaPlataforma() {
         // Quitar el último rectángulo del mundo si existe
@@ -447,6 +474,24 @@ namespace TF1 {
         }
     }
 
+    
+    private: void moverPlataformasHorizontalmente() {
+        for each (Control ^ x in this->Controls) {
+            if (x->Tag != nullptr && x->Tag->ToString() == "plataforma") {
+                if (!velocidadesPlataformas->ContainsKey(x)) {
+                    velocidadesPlataformas[x] = 5; 
+                }
 
+                if (x->Left + x->Width >= this->ClientSize.Width || x->Left <= 0) {
+                    velocidadesPlataformas[x] *= -1;
+                }
+
+                x->Left += velocidadesPlataformas[x];
+            }
+        }
+    }
+       
+
+    
     };
 }

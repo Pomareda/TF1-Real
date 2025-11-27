@@ -136,6 +136,7 @@ public:
     void setX(int nuevaX) { x = nuevaX; }
 
     int getY() { return y; }
+	int getX() { return x; }
 
     System::Drawing::Rectangle getRect() {
         return System::Drawing::Rectangle(x, y, ancho * 2.5, alto * 2.5);
