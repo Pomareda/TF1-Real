@@ -153,6 +153,7 @@
     <ClInclude Include="Menu_Interactivo.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Minimapa.h" />
     <ClInclude Include="Recurso.h" />
   </ItemGroup>
   <ItemGroup>

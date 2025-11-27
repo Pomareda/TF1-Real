@@ -10,6 +10,7 @@
 #include "FormAliado.h"
 #include "Dialogo_IAsuprema.h"
 #include "Game_Over.h"
+#include "Minimapa.h"
 using namespace System::Collections::Generic;
 using namespace TF1;
 
@@ -21,6 +22,7 @@ private:
 	List<Recurso^>^ recursos;
 	Aliado^ aliado;
 	int contador = 0;
+	Minimapa^ minimapa;
 	List<int>^ preguntas;
 	int nivel_perdido;
 	//Camara^ camara;
@@ -48,6 +50,7 @@ public:
 	int getContestadaLaIA();
 	int getTotalIAs();
 
+	Minimapa^ getMinimap() { return minimapa; }
 	Jugador^ getJugador() { return jugador; }
 };
 
@@ -58,6 +61,7 @@ inline Controladora::Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, in
 	aliado = gcnew Aliado(760, 1600);
 	preguntas = gcnew List<int>(); 
 	camara = cam;
+	minimapa = gcnew Minimapa(0, 0);
 	//camara = gcnew Camara(anchoVentana, altoVentana, 143 * 8, 672);
 }
 
@@ -176,7 +180,7 @@ inline bool Controladora::colisionAliado() {
 }
 
 inline void Controladora::barra_confianza() {
-	Barra_Confianza^ barra = gcnew	Barra_Confianza(jugador);
+	Barra_Confianza^ barra = gcnew	Barra_Confianza(jugador, minimapa, 2787, 1680);
 	barra->ShowDialog();
 }
 
