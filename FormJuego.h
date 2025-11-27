@@ -12,6 +12,7 @@ namespace TF1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::IO;
+	using namespace System::Media;
 	
 
 	public ref class MenuForm : public System::Windows::Forms::Form
@@ -71,6 +72,10 @@ namespace TF1 {
 			gameover = gcnew Game_Over();
 			mostrarDialogoInicial = true;
 
+			sound = gcnew SoundPlayer("Sonidos/FondoMundo1.wav");
+			sound->Load();
+			
+			
 		}
 	protected:
 		~MenuForm()
@@ -78,6 +83,10 @@ namespace TF1 {
 			if (components)
 			{
 				delete components;
+			}
+			if (sound) {
+				sound->Stop();
+				delete sound;
 			}
 			delete control;
 		}
@@ -113,6 +122,9 @@ namespace TF1 {
 		int contador = 0;
 		bool mostrarDialogoInicial;
 
+		//Sonidos
+		SoundPlayer^ sound;
+
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
 		{
@@ -135,6 +147,7 @@ namespace TF1 {
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Mundo 1";
 			this->Load += gcnew System::EventHandler(this, &MenuForm::MenuForm_Load);
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MenuForm::MenuForm_FormClosing);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyDown);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MenuForm::MenuForm_KeyUp);
 			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MenuForm::MenuForm_MouseDown);
@@ -213,7 +226,11 @@ namespace TF1 {
 				dialogoIA->ShowDialog();
 				this->timer1->Enabled = true;
 				mostrarDialogoInicial = false; // ⭐ Marcar como mostrado
+				sound->PlayLooping();
 			}
+
+			
+
 			Graphics^ gBuffer = buffer->Graphics;
 
 			// CÁMARA
@@ -452,30 +469,34 @@ namespace TF1 {
 		lastScrollY = scrollY;
 	}
 	private: void eliminarUltimaPlataforma() {
-			if (plataformas != nullptr && plataformas->Count > 0) {
-				plataformas->RemoveAt(plataformas->Count - 1);
-			}
+		if (plataformas != nullptr && plataformas->Count > 0) {
+			plataformas->RemoveAt(plataformas->Count - 1);
+		}
 
-			Control^ ultimo = nullptr;
-			for (int i = this->Controls->Count - 1; i >= 0; --i) {
-				Control^ c = this->Controls[i];
-				if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
-					ultimo = c;
-					break;
-				}
-			}
-
-			if (ultimo != nullptr) {
-				this->Controls->Remove(ultimo);
-				delete ultimo;
-				if (contadorPlataformas > 0) --contadorPlataformas;
-				guardarPlataformas();
-			}
-			else {
-				MessageBox::Show("No hay plataformas para eliminar");
+		Control^ ultimo = nullptr;
+		for (int i = this->Controls->Count - 1; i >= 0; --i) {
+			Control^ c = this->Controls[i];
+			if (c->Tag != nullptr && c->Tag->ToString() == "plataforma") {
+				ultimo = c;
+				break;
 			}
 		}
 
+		if (ultimo != nullptr) {
+			this->Controls->Remove(ultimo);
+			delete ultimo;
+			if (contadorPlataformas > 0) --contadorPlataformas;
+			guardarPlataformas();
+		}
+		else {
+			MessageBox::Show("No hay plataformas para eliminar");
+		}
+	}
+	private: System::Void MenuForm_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+		if (sound) {
+			sound->Stop();
+		}
+	}
 
 
 	};
