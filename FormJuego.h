@@ -1,11 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "Controladora.h"
 #include "Dialogo_IAsuprema.h"
 #include "Camara.h"
 #include "FormJuego2.h"
-
+	
 namespace TF1 {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -13,10 +12,12 @@ namespace TF1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 	using namespace System::IO;
+	
 
 	public ref class MenuForm : public System::Windows::Forms::Form
 	{
 	public:
+
 		MenuForm(void)
 		{
 			InitializeComponent();
@@ -55,8 +56,11 @@ namespace TF1 {
 			// IMPORTANTE: Inicializar la lista ANTES de cargar
 			plataformas = gcnew System::Collections::Generic::List<System::Drawing::Rectangle>();
 			cargarPlataformas(); // Esto carga y crea los PictureBox
-		}
 
+			gameover = gcnew Game_Over();
+			    mostrarDialogoInicial = true;
+
+		}
 	protected:
 		~MenuForm()
 		{
@@ -92,6 +96,9 @@ namespace TF1 {
 		System::Collections::Generic::List<System::Drawing::Rectangle>^ plataformas;
 
 		Controladora^ control;
+		Game_Over^ gameover;
+		int contador = 0;
+		bool mostrarDialogoInicial;
 
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void)
@@ -173,9 +180,16 @@ namespace TF1 {
 		}
 
 		System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+			if (mostrarDialogoInicial) {
+				this->timer1->Enabled = false;
+				Dialogo_IAsuprema^ dialogoIA = gcnew Dialogo_IAsuprema();
+				dialogoIA->ShowDialog();
+				this->timer1->Enabled = true;
+				mostrarDialogoInicial = false; // â­ Marcar como mostrado
+			}
 			Graphics^ gBuffer = buffer->Graphics;
 
-			// CÁMARA
+			// CÃMARA
 			camara->actualizarCamaraYDibujar(jugadorPtr, this->ClientSize.Width, this->ClientSize.Height, bmpMapa->Width, bmpMapa->Height, gBuffer, bmpMapa);
 			moverPicturesBoxes(camara->getScrollY(), camara->getScrollX());
 
@@ -183,7 +197,6 @@ namespace TF1 {
 			verificarColisionesPlataformas();
 
 			control->moverJugador(gBuffer, bmpPersonajeHumano);
-
 			if (cant_recursos < 4) {
 				control->crearRecursos(bmpRecurso);
 			}
@@ -210,38 +223,32 @@ namespace TF1 {
 			} 
 			buffer->Render(g);
 			cant_recursos++;
-
+			contador++;
 			
-			//DESCOMENTAR ESTO LUEGO, esta es la logica que se usa de vrd
-			//if (jugadorPtr->getConfianza() > 10 && control->contestadaLaIA() ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
-			//{
+			if (jugadorPtr->getConfianza() > 100 && control->contestadaLaIA() ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
+			{
 					
-			//	this->timer1->Enabled = false;
-			//	this->Close();
-			//	MyForm^ Mapa2 = gcnew MyForm();
-			//	Mapa2->Show();
-				
-			//}
-
-			// Aqui solo estoy usando esto para poder probar, luego se bora
-			if (jugadorPtr->getConfianza() > 10) {
-
 				this->timer1->Enabled = false;
 				this->Close();
 				MyForm^ Mapa2 = gcnew MyForm();
 				Mapa2->Show();
-
 			}
-			
+			else if (jugadorPtr->getConfianza() < 70 && control->contestadaLaIA()) {
 
-
+				this->timer1->Enabled = false;
+				gameover->ShowDialog();
+				if ( gameover->GetCondicion()) {
+					MenuForm^ nuevo = gcnew MenuForm();
+					this->Close();
+					nuevo->Show();
+				}
+				else {
+					this->Close();
+				}
+			}
 		}
 	
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
-		this->timer1->Enabled = false;
-		Dialogo_IAsuprema^ dialogoIA = gcnew Dialogo_IAsuprema();
-		dialogoIA->ShowDialog();
-		this->timer1->Enabled = true;
 	}
 
 	private: System::Void MenuForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
@@ -268,9 +275,9 @@ namespace TF1 {
 			int ancho = Math::Abs(puntoActual.X - puntoInicio.X);
 			int alto = Math::Abs(puntoActual.Y - puntoInicio.Y);
 
-			// Crear solo si tiene tamaño
+			// Crear solo si tiene tamaÃ±o
 			if (ancho > 5 && alto > 5) {
-				// Agregar el rectángulo en COORDENADAS DEL MUNDO
+				// Agregar el rectÃ¡ngulo en COORDENADAS DEL MUNDO
 				System::Drawing::Rectangle plataforma = System::Drawing::Rectangle(x, y, ancho, alto);
 				plataformas->Add(plataforma);
 
@@ -283,18 +290,13 @@ namespace TF1 {
 		}
 	}
 
-
-
-
-
-
-		   // COLISIÓN ARREGLADA: Usa la List<Rectangle> en coordenadas del mundo
+		   // COLISIÃ“N ARREGLADA: Usa la List<Rectangle> en coordenadas del mundo
 	private: void verificarColisionesPlataformas() {
 		System::Drawing::Rectangle jugadorRect = jugadorPtr->getRect();
 
 		// Iterar sobre la lista de Rectangles (coordenadas del mundo)
 		for each (System::Drawing::Rectangle plat in plataformas) {
-			// Verificar intersección
+			// Verificar intersecciÃ³n
 			if (!jugadorRect.IntersectsWith(plat))
 				continue;
 
@@ -307,9 +309,9 @@ namespace TF1 {
 			int penX = Math::Min(Math::Abs(overlapLeft), Math::Abs(overlapRight));
 			int penY = Math::Min(Math::Abs(overlapTop), Math::Abs(overlapBottom));
 
-			// Resolver colisión
+			// Resolver colisiÃ³n
 			if (penX < penY) {
-				// Colisión horizontal
+				// ColisiÃ³n horizontal
 				if (Math::Abs(overlapLeft) < Math::Abs(overlapRight)) {
 					jugadorPtr->SetX(jugadorPtr->getX() - overlapLeft);
 				}
@@ -319,7 +321,7 @@ namespace TF1 {
 				jugadorPtr->SetDx(0);
 			}
 			else {
-				// Colisión vertical
+				// ColisiÃ³n vertical
 				if (Math::Abs(overlapTop) < Math::Abs(overlapBottom)) {
 					jugadorPtr->SetY(jugadorPtr->getY() - overlapTop);
 				}
@@ -347,7 +349,7 @@ namespace TF1 {
 			g->DrawRectangle(Pens::Red, platPantalla);
 		}
 	}
-
+	
 		   // GUARDAR: Guarda los Rectangles (coordenadas del mundo)
 	private: void guardarPlataformas() {
 		StreamWriter^ writer = gcnew StreamWriter("plataformas.txt");
@@ -399,7 +401,7 @@ namespace TF1 {
 
 
 
-		   // Crea un PictureBox para visualización (recibe coordenadas del mundo)
+		   // Crea un PictureBox para visualizaciÃ³n (recibe coordenadas del mundo)
 	private: void crearPictureBoxPlataforma(int xMundo, int yMundo, int ancho, int alto) {
 		PictureBox^ nuevaPlataforma = gcnew PictureBox();
 
@@ -430,7 +432,7 @@ namespace TF1 {
 		}
 	}
 
-		   // Mueve los PictureBox según el scroll de la cámara
+		   // Mueve los PictureBox segÃºn el scroll de la cÃ¡mara
 	private: void moverPicturesBoxes(int scrollY, int scrollX) {
 		static int lastScrollX = 0;
 		static int lastScrollY = 0;
@@ -442,7 +444,7 @@ namespace TF1 {
 			if (c->Tag == nullptr) continue;
 			if (c->Tag->ToString() != "plataforma") continue;
 
-			// Mover al revés del scroll
+			// Mover al revÃ©s del scroll
 			c->Left -= deltaX;
 			c->Top -= deltaY;
 		}
@@ -451,12 +453,12 @@ namespace TF1 {
 		lastScrollY = scrollY;
 	}
 	private: void eliminarUltimaPlataforma() {
-			// Quitar el último rectángulo del mundo si existe
+			// Quitar el Ãºltimo rectÃ¡ngulo del mundo si existe
 			if (plataformas != nullptr && plataformas->Count > 0) {
 				plataformas->RemoveAt(plataformas->Count - 1);
 			}
 
-			// Buscar el último control con Tag == "plataforma"
+			// Buscar el Ãºltimo control con Tag == "plataforma"
 			Control^ ultimo = nullptr;
 			for (int i = this->Controls->Count - 1; i >= 0; --i) {
 				Control^ c = this->Controls[i];

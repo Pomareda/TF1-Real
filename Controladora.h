@@ -9,7 +9,7 @@
 #include "Camara.h"
 #include "FormAliado.h"
 #include "Dialogo_IAsuprema.h"
-#include "FormJuego.h"
+#include "Game_Over.h"
 using namespace System::Collections::Generic;
 using namespace TF1;
 
@@ -22,6 +22,7 @@ private:
 	Aliado^ aliado;
 	int contador = 0;
 	List<int>^ preguntas;
+	int nivel_perdido;
 	//Camara^ camara;
 public:
 	Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, int altoVentana);
@@ -41,7 +42,7 @@ public:
 	bool colisionAliado();
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
-
+	//void game_over();
 	void barra_confianza();
 
 	int getContestadaLaIA();
@@ -76,6 +77,21 @@ inline void Controladora::crearRecursos(Bitmap^ recurso)
 inline void Controladora::agregarEnemigo(Enemigo^ enemigo) {
 	enemigos->Add(enemigo);
 }
+//
+//inline void Controladora::game_over() {
+//		Game_Over^ gameover = gcnew Game_Over();
+//		if (gameover->GetCondicion() == 1) {
+//			for (int i = 0; i < enemigos->Count; i++) {
+//
+//				if (enemigos[i]->getActivo() == true) {
+//					return;
+//				}
+//			}
+//			gameover->Close();
+//			MenuForm^ formjuego = gcnew MenuForm();
+//			formjuego->ShowDialog();
+//		}
+//}
 
 inline void Controladora::agregarRecurso(Recurso^ recursito)
 {
