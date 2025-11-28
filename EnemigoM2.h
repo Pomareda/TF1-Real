@@ -12,11 +12,11 @@ private:
 	Bitmap^ bmpEnemigo;
 
 public:
-    EnemigoM2(int x, int y, int dx, int dy) : Entidad(x, y, 60, 60) {
+    EnemigoM2(int x, int y, int dx, int dy) : Entidad(x, y, 950/5, 178) {
         this->dx = dx;
         this->dy = dy;
         proyectiles = gcnew List<ProyectilM2^>();
-		bmpEnemigo = gcnew Bitmap("Imagenes/roca.png");//cambiar por imagen de enemigo
+		bmpEnemigo = gcnew Bitmap("Imagenes/EnemigoM2.png");//cambiar por imagen de enemigo
         contadorDisparo = 0;
         tiempoEntreDisparos = 100; 
         rangoDeteccion = 1500;
@@ -53,12 +53,20 @@ public:
         proyectiles->Add(nuevoProyectil);
     }
 
-    void dibujar(Graphics^ g, int scrollY) {
+    void mover() override {
+        ++idX; 
+        if (idX >= 5) { idX = 0; }
+	}
+
+    void dibujar(Graphics^ g, Bitmap^ bmp, int scrollY) {
         int pantallaY = y - scrollY;
 
-        System::Drawing::Rectangle rect = System::Drawing::Rectangle(x, pantallaY, ancho, alto);
-        g->FillRectangle(Brushes::Purple, rect);
-        g->DrawRectangle(Pens::White, rect);
+
+        System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
+        System::Drawing::Rectangle dest = System::Drawing::Rectangle(x, pantallaY, ancho*0.4, alto*0.4);
+
+        g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);
+        
 
         // Dibujar proyectiles
         for each (ProyectilM2 ^ p in proyectiles) {

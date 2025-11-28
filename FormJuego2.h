@@ -41,7 +41,11 @@ namespace TF1 {
             plataformas = gcnew System::Collections::Generic::List<PlataformaM2^>();
             cargarPlataformas();
 			sound = gcnew SoundPlayer("Sonidos/lol.wav");
-			sound->Load();
+			//sound->Load();
+
+            bmpEnemigoM2 = gcnew Bitmap("Imagenes/EnemigoM2.png");
+            
+            
         }
 
     protected:
@@ -66,6 +70,8 @@ namespace TF1 {
 
         System::Collections::Generic::List<PlataformaM2^>^ plataformas;
         SoundPlayer^ sound;
+
+        Bitmap^ bmpEnemigoM2;
 
 
 #pragma region Windows Form Designer generated code
@@ -116,7 +122,6 @@ namespace TF1 {
         if (pictureBox1->BackgroundImage == nullptr) {
             return;
         }
-        sound->PlayLooping();
 
 
         Graphics^ G = pictureBox1->CreateGraphics();
@@ -131,6 +136,7 @@ namespace TF1 {
         jugador->mover();
         colisiones();
         moverPlataformasHorizontalmente();
+
 
         control->actualizarEnemigosM2(jugador->getX(), jugador->getY(),pictureBox1->BackgroundImage->Width, altoTotal);
 
@@ -166,7 +172,7 @@ namespace TF1 {
             p->dibujar(Canvas->Graphics, scrollY);
         }
 
-        control->dibujarEnemigosM2(Canvas->Graphics, scrollY);
+        control->moverEnemigosM2(Canvas->Graphics, bmpEnemigoM2, scrollY);
 
         // Dibujar jugador
         jugador->dibujarConScroll(Canvas->Graphics, scrollY);
@@ -287,7 +293,7 @@ namespace TF1 {
             System::Drawing::Rectangle jugadorRect = jugador->getRect();
 
             if (plataformaMundo.IntersectsWith(jugadorRect)) {
-                int distanciaArriba = Math::Abs(jugadorRect.Bottom - plataformaMundo.Top);
+                int distanciaArriba = Math::Abs(jugadorRect.Bottom - plataformaMundo.Top - 10);
                 int distanciaAbajo = Math::Abs(jugadorRect.Top - plataformaMundo.Bottom);
                 int distanciaIzquierda = Math::Abs(jugadorRect.Right - plataformaMundo.Left);
                 int distanciaDerecha = Math::Abs(jugadorRect.Left - plataformaMundo.Right);

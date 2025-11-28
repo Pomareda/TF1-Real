@@ -49,14 +49,8 @@ public:
 	void barra_confianza();
 
 	void agregarEnemigoM2(EnemigoM2^ enemigoM2);
-	
-
 	void actualizarEnemigosM2(int jugadorX, int jugadorY, int anchoMapa, int altoMapa);
-		
-	
-
-	void dibujarEnemigosM2(Graphics^ g, int scrollY);
-
+	void moverEnemigosM2(Graphics^ g, Bitmap^ bmp, int scrollY);
 	bool colisionProyectilesM2(System::Drawing::Rectangle jugadorRect);
 	
 
@@ -184,9 +178,10 @@ inline void Controladora::actualizarEnemigosM2(int jugadorX, int jugadorY, int a
 	}
 }
 
-inline void Controladora::dibujarEnemigosM2(Graphics^ g, int scrollY) {
+inline void Controladora::moverEnemigosM2(Graphics^ g, Bitmap^ bmp,int scrollY) {
 	for each (EnemigoM2 ^ enemigoM2 in enemigosm2) {
-		enemigoM2->dibujar(g, scrollY);
+		enemigoM2->mover();
+		enemigoM2->dibujar(g, bmp, scrollY);
 	}
 }
 

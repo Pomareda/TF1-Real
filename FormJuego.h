@@ -225,7 +225,7 @@ namespace TF1 {
 				Dialogo_IAsuprema^ dialogoIA = gcnew Dialogo_IAsuprema();
 				dialogoIA->ShowDialog();
 				this->timer1->Enabled = true;
-				mostrarDialogoInicial = false; // ⭐ Marcar como mostrado
+				mostrarDialogoInicial = false; 
 				sound->PlayLooping();
 			}
 

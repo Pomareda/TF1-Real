@@ -59,11 +59,6 @@ inline void Enemigo::dibujar(Graphics^ g, Bitmap^ bmp, int scrollX, int scrollY)
 	int pantallaX = x - scrollX;
 	int pantallaY = y - scrollY;
 
-	// NO dibujar si está fuera de la pantalla
-	if (pantallaX < -ancho || pantallaX > 2750 || pantallaY < -alto || pantallaY > 1730) {
-		return;
-	}
-
 	System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
 	System::Drawing::Rectangle dest = System::Drawing::Rectangle(pantallaX, pantallaY, ancho*2, alto*2);
 
