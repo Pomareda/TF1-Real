@@ -1,5 +1,8 @@
 #pragma once
 #include "JugadorIA.h"
+#include "Controladora.h"
+#include "PlataformaM2.h"
+#include "EnemigoM2.h"
 
 namespace TF1 {
 
@@ -11,50 +14,7 @@ namespace TF1 {
     using namespace System::Drawing;
     using namespace System::IO;
 
-    ref class Plataforma {
-    public:
-        int x, y, ancho, alto;
-        int velocidad;
-        Bitmap^ imagen;
-
-        Plataforma(int _x, int _y, int _ancho, int _alto) {
-            x = _x;
-            y = _y;
-            ancho = _ancho;
-            alto = _alto;
-            velocidad = 5;
-
-            try {
-                imagen = gcnew Bitmap("Imagenes/piso2.png");
-                imagen->MakeTransparent(Color::White);
-            }
-            catch (...) {
-                imagen = nullptr;
-            }
-        }
-
-        void mover(int anchoVentana) {
-            if (x + ancho >= anchoVentana || x <= 0) {
-                velocidad *= -1;
-            }
-            x += velocidad;
-        }
-
-        void dibujar(Graphics^ g, int scrollY) {
-            if (imagen != nullptr) {
-                g->DrawImage(imagen, x, y - scrollY, ancho, alto);
-            }
-            else {
-                g->FillRectangle(Brushes::Brown, x, y - scrollY, ancho, alto);
-            }
-        }
-
-        System::Drawing::Rectangle getRect() {
-            return System::Drawing::Rectangle(x, y, ancho, alto);
-        }
-    };
    
-
     public ref class MyForm : public System::Windows::Forms::Form
     {
     public:
@@ -62,13 +22,21 @@ namespace TF1 {
         {
             InitializeComponent();
             jugador = gcnew JugadorIA(gcnew Bitmap("Imagenes/personajeIA.png"));
-            scrollY = 0;
+			control = gcnew Controladora(gcnew Bitmap("Imagenes/posibleMapa2.jpg"), nullptr, this->ClientRectangle.Width, this->ClientRectangle.Height);
 
+            EnemigoM2^ en1 = gcnew EnemigoM2(200, 2500, 0, 0);
+            EnemigoM2^ en2 = gcnew EnemigoM2(100, 1800, 0, 0);
+            EnemigoM2^ en3 = gcnew EnemigoM2(350, 2200, 0, 0);
+            control->agregarEnemigoM2(en1);
+            control->agregarEnemigoM2(en2);
+            control->agregarEnemigoM2(en3);
+
+            scrollY = 0;
             contadorPlataformas = 0;
             modoDebug = false;
             creandoPlataforma = false;
 
-            plataformas = gcnew System::Collections::Generic::List<Plataforma^>();
+            plataformas = gcnew System::Collections::Generic::List<PlataformaM2^>();
             cargarPlataformas();
         }
 
@@ -83,6 +51,7 @@ namespace TF1 {
         System::Windows::Forms::Timer^ timer1;
         System::Windows::Forms::PictureBox^ pictureBox1;
         JugadorIA^ jugador;
+		Controladora^ control;
 
         int scrollY;
         bool modoDebug = false;
@@ -91,7 +60,7 @@ namespace TF1 {
         Point puntoActual;
         int contadorPlataformas = 0;
 
-        System::Collections::Generic::List<Plataforma^>^ plataformas;
+        System::Collections::Generic::List<PlataformaM2^>^ plataformas;
 
 #pragma region Windows Form Designer generated code
         void InitializeComponent(void)
@@ -155,6 +124,13 @@ namespace TF1 {
         colisiones();
         moverPlataformasHorizontalmente();
 
+        control->actualizarEnemigosM2(jugador->getX(), jugador->getY(),pictureBox1->BackgroundImage->Width, altoTotal);
+
+
+        if (control->colisionProyectilesM2(jugador->getRect())) {
+            //aca le baja vida??
+        }
+
         int posicionJugador = jugador->getY();
         scrollY = posicionJugador - pictureBox1->Height / 2;
 
@@ -178,10 +154,11 @@ namespace TF1 {
             GraphicsUnit::Pixel
         );
 
-        // Dibujar plataformas
-        for each (Plataforma ^ p in plataformas) {
+        for each (PlataformaM2 ^ p in plataformas) {
             p->dibujar(Canvas->Graphics, scrollY);
         }
+
+        control->dibujarEnemigosM2(Canvas->Graphics, scrollY);
 
         // Dibujar jugador
         jugador->dibujarConScroll(Canvas->Graphics, scrollY);
@@ -269,7 +246,7 @@ namespace TF1 {
     }
 
     private: Void crearPlataforma(int x, int y, int ancho, int alto) {
-        Plataforma^ nueva = gcnew Plataforma(x, y, ancho, alto);
+        PlataformaM2^ nueva = gcnew PlataformaM2(x, y, ancho, alto);
         plataformas->Add(nueva);
         contadorPlataformas++;
     }
@@ -295,9 +272,9 @@ namespace TF1 {
             return;
         }
 
-        Plataforma^ plataformaActual = nullptr;
+        PlataformaM2^ plataformaActual = nullptr;
 
-        for each (Plataforma ^ p in plataformas) {
+        for each (PlataformaM2 ^ p in plataformas) {
             System::Drawing::Rectangle plataformaMundo = p->getRect();
             System::Drawing::Rectangle jugadorRect = jugador->getRect();
 
@@ -351,7 +328,7 @@ namespace TF1 {
         );
         g->DrawRectangle(Pens::Lime, jugadorPantalla);
 
-        for each (Plataforma ^ p in plataformas) {
+        for each (PlataformaM2 ^ p in plataformas) {
             System::Drawing::Rectangle platRect = p->getRect();
             int platY = platRect.Y - scrollY;
             g->DrawRectangle(Pens::Red, platRect.X, platY, platRect.Width, platRect.Height);
@@ -362,7 +339,7 @@ namespace TF1 {
     private: Void guardarPlataformas() {
         try {
             StreamWriter^ writer = gcnew StreamWriter("plataformas2.txt");
-            for each (Plataforma ^ p in plataformas) {
+            for each (PlataformaM2 ^ p in plataformas) {
                 String^ linea = String::Format("{0},{1},{2},{3}",
                     p->x, p->y, p->ancho, p->alto);
                 writer->WriteLine(linea);
@@ -387,7 +364,7 @@ namespace TF1 {
                         int y = Int32::Parse(datos[1]);
                         int ancho = Int32::Parse(datos[2]);
                         int alto = Int32::Parse(datos[3]);
-                        Plataforma^ p = gcnew Plataforma(x, y, ancho, alto);
+                        PlataformaM2^ p = gcnew PlataformaM2(x, y, ancho, alto);
                         plataformas->Add(p);
                     }
                 }
@@ -425,7 +402,7 @@ namespace TF1 {
     }
 
     private: void moverPlataformasHorizontalmente() {
-        for each (Plataforma ^ p in plataformas) {
+        for each (PlataformaM2 ^ p in plataformas) {
             p->mover(this->pictureBox1->Width);
         }
     }

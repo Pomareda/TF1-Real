@@ -11,6 +11,8 @@
 #include "Dialogo_IAsuprema.h"
 #include "Game_Over.h"
 #include "Minimapa.h"
+#include "EnemigoM2.h"
+#include "JugadorIA.h"
 using namespace System::Collections::Generic;
 using namespace TF1;
 
@@ -24,6 +26,7 @@ private:
 	int contador = 0;
 	Minimapa^ minimapa;
 	List<int>^ preguntas;
+	List<EnemigoM2^>^ enemigosm2;
 	int nivel_perdido;
 	//Camara^ camara;
 public:
@@ -45,6 +48,18 @@ public:
 	bool colisionRecurso(Graphics^ g);
 	void barra_confianza();
 
+	void agregarEnemigoM2(EnemigoM2^ enemigoM2);
+	
+
+	void actualizarEnemigosM2(int jugadorX, int jugadorY, int anchoMapa, int altoMapa);
+		
+	
+
+	void dibujarEnemigosM2(Graphics^ g, int scrollY);
+
+	bool colisionProyectilesM2(System::Drawing::Rectangle jugadorRect);
+	
+
 	int getContestadaLaIA();
 	int getTotalIAs();
 
@@ -58,6 +73,7 @@ inline Controladora::Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, in
 	recursos = gcnew List<Recurso^>();
 	aliado = gcnew Aliado(760, 1600);
 	preguntas = gcnew List<int>(); 
+	enemigosm2 = gcnew List<EnemigoM2^>();
 	camara = cam;
 	minimapa = gcnew Minimapa(0, 0);
 }
@@ -156,6 +172,33 @@ inline void Controladora::barra_confianza() {
 	barra->ShowDialog();
 }
 
+inline void Controladora::agregarEnemigoM2(EnemigoM2^ enemigoM2)
+{
+	enemigosm2->Add(enemigoM2);
+}
+
+inline void Controladora::actualizarEnemigosM2(int jugadorX, int jugadorY, int anchoMapa, int altoMapa)
+{
+	for each (EnemigoM2 ^ enemigoM2 in enemigosm2) {
+		enemigoM2->actualizar(jugadorX, jugadorY, anchoMapa, altoMapa);
+	}
+}
+
+inline void Controladora::dibujarEnemigosM2(Graphics^ g, int scrollY) {
+	for each (EnemigoM2 ^ enemigoM2 in enemigosm2) {
+		enemigoM2->dibujar(g, scrollY);
+	}
+}
+
+inline bool Controladora::colisionProyectilesM2(System::Drawing::Rectangle jugadorRect) {
+	for each (EnemigoM2 ^ enemigoM2 in enemigosm2) {
+		if (enemigoM2->colisionConJugador(jugadorRect)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 inline void Controladora::interactuarAliado() {
 	static int unavez = 0;
 	int distanciaX = jugador->getX() - aliado->getRect().X;
@@ -229,3 +272,4 @@ inline int Controladora::getContestadaLaIA() {
 inline int Controladora::getTotalIAs() {
 	return enemigos->Count;
 }
+

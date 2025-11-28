@@ -125,6 +125,7 @@
     </ClInclude>
     <ClInclude Include="Didi_hablando.h" />
     <ClInclude Include="Enemigo.h" />
+    <ClInclude Include="EnemigoM2.h" />
     <ClInclude Include="Entidad.h" />
     <ClInclude Include="FormAliado.h">
       <FileType>CppForm</FileType>
@@ -154,6 +155,8 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Minimapa.h" />
+    <ClInclude Include="PlataformaM2.h" />
+    <ClInclude Include="ProyectilM2.h" />
     <ClInclude Include="Recurso.h" />
   </ItemGroup>
   <ItemGroup>
