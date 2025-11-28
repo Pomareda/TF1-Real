@@ -13,6 +13,8 @@ namespace TF1 {
     using namespace System::Data;
     using namespace System::Drawing;
     using namespace System::IO;
+    using namespace System::Media;
+
 
    
     public ref class MyForm : public System::Windows::Forms::Form
@@ -38,6 +40,8 @@ namespace TF1 {
 
             plataformas = gcnew System::Collections::Generic::List<PlataformaM2^>();
             cargarPlataformas();
+			sound = gcnew SoundPlayer("Sonidos/lol.wav");
+			sound->Load();
         }
 
     protected:
@@ -61,6 +65,8 @@ namespace TF1 {
         int contadorPlataformas = 0;
 
         System::Collections::Generic::List<PlataformaM2^>^ plataformas;
+        SoundPlayer^ sound;
+
 
 #pragma region Windows Form Designer generated code
         void InitializeComponent(void)
@@ -110,6 +116,8 @@ namespace TF1 {
         if (pictureBox1->BackgroundImage == nullptr) {
             return;
         }
+        sound->PlayLooping();
+
 
         Graphics^ G = pictureBox1->CreateGraphics();
         BufferedGraphicsContext^ Espacio = BufferedGraphicsManager::Current;
