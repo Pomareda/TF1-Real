@@ -139,6 +139,9 @@
     <ClInclude Include="Game_Over.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Game_Over2.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="IA_suprema_hablando.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="FormJuego.h">
@@ -161,6 +164,9 @@
     <ClInclude Include="PlataformaM2.h" />
     <ClInclude Include="ProyectilM2.h" />
     <ClInclude Include="Recurso.h" />
+    <ClInclude Include="Transición1_2.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -170,7 +176,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game_Over2.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Transición1_2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Barra_Confianza.resx">
@@ -197,6 +205,9 @@
     <EmbeddedResource Include="Game_Over.resx">
       <DependentUpon>Game_Over.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Game_Over2.resx">
+      <DependentUpon>Game_Over2.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Menu_Creditos.resx">
       <DependentUpon>Menu_Creditos.h</DependentUpon>
     </EmbeddedResource>
@@ -205,6 +216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Menu_Interactivo.resx">
       <DependentUpon>Menu_Interactivo.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transición1_2.resx">
+      <DependentUpon>Transición1_2.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
