@@ -70,29 +70,38 @@ namespace Mundo3 {
 			//---------------------------------------------------------------------------------------------------------------------
 			mciSendStringA("close all", NULL, 0, NULL);
 
-			String^ rutaAbsoluta = System::Windows::Forms::Application::StartupPath + "\\Soundtrack.wav";
+			// "Imagenes\\mundo3\\..." = Entrar a la carpeta de recursos
+			String^ rutaRelativa = System::Windows::Forms::Application::StartupPath + "\\..\\..\\Imagenes\\mundo3\\Soundtrack.wav";
 
+			// GetFullPath limpia los ".." y crea una ruta perfecta tipo C:\Users\...\
+
+            String^ rutaAbsoluta = System::IO::Path::GetFullPath(rutaRelativa);
+
+			// 2. Comando Open (igual que antes)
 			String^ comandoOpen = "open \"" + rutaAbsoluta + "\" alias MiMusica";
 
+			// Conversión y ejecución (igual que antes)
 			char* comandoChars = (char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(comandoOpen);
 			int errorOpen = mciSendStringA(comandoChars, NULL, 0, NULL);
 			System::Runtime::InteropServices::Marshal::FreeHGlobal(System::IntPtr(comandoChars));
 
 			if (errorOpen != 0) {
+				// Mensaje de error para saber dónde buscó si falla
 				char errorText[128];
 				mciGetErrorStringA(errorOpen, errorText, 128);
-				MessageBox::Show("Error al ABRIR:\n" + gcnew String(errorText));
+				MessageBox::Show("No encuentro el audio en:\n" + rutaAbsoluta + "\n\nError: " + gcnew String(errorText));
 			}
 			else {
 				int errorPlay = mciSendStringA("play MiMusica repeat", NULL, 0, NULL);
-
 				if (errorPlay != 0) {
 					mciSendStringA("play MiMusica", NULL, 0, NULL);
 				}
 			}
 
-			// Sonido Disparo
-			sonidoDisparo = gcnew System::Media::SoundPlayer("Imagenes/mundo3/Disparo.wav");
+			// --- ACTUALIZACIÓN TAMBIÉN PARA EL DISPARO ---
+			// Hacemos lo mismo para el disparo para que no falle
+			String^ rutaDisparo = System::Windows::Forms::Application::StartupPath + "\\..\\..\\Imagenes\\mundo3\\Disparo.wav";
+			sonidoDisparo = gcnew System::Media::SoundPlayer(System::IO::Path::GetFullPath(rutaDisparo));
 			sonidoDisparo->LoadAsync();
 			//---------------------------------------------------------------------------------------------------------------------		
 		}
@@ -162,15 +171,16 @@ namespace Mundo3 {
 			this->timer2->Interval = 200;
 			this->timer2->Tick += gcnew System::EventHandler(this, &Mundo3::timer2_Tick);
 			// 
-			// MyForm
+			// Mundo3
 			// 
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
 			this->BackColor = System::Drawing::Color::DimGray;
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->ClientSize = System::Drawing::Size(782, 503);
-			this->Name = L"MyForm";
+			this->Name = L"Mundo3";
 			this->RightToLeftLayout = true;
 			this->Text = L"Mundo3";
+			this->Load += gcnew System::EventHandler(this, &Mundo3::Mundo3_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Mundo3::Mundo3_KeyDown);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &Mundo3::Mundo3_KeyUp);
 			this->ResumeLayout(false);
@@ -472,5 +482,7 @@ namespace Mundo3 {
 		}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+	private: System::Void Mundo3_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }
