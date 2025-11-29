@@ -115,9 +115,12 @@
   <ItemGroup>
     <ClInclude Include="Aliado.h" />
     <ClInclude Include="Animacion_instrucciones.h" />
+    <ClInclude Include="Bala.h" />
     <ClInclude Include="Barra_Confianza.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Boss.h" />
+    <ClInclude Include="Cables.h" />
     <ClInclude Include="Camara.h" />
     <ClInclude Include="Controladora.h" />
     <ClInclude Include="Dialogo_IAsuprema.h">
@@ -151,6 +154,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="JugadorIA.h" />
+    <ClInclude Include="JugadorM3.h" />
     <ClInclude Include="Menu_Creditos.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -161,12 +165,17 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Minimapa.h" />
+    <ClInclude Include="Mundo3.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Plataforma.h" />
     <ClInclude Include="PlataformaM2.h" />
     <ClInclude Include="ProyectilM2.h" />
     <ClInclude Include="Recurso.h" />
     <ClInclude Include="Transición1_2.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="USB.h" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -216,6 +225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Menu_Interactivo.resx">
       <DependentUpon>Menu_Interactivo.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mundo3.resx">
+      <DependentUpon>Mundo3.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transición1_2.resx">
       <DependentUpon>Transición1_2.h</DependentUpon>

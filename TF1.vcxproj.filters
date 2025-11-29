@@ -12,6 +12,9 @@
     <Filter Include="Formularios">
       <UniqueIdentifier>{29a18fa2-6546-4a62-86e3-f5b018d1756a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mundo3">
+      <UniqueIdentifier>{1ad35ee4-b056-4c59-bb54-edd5de93d503}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entidad.h">
@@ -97,6 +100,27 @@
     </ClInclude>
     <ClInclude Include="Game_Over2.h">
       <Filter>Formularios</Filter>
+    </ClInclude>
+    <ClInclude Include="Mundo3.h">
+      <Filter>Mundo3</Filter>
+    </ClInclude>
+    <ClInclude Include="Plataforma.h">
+      <Filter>Mundo3</Filter>
+    </ClInclude>
+    <ClInclude Include="USB.h">
+      <Filter>Mundo3</Filter>
+    </ClInclude>
+    <ClInclude Include="JugadorM3.h">
+      <Filter>Mundo3</Filter>
+    </ClInclude>
+    <ClInclude Include="Cables.h">
+      <Filter>Mundo3</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Mundo3</Filter>
+    </ClInclude>
+    <ClInclude Include="Bala.h">
+      <Filter>Mundo3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

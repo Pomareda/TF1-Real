@@ -5,6 +5,7 @@
 #include "EnemigoM2.h"
 #include "Game_Over2.h"
 #include "FormHumanoNpc.h"
+#include "Mundo3.h"
 
 namespace TF1 {
 
@@ -105,11 +106,12 @@ namespace TF1 {
             // pictureBox1
             // 
             this->pictureBox1->Location = System::Drawing::Point(0, -1);
-            this->pictureBox1->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->pictureBox1->Margin = System::Windows::Forms::Padding(4);
             this->pictureBox1->Name = L"pictureBox1";
             this->pictureBox1->Size = System::Drawing::Size(668, 673);
             this->pictureBox1->TabIndex = 0;
             this->pictureBox1->TabStop = false;
+            this->pictureBox1->Click += gcnew System::EventHandler(this, &MyForm::pictureBox1_Click);
             this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDown);
             this->pictureBox1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseMove);
             this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseUp);
@@ -133,7 +135,7 @@ namespace TF1 {
             this->Controls->Add(this->vidas);
             this->Controls->Add(this->pictureBox1);
             this->DoubleBuffered = true;
-            this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+            this->Margin = System::Windows::Forms::Padding(4);
             this->MaximizeBox = false;
             this->Name = L"MyForm";
             this->Text = L"Prueba Salto";
@@ -284,8 +286,13 @@ namespace TF1 {
                 dialogoHumanoNpc->ShowDialog();  
 
                 if (dialogoHumanoNpc->getGano()) {
-                    MessageBox::Show("¡Pasaste la prueba!");
+                    this->timer1->Enabled = false;
                     this->Close();
+                    //falta transisción de m2 a m3
+                    //Transición1_2^ transicion = gcnew Transición1_2();
+                    //transicion->ShowDialog();
+                    Mundo3::Mundo3^ m3 = gcnew Mundo3::Mundo3();                    
+                    m3->Show();
                 }
                 else {
                     this->Close();
@@ -485,5 +492,7 @@ namespace TF1 {
             p->mover(this->pictureBox1->Width);
         }
     }
-    };
+    private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
+    }
+};
 }
