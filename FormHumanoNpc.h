@@ -458,5 +458,10 @@ namespace TF1 {
 		System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
 			ResponderPregunta(2);
 		}
+		public: bool getGano() {
+
+			return gano;
+
+		}
 };
 }

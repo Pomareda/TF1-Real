@@ -78,6 +78,7 @@ namespace TF1 {
         Point puntoActual;
         int contadorPlataformas = 0;
         System::Collections::Generic::List<PlataformaM2^>^ plataformas;
+        FormHumanoNpc^ dialogoHumanoNpc;
         Game_Over^ gameover;
         Bitmap^ bmpEnemigoM2;
     private: System::Windows::Forms::Label^ vidas;
