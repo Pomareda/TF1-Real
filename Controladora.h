@@ -47,6 +47,7 @@ public:
 	bool colisionEnemigo(Graphics^ g);
 	bool colisionRecurso(Graphics^ g);
 	void barra_confianza();
+	bool dialogoHumanoNpc(Jugador^ npc, JugadorIA^ ia);
 
 	void agregarEnemigoM2(EnemigoM2^ enemigoM2);
 	void actualizarEnemigosM2(int jugadorX, int jugadorY, int anchoMapa, int altoMapa);
@@ -164,6 +165,20 @@ inline bool Controladora::colisionAliado() {
 inline void Controladora::barra_confianza() {
 	Barra_Confianza^ barra = gcnew	Barra_Confianza(jugador, minimapa, 2787, 1680);
 	barra->ShowDialog();
+}
+
+inline bool Controladora::dialogoHumanoNpc(Jugador^ npc, JugadorIA^ ia)
+{
+	static int unavez = 0;
+	int distanciaX = ia->getX() - npc->getRectNpcHumano().X;
+	int distanciaY = ia->getY() - npc->getRectNpcHumano().Y;
+
+	if ((distanciaX < 100 && distanciaX > -100) && (distanciaY < 90 && distanciaY > -120) && unavez == 0) {
+		
+		return true;
+	}
+	else { return false; }
+	
 }
 
 inline void Controladora::agregarEnemigoM2(EnemigoM2^ enemigoM2)

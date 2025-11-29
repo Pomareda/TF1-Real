@@ -17,6 +17,7 @@ private:
     //--------------------------
     int x, y, dx, ancho, alto, idx, idy;
     bool izq, der, enSuelo;
+    int vidas;
     Direccioness Ultima;
     Bitmap^ bmpJugador;
 
@@ -26,6 +27,8 @@ public:
         dx = 10;
         velY = 0;
         gravedad = 1.5;
+
+		vidas = 5;
 
         cargaActual = 0;
         maxCarga = 30;
@@ -153,4 +156,7 @@ public:
     void setVelY(double v) {
         velY = v;
     }
+
+	void setVidas(int v) { vidas = v; }
+	int getVidas() { return vidas; }
 };

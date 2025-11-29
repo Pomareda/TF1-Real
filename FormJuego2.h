@@ -3,6 +3,8 @@
 #include "Controladora.h"
 #include "PlataformaM2.h"
 #include "EnemigoM2.h"
+#include "Game_Over.h"
+#include "FormHumanoNpc.h"
 
 namespace TF1 {
 
@@ -25,10 +27,15 @@ namespace TF1 {
             InitializeComponent();
             jugador = gcnew JugadorIA(gcnew Bitmap("Imagenes/personajeIA.png"));
 			control = gcnew Controladora(gcnew Bitmap("Imagenes/posibleMapa2.jpg"), nullptr, this->ClientRectangle.Width, this->ClientRectangle.Height);
+			npc = gcnew Bitmap("Imagenes/idleHumano.png");
 
-            EnemigoM2^ en1 = gcnew EnemigoM2(200, 2500, 0, 0);
-            EnemigoM2^ en2 = gcnew EnemigoM2(100, 1800, 0, 0);
-            EnemigoM2^ en3 = gcnew EnemigoM2(350, 2200, 0, 0);
+            EnemigoM2^ en1 = gcnew EnemigoM2(15, 2600, 0, 0);
+            EnemigoM2^ en2 = gcnew EnemigoM2(15, 1590, 0, 0);
+            EnemigoM2^ en3 = gcnew EnemigoM2(400, 2200, 0, 0); //bien
+
+			npcHumano = gcnew Jugador(30, 50, npc->Width / 4, npc->Height / 4);
+            
+
             control->agregarEnemigoM2(en1);
             control->agregarEnemigoM2(en2);
             control->agregarEnemigoM2(en3);
@@ -40,8 +47,7 @@ namespace TF1 {
 
             plataformas = gcnew System::Collections::Generic::List<PlataformaM2^>();
             cargarPlataformas();
-			sound = gcnew SoundPlayer("Sonidos/lol.wav");
-			//sound->Load();
+			
 
             bmpEnemigoM2 = gcnew Bitmap("Imagenes/EnemigoM2.png");
             
@@ -59,6 +65,7 @@ namespace TF1 {
         System::Windows::Forms::Timer^ timer1;
         System::Windows::Forms::PictureBox^ pictureBox1;
         JugadorIA^ jugador;
+		Jugador^ npcHumano;
 		Controladora^ control;
 
         int scrollY;
@@ -67,11 +74,12 @@ namespace TF1 {
         Point puntoInicio;
         Point puntoActual;
         int contadorPlataformas = 0;
-
         System::Collections::Generic::List<PlataformaM2^>^ plataformas;
-        SoundPlayer^ sound;
 
         Bitmap^ bmpEnemigoM2;
+    private: System::Windows::Forms::Label^ vidas;
+
+           Bitmap^ npc;
 
 
 #pragma region Windows Form Designer generated code
@@ -80,6 +88,7 @@ namespace TF1 {
             this->components = (gcnew System::ComponentModel::Container());
             this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
             this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+            this->vidas = (gcnew System::Windows::Forms::Label());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
             this->SuspendLayout();
             // 
@@ -100,11 +109,21 @@ namespace TF1 {
             this->pictureBox1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseMove);
             this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseUp);
             // 
+            // vidas
+            // 
+            this->vidas->AutoSize = true;
+            this->vidas->Location = System::Drawing::Point(369, 33);
+            this->vidas->Name = L"vidas";
+            this->vidas->Size = System::Drawing::Size(51, 13);
+            this->vidas->TabIndex = 1;
+            this->vidas->Text = L"VIDAS: 5";
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(498, 544);
+            this->Controls->Add(this->vidas);
             this->Controls->Add(this->pictureBox1);
             this->DoubleBuffered = true;
             this->MaximizeBox = false;
@@ -115,6 +134,8 @@ namespace TF1 {
             this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyUp);
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
             this->ResumeLayout(false);
+            this->PerformLayout();
+
         }
 #pragma endregion
 
@@ -142,8 +163,15 @@ namespace TF1 {
 
 
         if (control->colisionProyectilesM2(jugador->getRect())) {
-            //aca le baja vida??
+			jugador->setVidas(jugador->getVidas() - 1);
+            vidas->Text = "VIDAS: " + jugador->getVidas();
         }
+        if(jugador->getVidas() <= 0) {
+            timer1->Enabled = false;
+            Game_Over^ gameOverForm = gcnew Game_Over();
+            gameOverForm->ShowDialog();
+            this->Close();
+		}
 
         int posicionJugador = jugador->getY();
         scrollY = posicionJugador - pictureBox1->Height / 2;
@@ -176,6 +204,8 @@ namespace TF1 {
 
         // Dibujar jugador
         jugador->dibujarConScroll(Canvas->Graphics, scrollY);
+
+		npcHumano->dibujarNpcHumano(Canvas->Graphics,npc, scrollY);
 
         if (modoDebug) {
             dibujarColisiones(Canvas->Graphics);
@@ -227,6 +257,14 @@ namespace TF1 {
             eliminarUltimaPlataforma();
             MessageBox::Show("Plataforma eliminada!");
             break;
+        case Keys::E:
+			if(control->dialogoHumanoNpc(npcHumano, jugador)) {
+				this->timer1->Enabled = false;
+                this->Close();
+				FormHumanoNpc^ dialogoHumanoNpc = gcnew FormHumanoNpc(npcHumano);
+                dialogoHumanoNpc->Show();
+			}
+			break;
         }
     }
 

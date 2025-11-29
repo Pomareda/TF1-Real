@@ -130,6 +130,9 @@
     <ClInclude Include="FormAliado.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="FormHumanoNpc.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="FormJuego2.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -167,7 +170,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game_Over.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAliado.resx">
       <DependentUpon>FormAliado.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHumanoNpc.resx">
+      <DependentUpon>FormHumanoNpc.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormJuego.resx">
       <DependentUpon>FormJuego.h</DependentUpon>

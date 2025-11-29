@@ -10,6 +10,8 @@ private:
     int tiempoEntreDisparos;
     int rangoDeteccion;
 	Bitmap^ bmpEnemigo;
+    int contadorAnimacion;
+    int velocidadAnimacion;
 
 public:
     EnemigoM2(int x, int y, int dx, int dy) : Entidad(x, y, 950/5, 178) {
@@ -20,6 +22,8 @@ public:
         contadorDisparo = 0;
         tiempoEntreDisparos = 100; 
         rangoDeteccion = 1500;
+        contadorAnimacion = 0;
+        velocidadAnimacion = 5;
     }
 
     void actualizar(int jugadorX, int jugadorY, int anchoMapa, int altoMapa) {
@@ -54,8 +58,17 @@ public:
     }
 
     void mover() override {
-        ++idX; 
-        if (idX >= 5) { idX = 0; }
+
+        
+         contadorAnimacion++;
+         if (contadorAnimacion >= velocidadAnimacion) {
+             contadorAnimacion = 0;
+             idX++;
+             if (idX >= 5) idX = 0;
+         }
+        
+        
+       
 	}
 
     void dibujar(Graphics^ g, Bitmap^ bmp, int scrollY) {

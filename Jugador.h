@@ -24,7 +24,10 @@ public:
 
     void mover(Graphics^ g, int an, int al);
 	void dibujar(Graphics^ g, Bitmap^ bmp, int scrollY, int scrollX);
+
+	void dibujarNpcHumano(Graphics^ g, Bitmap^ bmp, int scrollY);
 	System::Drawing::Rectangle getRect() override;
+	System::Drawing::Rectangle getRectNpcHumano() ;
 
     int getConfianza() { return confianza; };
 
@@ -134,6 +137,31 @@ inline void Jugador::mover(Graphics^ g, int an, int al) {
 	}
 }
 
+inline void Jugador::dibujarNpcHumano(Graphics^ g, Bitmap^ bmp, int scrollY)
+{
+	idY = 1;
+	int pantallaY = y - scrollY;
+
+
+	System::Drawing::Rectangle src = System::Drawing::Rectangle(idX * ancho, idY * alto, ancho, alto);
+	System::Drawing::Rectangle dest = System::Drawing::Rectangle(x, pantallaY, ancho * 0.5, alto * 0.5);
+
+	g->DrawImage(bmp, dest, src, GraphicsUnit::Pixel);
+
+	contadorAnimacion++;
+	if (contadorAnimacion >= velocidadAnimacion) {
+		contadorAnimacion = 0;
+		idX++;
+		if (idX >= 4) idX = 0;
+	}
+
+}
+
 inline System::Drawing::Rectangle Jugador::getRect() {
 	return System::Drawing::Rectangle(x, y , ancho *1.3 , alto * 1.3);
+}
+
+inline System::Drawing::Rectangle Jugador::getRectNpcHumano()
+{
+	return System::Drawing::Rectangle(x, y, ancho * 0.5, alto * 0.5);
 }
