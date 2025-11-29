@@ -58,6 +58,7 @@ namespace TF1 {
 
 			timer1->Enabled = true;
 			modoDialogo = true; // true = diálogo narrativo, false = pregunta
+			gano = false;
 		}
 
 	protected:
@@ -98,6 +99,7 @@ namespace TF1 {
 		int indiceDialogo = 0;
 		bool modoDialogo;
 		int indiceCharPregunta = 0;
+		bool gano;
 
 	private:
 		void CargarDialogos()
@@ -191,7 +193,7 @@ namespace TF1 {
 					
 				}
 				else {
-					
+					gano = true;
 				}
 			}
 			this->Close();
@@ -405,5 +407,7 @@ namespace TF1 {
 		System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
 			ResponderPregunta(2);
 		}
+		
+		public: bool getGano() { return gano; }
 	};
 }

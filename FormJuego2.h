@@ -31,7 +31,7 @@ namespace TF1 {
 
             EnemigoM2^ en1 = gcnew EnemigoM2(15, 2600, 0, 0);
             EnemigoM2^ en2 = gcnew EnemigoM2(15, 1590, 0, 0);
-            EnemigoM2^ en3 = gcnew EnemigoM2(400, 2200, 0, 0); //bien
+            EnemigoM2^ en3 = gcnew EnemigoM2(400, 2200, 0, 0, true); //bien
 
 			npcHumano = gcnew Jugador(30, 50, npc->Width / 4, npc->Height / 4);
             
@@ -50,6 +50,8 @@ namespace TF1 {
 			
 
             bmpEnemigoM2 = gcnew Bitmap("Imagenes/EnemigoM2.png");
+
+            dialogoHumanoNpc = gcnew FormHumanoNpc(npcHumano);
             
             
         }
@@ -75,7 +77,7 @@ namespace TF1 {
         Point puntoActual;
         int contadorPlataformas = 0;
         System::Collections::Generic::List<PlataformaM2^>^ plataformas;
-
+        FormHumanoNpc^ dialogoHumanoNpc;
         Bitmap^ bmpEnemigoM2;
     private: System::Windows::Forms::Label^ vidas;
 
@@ -172,6 +174,8 @@ namespace TF1 {
             gameOverForm->ShowDialog();
             this->Close();
 		}
+        
+        
 
         int posicionJugador = jugador->getY();
         scrollY = posicionJugador - pictureBox1->Height / 2;
@@ -224,6 +228,8 @@ namespace TF1 {
             );
         }
 
+        
+
         Canvas->Render(G);
         delete Canvas;
         delete Espacio;
@@ -258,12 +264,19 @@ namespace TF1 {
             MessageBox::Show("Plataforma eliminada!");
             break;
         case Keys::E:
-			if(control->dialogoHumanoNpc(npcHumano, jugador)) {
-				this->timer1->Enabled = false;
-                this->Close();
-				FormHumanoNpc^ dialogoHumanoNpc = gcnew FormHumanoNpc(npcHumano);
-                dialogoHumanoNpc->Show();
-			}
+            if (control->dialogoHumanoNpc(npcHumano, jugador)) {
+                timer1->Enabled = false;
+
+                dialogoHumanoNpc->ShowDialog();  
+
+                if (dialogoHumanoNpc->getGano()) {
+                    MessageBox::Show("¡Pasaste la prueba!");
+                    this->Close();
+                }
+                else {
+                    this->Close();
+                }
+            }
 			break;
         }
     }
