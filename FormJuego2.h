@@ -3,7 +3,7 @@
 #include "Controladora.h"
 #include "PlataformaM2.h"
 #include "EnemigoM2.h"
-#include "Game_Over.h"
+#include "Game_Over2.h"
 #include "FormHumanoNpc.h"
 
 namespace TF1 {
@@ -54,6 +54,7 @@ namespace TF1 {
             dialogoHumanoNpc = gcnew FormHumanoNpc(npcHumano);
             
             
+            gameover = gcnew Game_Over();
         }
 
     protected:
@@ -77,7 +78,7 @@ namespace TF1 {
         Point puntoActual;
         int contadorPlataformas = 0;
         System::Collections::Generic::List<PlataformaM2^>^ plataformas;
-        FormHumanoNpc^ dialogoHumanoNpc;
+        Game_Over^ gameover;
         Bitmap^ bmpEnemigoM2;
     private: System::Windows::Forms::Label^ vidas;
 
@@ -103,8 +104,9 @@ namespace TF1 {
             // pictureBox1
             // 
             this->pictureBox1->Location = System::Drawing::Point(0, -1);
+            this->pictureBox1->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
             this->pictureBox1->Name = L"pictureBox1";
-            this->pictureBox1->Size = System::Drawing::Size(501, 547);
+            this->pictureBox1->Size = System::Drawing::Size(668, 673);
             this->pictureBox1->TabIndex = 0;
             this->pictureBox1->TabStop = false;
             this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDown);
@@ -114,20 +116,23 @@ namespace TF1 {
             // vidas
             // 
             this->vidas->AutoSize = true;
-            this->vidas->Location = System::Drawing::Point(369, 33);
+            this->vidas->BackColor = System::Drawing::Color::Transparent;
+            this->vidas->Location = System::Drawing::Point(492, 41);
+            this->vidas->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
             this->vidas->Name = L"vidas";
-            this->vidas->Size = System::Drawing::Size(51, 13);
+            this->vidas->Size = System::Drawing::Size(60, 16);
             this->vidas->TabIndex = 1;
             this->vidas->Text = L"VIDAS: 5";
             // 
             // MyForm
             // 
-            this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+            this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(498, 544);
+            this->ClientSize = System::Drawing::Size(664, 670);
             this->Controls->Add(this->vidas);
             this->Controls->Add(this->pictureBox1);
             this->DoubleBuffered = true;
+            this->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
             this->MaximizeBox = false;
             this->Name = L"MyForm";
             this->Text = L"Prueba Salto";
@@ -142,11 +147,13 @@ namespace TF1 {
 #pragma endregion
 
     private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-        if (pictureBox1->BackgroundImage == nullptr) {
+        if (this->IsDisposed || !this->IsHandleCreated) {
             return;
         }
 
-
+        if (pictureBox1->BackgroundImage == nullptr) {
+            return;
+        }
         Graphics^ G = pictureBox1->CreateGraphics();
         BufferedGraphicsContext^ Espacio = BufferedGraphicsManager::Current;
         BufferedGraphics^ Canvas = Espacio->Allocate(G, pictureBox1->ClientRectangle);
@@ -168,14 +175,7 @@ namespace TF1 {
 			jugador->setVidas(jugador->getVidas() - 1);
             vidas->Text = "VIDAS: " + jugador->getVidas();
         }
-        if(jugador->getVidas() <= 0) {
-            timer1->Enabled = false;
-            Game_Over^ gameOverForm = gcnew Game_Over();
-            gameOverForm->ShowDialog();
-            this->Close();
-		}
-        
-        
+
 
         int posicionJugador = jugador->getY();
         scrollY = posicionJugador - pictureBox1->Height / 2;
@@ -227,9 +227,22 @@ namespace TF1 {
                 x, y, ancho, alto
             );
         }
-
-        
-
+        if (jugador->getVidas() <= 0) {
+            timer1->Enabled = false;
+            delete Canvas;
+            delete Espacio;
+            delete G;
+            gameover->ShowDialog();
+            if (gameover->GetCondicion() == 2) {
+                this->Close();
+                MyForm^ nuevo = gcnew MyForm();
+                nuevo->Show();
+            }
+            else {
+                this->Close();
+            }
+            return;
+        }
         Canvas->Render(G);
         delete Canvas;
         delete Espacio;

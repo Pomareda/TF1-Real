@@ -3,7 +3,7 @@
 #include "Dialogo_IAsuprema.h"
 #include "Camara.h"
 #include "FormJuego2.h"
-	
+#include "Transición1_2.h"
 namespace TF1 {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -266,21 +266,24 @@ namespace TF1 {
 			cant_recursos++;
 			contador++;
 			
-			if (jugadorPtr->getConfianza() > 30 /*&& control->contestadaLaIA()*/ ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
+			if (jugadorPtr->getConfianza() > 10 /*&& control->contestadaLaIA()*/ ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
 			{
 					
 				this->timer1->Enabled = false;
 				this->Close();
+				Transición1_2^ transicion = gcnew Transición1_2();
+				transicion->ShowDialog();
 				MyForm^ Mapa2 = gcnew MyForm();
 				Mapa2->Show();
 			}
-			else if (jugadorPtr->getConfianza() < 70 && control->contestadaLaIA()) {
+			else if (jugadorPtr->getConfianza() <= 70 && control->contestadaLaIA()) {
 
 				this->timer1->Enabled = false;
+				this->Close();
 				gameover->ShowDialog();
+
 				if ( gameover->GetCondicion()) {
 					MenuForm^ nuevo = gcnew MenuForm();
-					this->Close();
 					nuevo->Show();
 				}
 				else {
