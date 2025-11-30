@@ -276,7 +276,7 @@ namespace Mundo3 {
 					plataformas[i]->getAncho(),
 					plataformas[i]->getAlto());
 
-				gBuffer->DrawRectangle(Pens::Red, plataformas[i]->getRect()); //rectangulo de las plataformas para pruebas
+				//gBuffer->DrawRectangle(Pens::Red, plataformas[i]->getRect()); //rectangulo de las plataformas para pruebas
 			}
 
 			//JUGADOR:
@@ -301,7 +301,7 @@ namespace Mundo3 {
 			gBuffer->FillRectangle(Brushes::Green, System::Drawing::Rectangle(jugador->getX(), jugador->getY() - 15, 3 * jugador->getVida() / 4, 10));
 
 			//dibujar rectagulo de jugador para pruebas
-			gBuffer->DrawRectangle(Pens::Blue, jugador->getRect());
+			//gBuffer->DrawRectangle(Pens::Blue, jugador->getRect());
 
 			bool inter = false;
 			for (int i = 0; i < plataformas->Count; i++) {
@@ -347,7 +347,6 @@ namespace Mundo3 {
 					}
 				}
 
-
 				// Eliminar inactivos 
 				if (!USBs[i]->esActivo()) {
 					USBs->RemoveAt(i);
@@ -377,8 +376,7 @@ namespace Mundo3 {
 					);
 
 					gBuffer->DrawImage(bmpCable, destino, origen, GraphicsUnit::Pixel);
-
-					gBuffer->DrawRectangle(Pens::Black, destino); // Usamos 'destino' para ver la caja real
+					gBuffer->DrawRectangle(Pens::Black, destino);
 
 					// Lógica de colisión usando el rectángulo visual 'destino'
 					if (jugador->getRect().IntersectsWith(destino)) {
@@ -526,19 +524,13 @@ namespace Mundo3 {
 				}
 
 				if (lado == 0) {
-					// Sale de la IZQUIERDA hacia la derecha
-					// X = -50 (fuera de pantalla), Velocidad = 15
 					USBs->Add(gcnew USB(-50, posY, 15));
 				}
 				else {
-					// Sale de la DERECHA hacia la izquierda
-					// X = 1100 (fuera de pantalla), Velocidad = -15
 					USBs->Add(gcnew USB(1100, posY, -15));
 				}
 
 				cooldownSpawnUSB = 5;
-
-				//condiciones de victoria/derrota
 				
 			}
 		}
