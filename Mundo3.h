@@ -7,6 +7,8 @@
 #include "Cables.h"
 #include "Bala.h" //bala ya incluye a jugador, no lo llamo 2veces
 #include "USB.h"
+#include "File.h"
+#include "FormScores.h"
 
 
 namespace Mundo3 {
@@ -24,8 +26,9 @@ namespace Mundo3 {
 	public ref class Mundo3 : public System::Windows::Forms::Form
 	{
 	public:
-		Mundo3(void) {
+		Mundo3(int idJugador) {
 			InitializeComponent();
+			idJugadorActual = idJugador;
 			timer1->Enabled = true;
 			timer2->Enabled = true;
 			rand = gcnew Random(Guid::NewGuid().GetHashCode()); //indefendible, esto debe ser puesto como sacado de ia
@@ -103,8 +106,24 @@ namespace Mundo3 {
 			String^ rutaDisparo = System::Windows::Forms::Application::StartupPath + "\\..\\..\\Imagenes\\mundo3\\Disparo.wav";
 			sonidoDisparo = gcnew System::Media::SoundPlayer(System::IO::Path::GetFullPath(rutaDisparo));
 			sonidoDisparo->LoadAsync();
-			//---------------------------------------------------------------------------------------------------------------------		
+			//---------------------------------------------------------------------------------------------------------------------	
+			
+			try {
+				FileParametersMundo3* fileParams = new FileParametersMundo3();
+
+				int platX[5] = { 40, 290, 550 };
+				int platY[5] = { 270, 320, 300 };
+
+				fileParams->GuardarConfiguracion(600, 3, platX, platY);
+				delete fileParams;
+			}
+			catch (...) {}
+
+
+
 		}
+
+		Mundo3(){}
 
 	protected:
 
@@ -151,6 +170,11 @@ namespace Mundo3 {
 		Bitmap^ bmpUSB;
 		Bitmap^ bmpUSBinvertido;
 		Bitmap^ bmpFondo;
+
+		int tiempoTranscurrido = 0;
+		int ticksTimer = 0;
+		int danoTotalAlBoss = 0;
+		int idJugadorActual;
 
 #pragma region Windows Form Designer generated code
 
@@ -226,6 +250,13 @@ namespace Mundo3 {
 		//--------------------------------------------------------------
 
 		System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+
+			ticksTimer++;
+			if (ticksTimer >= 25) { // 25 ticks = 1 segundo (40ms * 25 = 1000ms)
+				tiempoTranscurrido++;
+				ticksTimer = 0;
+			}
+
 			//100 ms
 			Graphics^ gBuffer = buffer->Graphics;
 			//imagen de fondo
@@ -358,6 +389,7 @@ namespace Mundo3 {
 							if (balas[i]->getRect().IntersectsWith(destino)) {
 								balas->RemoveAt(i);
 								boss->setVida(boss->getVida() - 5);
+								danoTotalAlBoss += 5;
 								i--;
 							}
 						}
@@ -400,6 +432,19 @@ namespace Mundo3 {
 			if (acabar) {
 				timer1->Enabled = false;
 				timer2->Enabled = false;
+
+				try {
+					FileScores* fileScores = new FileScores();
+					fileScores->GuardarScoreMundo3(
+						danoTotalAlBoss,
+						jugador->getVida(),
+						tiempoTranscurrido,
+						idJugadorActual // PASAR EL ID
+					);
+					delete fileScores;
+				}
+				catch (...) {}
+
 				String^ mensaje;
 				if (jugador->getVida() <= 0) {
 					mensaje = "Has sido derrotado...";
@@ -408,6 +453,10 @@ namespace Mundo3 {
 					mensaje = "¡Has vencido al Boss!";
 				}
 				MessageBox::Show(mensaje, "Fin del combate");
+
+				FormScores^ formScores = gcnew FormScores();
+				formScores->ShowDialog();
+
 				this->Close();
 				return;
 			}

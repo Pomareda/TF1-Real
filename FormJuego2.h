@@ -23,9 +23,10 @@ namespace TF1 {
     public ref class MyForm : public System::Windows::Forms::Form
     {
     public:
-        MyForm(void)
+        MyForm(int idJugador)
         {
             InitializeComponent();
+            idJugadorActual = idJugador;
             jugador = gcnew JugadorIA(gcnew Bitmap("Imagenes/personajeIA.png"));
 			control = gcnew Controladora(gcnew Bitmap("Imagenes/posibleMapa2.jpg"), nullptr, this->ClientRectangle.Width, this->ClientRectangle.Height);
 			npc = gcnew Bitmap("Imagenes/idleHumano.png");
@@ -56,7 +57,20 @@ namespace TF1 {
             
             
             gameover = gcnew Game_Over();
+
+            try {
+                FileParametersMundo2* fileParams = new FileParametersMundo2();
+
+                int enemX[5] = { 15, 15, 400 };
+                int enemY[5] = { 2600, 1590, 2200 };
+
+                fileParams->GuardarConfiguracion(3, enemX, enemY);
+                delete fileParams;
+            }
+            catch (...) {}
         }
+
+        MyForm(){}
 
     protected:
         ~MyForm()
@@ -72,6 +86,8 @@ namespace TF1 {
 		Jugador^ npcHumano;
 		Controladora^ control;
 
+        int idJugadorActual;
+
         int scrollY;
         bool modoDebug = false;
         bool creandoPlataforma = false;
@@ -85,6 +101,8 @@ namespace TF1 {
     private: System::Windows::Forms::Label^ vidas;
 
            Bitmap^ npc;
+           int tiempoTranscurrido = 0;
+           int ticksTimer = 0;
 
 
 #pragma region Windows Form Designer generated code
@@ -152,6 +170,12 @@ namespace TF1 {
     private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
         if (this->IsDisposed || !this->IsHandleCreated) {
             return;
+        }
+
+        ticksTimer++;
+        if (ticksTimer >= 50) { // 50 ticks = 1 segundo (20ms * 50 = 1000ms)
+            tiempoTranscurrido++;
+            ticksTimer = 0;
         }
 
         if (pictureBox1->BackgroundImage == nullptr) {
@@ -287,11 +311,23 @@ namespace TF1 {
 
                 if (dialogoHumanoNpc->getGano()) {
                     this->timer1->Enabled = false;
+
+                    try {
+                        FileScores* fileScores = new FileScores();
+                        fileScores->GuardarScoreMundo2(
+                            jugador->getVidas(),
+                            tiempoTranscurrido,
+                            idJugadorActual // PASAR EL ID
+                        );
+                        delete fileScores;
+                    }
+                    catch (...) {}
+
                     this->Close();
                     //falta transisción de m2 a m3
                     //Transición1_2^ transicion = gcnew Transición1_2();
                     //transicion->ShowDialog();
-                    Mundo3::Mundo3^ m3 = gcnew Mundo3::Mundo3();                    
+                    Mundo3::Mundo3^ m3 = gcnew Mundo3::Mundo3(idJugadorActual);
                     m3->Show();
                 }
                 else {

@@ -130,6 +130,7 @@
     <ClInclude Include="Enemigo.h" />
     <ClInclude Include="EnemigoM2.h" />
     <ClInclude Include="Entidad.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="FormAliado.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -137,6 +138,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="FormJuego2.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="FormScores.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Game_Over.h">

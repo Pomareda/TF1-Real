@@ -4,6 +4,8 @@
 #include "Camara.h"
 #include "FormJuego2.h"
 #include "Transición1_2.h"
+#include "File.h"
+#include "FormScores.h"
 namespace TF1 {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -22,6 +24,16 @@ namespace TF1 {
 		MenuForm(void)
 		{
 			InitializeComponent();
+
+			try {
+				FileScores* fileScores = new FileScores();
+				idJugadorActual = fileScores->ObtenerProximoIDJugador();
+				delete fileScores;
+			}
+			catch (...) {
+				idJugadorActual = 1; 
+			}
+
 			g = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g, this->ClientRectangle);
@@ -60,6 +72,19 @@ namespace TF1 {
 			control->agregarRecurso(recurso3);
 			control->agregarRecurso(recurso4);
 			control->agregarRecurso(recurso5);
+
+			try {
+				FileParametersMundo1* fileParams = new FileParametersMundo1();
+
+				int enemX[10] = { 1760, 1300, 500, 2550, 490 };
+				int enemY[10] = { 100, 1510, 540, 1150, 1330 };
+				int recX[10] = { 700, 945, 1600, 2345, 1540 };
+				int recY[10] = { 300, 1050, 1370, 500, 100 };
+
+				fileParams->GuardarConfiguracion(5, 1, 5, enemX, enemY, recX, recY, 760, 1600);
+				delete fileParams;
+			}
+			catch (...) {}
 
 			cant_recursos = 0;
 			contadorPlataformas = 0;
@@ -121,6 +146,7 @@ namespace TF1 {
 		Game_Over^ gameover;
 		int contador = 0;
 		bool mostrarDialogoInicial;
+		int idJugadorActual;
 
 		//Sonidos
 		SoundPlayer^ sound;
@@ -270,15 +296,45 @@ namespace TF1 {
 			{
 					
 				this->timer1->Enabled = false;
+
+				try {
+					FileScores* fileScores = new FileScores();
+					fileScores->GuardarScoreMundo1(
+						jugadorPtr->getConfianza(),
+						control->getContestadaLaIA(),
+						control->getRecursosRecogidos(),
+						idJugadorActual // PASAR EL ID
+					);
+					delete fileScores;
+				}
+				catch (...) {}
+
+				
+
+
 				this->Close();
 				Transición1_2^ transicion = gcnew Transición1_2();
 				transicion->ShowDialog();
-				MyForm^ Mapa2 = gcnew MyForm();
+				MyForm^ Mapa2 = gcnew MyForm(idJugadorActual);
 				Mapa2->Show();
 			}
 			else if (jugadorPtr->getConfianza() <= 70 && control->contestadaLaIA()) {
 
 				this->timer1->Enabled = false;
+
+				try {
+					FileScores* fileScores = new FileScores();
+					fileScores->GuardarScoreMundo1(
+						jugadorPtr->getConfianza(),
+						control->getContestadaLaIA(),
+						control->getRecursosRecogidos(),
+						idJugadorActual
+					);
+					delete fileScores;
+				}
+				catch (...) {}
+
+
 				this->Close();
 				gameover->ShowDialog();
 
@@ -293,6 +349,23 @@ namespace TF1 {
 		}
 	
 	private: System::Void MenuForm_Load(System::Object^ sender, System::EventArgs^ e) {
+
+		try {
+			// Validar SCORES.bin
+			FileScores* fileScores = new FileScores();
+			if (!fileScores->ValidarIntegridad()) {
+				MessageBox::Show("Archivo SCORES.bin corrupto. Se creará uno nuevo.",
+					"Advertencia", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+				fileScores->LimpiarArchivo();
+			}
+			delete fileScores;
+		}
+		catch (runtime_error& e) {
+			MessageBox::Show(gcnew String(e.what()), "Error de Archivos",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+
+		
 	}
 
 	private: System::Void MenuForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {

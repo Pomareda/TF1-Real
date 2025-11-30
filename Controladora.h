@@ -28,6 +28,7 @@ private:
 	List<int>^ preguntas;
 	List<EnemigoM2^>^ enemigosm2;
 	int nivel_perdido;
+	int recursosRecogidosTotal;
 	//Camara^ camara;
 public:
 	Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, int altoVentana);
@@ -57,6 +58,7 @@ public:
 
 	int getContestadaLaIA();
 	int getTotalIAs();
+	int getRecursosRecogidos();
 
 	Minimapa^ getMinimap() { return minimapa; }
 	Jugador^ getJugador() { return jugador; }
@@ -71,6 +73,7 @@ inline Controladora::Controladora(Bitmap^ bmp, Camara^ cam, int anchoVentana, in
 	enemigosm2 = gcnew List<EnemigoM2^>();
 	camara = cam;
 	minimapa = gcnew Minimapa(0, 0);
+	recursosRecogidosTotal = 0;
 }
 
 
@@ -148,6 +151,7 @@ inline bool Controladora::colisionRecurso(Graphics^ g)
 			jugador->setConfianza(jugador->getConfianza() + 30);
 			recursos[i]->setActivo(false);
 			recursos->RemoveAt(i);
+			recursosRecogidosTotal++;
 		}
 
 	}
@@ -281,5 +285,10 @@ inline int Controladora::getContestadaLaIA() {
 }
 inline int Controladora::getTotalIAs() {
 	return enemigos->Count;
+}
+
+inline int Controladora::getRecursosRecogidos()
+{
+	return recursosRecogidosTotal;
 }
 
