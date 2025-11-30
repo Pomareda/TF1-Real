@@ -292,7 +292,7 @@ namespace TF1 {
 			cant_recursos++;
 			contador++;
 			
-			if (jugadorPtr->getConfianza() > 10 /*&& control->contestadaLaIA()*/ ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
+			if (jugadorPtr->getConfianza() > 500 /*&& control->contestadaLaIA()*/ ) //AQUI EL VALOR SE TIENE QUE CAMBIAR DESPUES
 			{
 					
 				this->timer1->Enabled = false;

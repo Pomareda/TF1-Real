@@ -2,6 +2,9 @@
 #include "Menu_Creditos.h"
 #include "FormJuego.h"
 #include "Menu_Instrucciones.h"
+
+using namespace System::Media;
+
 namespace TF1 {
 
 	using namespace System;
@@ -35,6 +38,20 @@ namespace TF1 {
 			boton_jugar->MakeTransparent(boton_jugar->GetPixel(0, 0));
 			boton_rules = gcnew Bitmap("Imagenes/Menu/Boton_Rules_verdadero.png");
 			boton_rules->MakeTransparent(boton_rules->GetPixel(0, 0));
+			
+			String^ rutaRelativa = System::Windows::Forms::Application::StartupPath + "\\..\\..\\Imagenes\\Menu\\SoundtrackMenu.wav";
+			String^ rutaAbsoluta = System::IO::Path::GetFullPath(rutaRelativa);
+
+			try {
+				//Cargar y Reproducir
+				musicaMenu = gcnew System::Media::SoundPlayer(rutaAbsoluta);
+				musicaMenu->PlayLooping();
+			}
+			catch (Exception^ e) {
+				//mostrará dónde intentó buscar para que verifiques
+				MessageBox::Show("No encuentro el audio en:\n" + rutaAbsoluta);
+			}
+
 		}
 
 	protected:
@@ -48,39 +65,30 @@ namespace TF1 {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Panel^ Panel_Inicio;
-	private: System::ComponentModel::IContainer^ components;
-	protected:
-
-	protected:
-
-	private:
-		/// <summary>
-		/// Variable del diseñador necesaria.
-		/// </summary>
+	private: 
+		System::Windows::Forms::Panel^ Panel_Inicio;
+		System::ComponentModel::IContainer^ components;
 
 		Bitmap^ bmpFondo1;
 		Bitmap^ bmpFondo2;
 		Bitmap^ bmpFondo3;
-		Graphics^ g;
-		BufferedGraphicsContext^ space;
 		Bitmap^ boton_credits;
 		Bitmap^ boton_jugar;
 		Bitmap^ boton_rules;
+
+		Graphics^ g;
+		
+		BufferedGraphicsContext^ space;
+		BufferedGraphics^ buffer;
+		
 		int contador_imagen = 1;
-	private: System::Windows::Forms::Timer^ timer1;
-	private: System::Windows::Forms::Button^ btn2;
-	private: System::Windows::Forms::Button^ btn3;
 
+		System::Windows::Forms::Timer^ timer1;
+		System::Windows::Forms::Button^ btn2;
+		System::Windows::Forms::Button^ btn3;
+		System::Windows::Forms::Button^ btn1;
 
-	private: System::Windows::Forms::Button^ btn1;
-
-
-
-
-
-
-		   BufferedGraphics^ buffer;
+		System::Media::SoundPlayer^ musicaMenu;
 
 #pragma region Windows Form Designer generated code
 		   /// <summary>
@@ -214,8 +222,13 @@ namespace TF1 {
 	private: System::Void Panel_Inicio_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (musicaMenu != nullptr) {
+			musicaMenu->Stop();
+		}
+		
 		MenuForm^ mundo1 = gcnew MenuForm();
 		mundo1->Show();
+
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 		Menu_Instrucciones^ Instrucciones = gcnew Menu_Instrucciones();

@@ -390,7 +390,7 @@ namespace Mundo3 {
 						for (int i = 0; i < balas->Count; i++) {
 							if (balas[i]->getRect().IntersectsWith(destino)) {
 								balas->RemoveAt(i);
-								boss->setVida(boss->getVida() - 500);
+								boss->setVida(boss->getVida() - 5);
 								danoTotalAlBoss += 5;
 								i--;
 							}
@@ -413,7 +413,6 @@ namespace Mundo3 {
 			for (int i = 0; i < balas->Count; i++) {
 				balas[i]->mover();
 				gBuffer->DrawImage(bmpBala, balas[i]->getX(), balas[i]->getY());
-				//falta colision con boss/partes del cuerpo para quitarle vida
 
 				if (!balas[i]->getActiva()) {
 					balas->RemoveAt(i);

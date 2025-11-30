@@ -54,8 +54,7 @@ namespace TF1 {
             bmpEnemigoM2 = gcnew Bitmap("Imagenes/EnemigoM2.png");
 
             dialogoHumanoNpc = gcnew FormHumanoNpc(npcHumano);
-            
-            
+
             try {
                 FileParametersMundo2* fileParams = new FileParametersMundo2();
 
@@ -66,6 +65,19 @@ namespace TF1 {
                 delete fileParams;
             }
             catch (...) {}
+
+            String^ rutaRelativa = System::Windows::Forms::Application::StartupPath + "\\..\\..\\Imagenes\\SoundtrackM2.wav";
+            String^ rutaAbsoluta = System::IO::Path::GetFullPath(rutaRelativa);
+
+            try {
+                //Cargar y Reproducir
+                musicaM2 = gcnew System::Media::SoundPlayer(rutaAbsoluta);
+                musicaM2->PlayLooping();
+            }
+            catch (Exception^ e) {
+                //mostrará dónde intentó buscar para que verifiques
+                MessageBox::Show("No encuentro el audio en:\n" + rutaAbsoluta);
+            }
         }
 
         MyForm(){}
@@ -96,12 +108,11 @@ namespace TF1 {
         FormHumanoNpc^ dialogoHumanoNpc;
         Game_Over2^ gameover;
         Bitmap^ bmpEnemigoM2;
-    private: System::Windows::Forms::Label^ vidas;
-
-           Bitmap^ npc;
-           int tiempoTranscurrido = 0;
-           int ticksTimer = 0;
-
+        System::Windows::Forms::Label^ vidas;
+        Bitmap^ npc;
+        int tiempoTranscurrido = 0;
+        int ticksTimer = 0;
+        System::Media::SoundPlayer^ musicaM2;
 
 #pragma region Windows Form Designer generated code
         void InitializeComponent(void)
@@ -305,7 +316,9 @@ namespace TF1 {
         case Keys::E:
             if (control->dialogoHumanoNpc(npcHumano, jugador)) {
                 timer1->Enabled = false;
-
+                if (musicaM2 != nullptr) {
+                    musicaM2->Stop();
+                }
                 dialogoHumanoNpc->ShowDialog();  
 
                 if (dialogoHumanoNpc->getGano()) {

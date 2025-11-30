@@ -139,17 +139,5 @@
     <ClCompile Include="Source.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Transición1_2.cpp">
-      <Filter>Formularios</Filter>
-    </ClCompile>
-    <ClCompile Include="Game_Over2.cpp">
-      <Filter>Formularios</Filter>
-    </ClCompile>
-    <ClCompile Include="Victoria.cpp">
-      <Filter>Formularios</Filter>
-    </ClCompile>
-    <ClCompile Include="Game_Over3.cpp">
-      <Filter>Formularios</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@ namespace TF1 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Media;
 
 	/// <summary>
 	/// Resumen de Victoria
@@ -18,9 +19,9 @@ namespace TF1 {
 		Victoria(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: agregar código de constructor aquí
-			//
+			sound = gcnew SoundPlayer("Imagenes/win.wav");
+			sound->Load();
+			sound->Play();
 		}
 
 	protected:
@@ -42,6 +43,8 @@ namespace TF1 {
 		/// Variable del diseñador necesaria.
 		/// </summary>
 		System::ComponentModel::Container^ components;
+		SoundPlayer^ sound;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -77,10 +80,13 @@ namespace TF1 {
 			this->Controls->Add(this->label1);
 			this->Name = L"Victoria";
 			this->Text = L"Victoria";
+			this->Load += gcnew System::EventHandler(this, &Victoria::Victoria_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+	private: System::Void Victoria_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
 	};
 }

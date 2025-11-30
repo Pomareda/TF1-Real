@@ -195,11 +195,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game_Over2.cpp" />
-    <ClCompile Include="Game_Over3.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Transición1_2.cpp" />
-    <ClCompile Include="Victoria.cpp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Barra_Confianza.resx">
