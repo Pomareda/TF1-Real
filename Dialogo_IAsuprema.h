@@ -144,9 +144,10 @@ namespace TF1 {
 			this->pnl_Suprema->BackColor = System::Drawing::Color::Transparent;
 			this->pnl_Suprema->Controls->Add(this->lblMensaje);
 			this->pnl_Suprema->Controls->Add(this->lblNombre);
-			this->pnl_Suprema->Location = System::Drawing::Point(42, 420);
+			this->pnl_Suprema->Location = System::Drawing::Point(32, 341);
+			this->pnl_Suprema->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pnl_Suprema->Name = L"pnl_Suprema";
-			this->pnl_Suprema->Size = System::Drawing::Size(1082, 120);
+			this->pnl_Suprema->Size = System::Drawing::Size(812, 98);
 			this->pnl_Suprema->TabIndex = 1;
 			// 
 			// lblMensaje
@@ -154,9 +155,10 @@ namespace TF1 {
 			this->lblMensaje->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblMensaje->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->lblMensaje->Location = System::Drawing::Point(30, 49);
+			this->lblMensaje->Location = System::Drawing::Point(22, 40);
+			this->lblMensaje->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblMensaje->Name = L"lblMensaje";
-			this->lblMensaje->Size = System::Drawing::Size(0, 29);
+			this->lblMensaje->Size = System::Drawing::Size(0, 24);
 			this->lblMensaje->TabIndex = 1;
 			// 
 			// lblNombre
@@ -165,9 +167,10 @@ namespace TF1 {
 			this->lblNombre->BackColor = System::Drawing::Color::Transparent;
 			this->lblNombre->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblNombre->ForeColor = System::Drawing::Color::Crimson;
-			this->lblNombre->Location = System::Drawing::Point(30, 20);
+			this->lblNombre->Location = System::Drawing::Point(22, 16);
+			this->lblNombre->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblNombre->Name = L"lblNombre";
-			this->lblNombre->Size = System::Drawing::Size(148, 29);
+			this->lblNombre->Size = System::Drawing::Size(119, 24);
 			this->lblNombre->TabIndex = 0;
 			this->lblNombre->Text = L"IA Suprema";
 			// 
@@ -186,9 +189,10 @@ namespace TF1 {
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::Transparent;
-			this->panel1->Location = System::Drawing::Point(1143, 1);
+			this->panel1->Location = System::Drawing::Point(857, 1);
+			this->panel1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(16, 569);
+			this->panel1->Size = System::Drawing::Size(12, 462);
 			this->panel1->TabIndex = 2;
 			// 
 			// label1
@@ -196,24 +200,27 @@ namespace TF1 {
 			this->label1->AutoSize = true;
 			this->label1->BackColor = System::Drawing::Color::Transparent;
 			this->label1->ForeColor = System::Drawing::SystemColors::ButtonFace;
-			this->label1->Location = System::Drawing::Point(903, 543);
+			this->label1->Location = System::Drawing::Point(677, 441);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(221, 16);
+			this->label1->Size = System::Drawing::Size(172, 13);
 			this->label1->TabIndex = 3;
 			this->label1->Text = L"Presiona ESC para saltar el diálogo";
 			// 
 			// Dialogo_IAsuprema
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(1154, 566);
+			this->ClientSize = System::Drawing::Size(866, 460);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->pnl_Suprema);
 			this->DoubleBuffered = true;
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Dialogo_IAsuprema";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Dialogo_IAsuprema";
 			this->Load += gcnew System::EventHandler(this, &Dialogo_IAsuprema::Dialogo_IAsuprema_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Dialogo_IAsuprema::Dialogo_IAsuprema_KeyDown);

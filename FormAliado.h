@@ -92,9 +92,10 @@ namespace TF1 {
 			// 
 			this->pnlAliado->Controls->Add(this->lblMensaje);
 			this->pnlAliado->Controls->Add(this->lblNombre);
-			this->pnlAliado->Location = System::Drawing::Point(0, 472);
+			this->pnlAliado->Location = System::Drawing::Point(0, 384);
+			this->pnlAliado->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pnlAliado->Name = L"pnlAliado";
-			this->pnlAliado->Size = System::Drawing::Size(932, 240);
+			this->pnlAliado->Size = System::Drawing::Size(699, 195);
 			this->pnlAliado->TabIndex = 0;
 			// 
 			// lblMensaje
@@ -102,9 +103,10 @@ namespace TF1 {
 			this->lblMensaje->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblMensaje->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->lblMensaje->Location = System::Drawing::Point(30, 49);
+			this->lblMensaje->Location = System::Drawing::Point(22, 40);
+			this->lblMensaje->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblMensaje->Name = L"lblMensaje";
-			this->lblMensaje->Size = System::Drawing::Size(0, 29);
+			this->lblMensaje->Size = System::Drawing::Size(0, 24);
 			this->lblMensaje->TabIndex = 1;
 			// 
 			// lblNombre
@@ -113,9 +115,10 @@ namespace TF1 {
 			this->lblNombre->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblNombre->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(128)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)));
-			this->lblNombre->Location = System::Drawing::Point(30, 20);
+			this->lblNombre->Location = System::Drawing::Point(22, 16);
+			this->lblNombre->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblNombre->Name = L"lblNombre";
-			this->lblNombre->Size = System::Drawing::Size(52, 29);
+			this->lblNombre->Size = System::Drawing::Size(43, 24);
 			this->lblNombre->TabIndex = 0;
 			this->lblNombre->Text = L"\?\?\?";
 			// 
@@ -125,15 +128,17 @@ namespace TF1 {
 			// 
 			// FormAliado
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Control;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(932, 703);
+			this->ClientSize = System::Drawing::Size(699, 571);
 			this->Controls->Add(this->pnlAliado);
 			this->DoubleBuffered = true;
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"FormAliado";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"FormAliado";
 			this->Click += gcnew System::EventHandler(this, &FormAliado::FormAliado_Click);
 			this->pnlAliado->ResumeLayout(false);

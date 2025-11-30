@@ -147,9 +147,10 @@ private: System::Windows::Forms::Label^ label3;
 			this->pnl_Suprema->BackColor = System::Drawing::Color::Transparent;
 			this->pnl_Suprema->Controls->Add(this->lblMensaje);
 			this->pnl_Suprema->Controls->Add(this->lblNombre);
-			this->pnl_Suprema->Location = System::Drawing::Point(1, 356);
+			this->pnl_Suprema->Location = System::Drawing::Point(1, 289);
+			this->pnl_Suprema->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pnl_Suprema->Name = L"pnl_Suprema";
-			this->pnl_Suprema->Size = System::Drawing::Size(1082, 134);
+			this->pnl_Suprema->Size = System::Drawing::Size(812, 109);
 			this->pnl_Suprema->TabIndex = 2;
 			// 
 			// lblMensaje
@@ -157,9 +158,10 @@ private: System::Windows::Forms::Label^ label3;
 			this->lblMensaje->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblMensaje->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->lblMensaje->Location = System::Drawing::Point(30, 49);
+			this->lblMensaje->Location = System::Drawing::Point(22, 40);
+			this->lblMensaje->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblMensaje->Name = L"lblMensaje";
-			this->lblMensaje->Size = System::Drawing::Size(0, 29);
+			this->lblMensaje->Size = System::Drawing::Size(0, 24);
 			this->lblMensaje->TabIndex = 1;
 			// 
 			// lblNombre
@@ -168,9 +170,10 @@ private: System::Windows::Forms::Label^ label3;
 			this->lblNombre->BackColor = System::Drawing::Color::Transparent;
 			this->lblNombre->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblNombre->ForeColor = System::Drawing::Color::Crimson;
-			this->lblNombre->Location = System::Drawing::Point(30, 20);
+			this->lblNombre->Location = System::Drawing::Point(22, 16);
+			this->lblNombre->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblNombre->Name = L"lblNombre";
-			this->lblNombre->Size = System::Drawing::Size(148, 29);
+			this->lblNombre->Size = System::Drawing::Size(119, 24);
 			this->lblNombre->TabIndex = 0;
 			this->lblNombre->Text = L"IA Suprema";
 			// 
@@ -190,9 +193,10 @@ private: System::Windows::Forms::Label^ label3;
 			this->label1->AutoSize = true;
 			this->label1->BackColor = System::Drawing::Color::Transparent;
 			this->label1->ForeColor = System::Drawing::SystemColors::ButtonFace;
-			this->label1->Location = System::Drawing::Point(851, 493);
+			this->label1->Location = System::Drawing::Point(638, 401);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(221, 16);
+			this->label1->Size = System::Drawing::Size(172, 13);
 			this->label1->TabIndex = 4;
 			this->label1->Text = L"Presiona ESC para saltar el diálogo";
 			// 
@@ -201,23 +205,26 @@ private: System::Windows::Forms::Label^ label3;
 			this->label3->AutoSize = true;
 			this->label3->BackColor = System::Drawing::Color::Transparent;
 			this->label3->ForeColor = System::Drawing::SystemColors::ButtonFace;
-			this->label3->Location = System::Drawing::Point(448, 263);
+			this->label3->Location = System::Drawing::Point(336, 214);
+			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(0, 16);
+			this->label3->Size = System::Drawing::Size(0, 13);
 			this->label3->TabIndex = 6;
 			// 
 			// Transición1_2
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(1084, 510);
+			this->ClientSize = System::Drawing::Size(813, 414);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pnl_Suprema);
 			this->DoubleBuffered = true;
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Transición1_2";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Transición1_2";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Transición1_2::Transición1_2_KeyDown);
 			this->pnl_Suprema->ResumeLayout(false);

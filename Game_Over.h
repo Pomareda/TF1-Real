@@ -169,17 +169,19 @@ private: System::Windows::Forms::Button^ button1;
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::Transparent;
-			this->panel1->Location = System::Drawing::Point(8, 498);
+			this->panel1->Location = System::Drawing::Point(6, 405);
+			this->panel1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(1184, 17);
+			this->panel1->Size = System::Drawing::Size(888, 14);
 			this->panel1->TabIndex = 0;
 			// 
 			// panel2
 			// 
 			this->panel2->BackColor = System::Drawing::Color::Transparent;
-			this->panel2->Location = System::Drawing::Point(1174, -4);
+			this->panel2->Location = System::Drawing::Point(880, -3);
+			this->panel2->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(15, 505);
+			this->panel2->Size = System::Drawing::Size(11, 410);
 			this->panel2->TabIndex = 1;
 			// 
 			// timer2
@@ -193,9 +195,10 @@ private: System::Windows::Forms::Button^ button1;
 			this->pnl_Suprema->BackColor = System::Drawing::Color::Transparent;
 			this->pnl_Suprema->Controls->Add(this->lblMensaje);
 			this->pnl_Suprema->Controls->Add(this->lblNombre);
-			this->pnl_Suprema->Location = System::Drawing::Point(42, 358);
+			this->pnl_Suprema->Location = System::Drawing::Point(32, 291);
+			this->pnl_Suprema->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->pnl_Suprema->Name = L"pnl_Suprema";
-			this->pnl_Suprema->Size = System::Drawing::Size(1082, 134);
+			this->pnl_Suprema->Size = System::Drawing::Size(812, 109);
 			this->pnl_Suprema->TabIndex = 2;
 			this->pnl_Suprema->Visible = false;
 			// 
@@ -204,9 +207,10 @@ private: System::Windows::Forms::Button^ button1;
 			this->lblMensaje->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblMensaje->ForeColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->lblMensaje->Location = System::Drawing::Point(30, 49);
+			this->lblMensaje->Location = System::Drawing::Point(22, 40);
+			this->lblMensaje->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblMensaje->Name = L"lblMensaje";
-			this->lblMensaje->Size = System::Drawing::Size(0, 29);
+			this->lblMensaje->Size = System::Drawing::Size(0, 24);
 			this->lblMensaje->TabIndex = 1;
 			// 
 			// lblNombre
@@ -215,18 +219,20 @@ private: System::Windows::Forms::Button^ button1;
 			this->lblNombre->BackColor = System::Drawing::Color::Transparent;
 			this->lblNombre->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Bold));
 			this->lblNombre->ForeColor = System::Drawing::Color::Crimson;
-			this->lblNombre->Location = System::Drawing::Point(30, 20);
+			this->lblNombre->Location = System::Drawing::Point(22, 16);
+			this->lblNombre->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lblNombre->Name = L"lblNombre";
-			this->lblNombre->Size = System::Drawing::Size(148, 29);
+			this->lblNombre->Size = System::Drawing::Size(119, 24);
 			this->lblNombre->TabIndex = 0;
 			this->lblNombre->Text = L"IA Suprema";
 			this->lblNombre->Visible = false;
 			// 
 			// nivel1
 			// 
-			this->nivel1->Location = System::Drawing::Point(894, 165);
+			this->nivel1->Location = System::Drawing::Point(670, 134);
+			this->nivel1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->nivel1->Name = L"nivel1";
-			this->nivel1->Size = System::Drawing::Size(176, 71);
+			this->nivel1->Size = System::Drawing::Size(132, 58);
 			this->nivel1->TabIndex = 4;
 			this->nivel1->Text = L"nivel1";
 			this->nivel1->UseVisualStyleBackColor = true;
@@ -235,9 +241,10 @@ private: System::Windows::Forms::Button^ button1;
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(93, 165);
+			this->button1->Location = System::Drawing::Point(70, 134);
+			this->button1->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(176, 71);
+			this->button1->Size = System::Drawing::Size(132, 58);
 			this->button1->TabIndex = 5;
 			this->button1->Text = L"button1";
 			this->button1->UseVisualStyleBackColor = true;
@@ -246,11 +253,11 @@ private: System::Windows::Forms::Button^ button1;
 			// 
 			// Game_Over
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->ClientSize = System::Drawing::Size(1187, 513);
+			this->ClientSize = System::Drawing::Size(890, 417);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->nivel1);
 			this->Controls->Add(this->pnl_Suprema);
@@ -258,7 +265,9 @@ private: System::Windows::Forms::Button^ button1;
 			this->Controls->Add(this->panel1);
 			this->DoubleBuffered = true;
 			this->ImeMode = System::Windows::Forms::ImeMode::On;
+			this->Margin = System::Windows::Forms::Padding(2, 2, 2, 2);
 			this->Name = L"Game_Over";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Game_Over";
 			this->pnl_Suprema->ResumeLayout(false);
 			this->pnl_Suprema->PerformLayout();

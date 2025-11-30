@@ -205,6 +205,7 @@ namespace Mundo3 {
 			this->ClientSize = System::Drawing::Size(782, 503);
 			this->Name = L"Mundo3";
 			this->RightToLeftLayout = true;
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Mundo3";
 			this->Load += gcnew System::EventHandler(this, &Mundo3::Mundo3_Load);
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Mundo3::Mundo3_KeyDown);

@@ -133,9 +133,8 @@ namespace TF1 {
             // pictureBox1
             // 
             this->pictureBox1->Location = System::Drawing::Point(0, -1);
-            this->pictureBox1->Margin = System::Windows::Forms::Padding(4);
             this->pictureBox1->Name = L"pictureBox1";
-            this->pictureBox1->Size = System::Drawing::Size(668, 673);
+            this->pictureBox1->Size = System::Drawing::Size(501, 547);
             this->pictureBox1->TabIndex = 0;
             this->pictureBox1->TabStop = false;
             this->pictureBox1->Click += gcnew System::EventHandler(this, &MyForm::pictureBox1_Click);
@@ -147,24 +146,23 @@ namespace TF1 {
             // 
             this->vidas->AutoSize = true;
             this->vidas->BackColor = System::Drawing::Color::Transparent;
-            this->vidas->Location = System::Drawing::Point(492, 41);
-            this->vidas->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
+            this->vidas->Location = System::Drawing::Point(369, 33);
             this->vidas->Name = L"vidas";
-            this->vidas->Size = System::Drawing::Size(60, 16);
+            this->vidas->Size = System::Drawing::Size(51, 13);
             this->vidas->TabIndex = 1;
             this->vidas->Text = L"VIDAS: 5";
             // 
             // MyForm
             // 
-            this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+            this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(664, 670);
+            this->ClientSize = System::Drawing::Size(498, 544);
             this->Controls->Add(this->vidas);
             this->Controls->Add(this->pictureBox1);
             this->DoubleBuffered = true;
-            this->Margin = System::Windows::Forms::Padding(4);
             this->MaximizeBox = false;
             this->Name = L"MyForm";
+            this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
             this->Text = L"Prueba Salto";
             this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
             this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
