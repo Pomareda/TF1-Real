@@ -23,7 +23,7 @@ private:
 
 public:
     JugadorIA(Bitmap^ bmp) {
-        x = 50; y = 50;
+        x = 230; y = 2800;
         dx = 10;
         velY = 0;
         gravedad = 1.5;
