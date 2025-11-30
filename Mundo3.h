@@ -9,7 +9,8 @@
 #include "USB.h"
 #include "File.h"
 #include "FormScores.h"
-
+#include "Game_Over3.h"
+#include "Victoria.h"
 
 namespace Mundo3 {
 
@@ -170,6 +171,7 @@ namespace Mundo3 {
 		Bitmap^ bmpUSB;
 		Bitmap^ bmpUSBinvertido;
 		Bitmap^ bmpFondo;
+		Game_Over3^ gameOver;
 
 		int tiempoTranscurrido = 0;
 		int ticksTimer = 0;
@@ -388,7 +390,7 @@ namespace Mundo3 {
 						for (int i = 0; i < balas->Count; i++) {
 							if (balas[i]->getRect().IntersectsWith(destino)) {
 								balas->RemoveAt(i);
-								boss->setVida(boss->getVida() - 5);
+								boss->setVida(boss->getVida() - 500);
 								danoTotalAlBoss += 5;
 								i--;
 							}
@@ -429,9 +431,19 @@ namespace Mundo3 {
 		
 		System::Void timer2_Tick(System::Object^ sender, System::EventArgs^ e) {
 			// 200 ms
+			if (jugador->getVida() <= 0) {
+				jugador->setIDY(9); //cambio sprite a muerto
+				acabar = true;
+
+			}
+			else if (boss->getVida() <= 0) {
+				acabar = true;
+			}
+
 			if (acabar) {
 				timer1->Enabled = false;
 				timer2->Enabled = false;
+				mciSendStringA("stop MiMusica", NULL, 0, NULL);
 
 				try {
 					FileScores* fileScores = new FileScores();
@@ -445,15 +457,24 @@ namespace Mundo3 {
 				}
 				catch (...) {}
 
-				String^ mensaje;
 				if (jugador->getVida() <= 0) {
-					mensaje = "Has sido derrotado...";
+					gameOver = gcnew Game_Over3();
+					gameOver->ShowDialog();
+					if (gameOver->GetCondicion() == 1)
+					{
+						this->Close();
+						Mundo3^ mundo3 = gcnew Mundo3(idJugadorActual);
+						mundo3->Show();
+					}
+					else {
+						this->Close();
+					}
 				}
 				else {
-					mensaje = "¡Has vencido al Boss!";
+					Victoria^ vic = gcnew Victoria();
+					this->Close();
+					vic->ShowDialog();
 				}
-				MessageBox::Show(mensaje, "Fin del combate");
-
 				FormScores^ formScores = gcnew FormScores();
 				formScores->ShowDialog();
 
@@ -519,14 +540,7 @@ namespace Mundo3 {
 				cooldownSpawnUSB = 5;
 
 				//condiciones de victoria/derrota
-				if (jugador->getVida() <= 0) {
-					jugador->setIDY(9); //cambio sprite a muerto
-					acabar = true;
-
-				}
-				else if (boss->getVida() <= 0) {
-					acabar = true;
-				}
+				
 			}
 		}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {

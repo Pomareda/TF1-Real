@@ -17,14 +17,14 @@ namespace TF1 {
 	public:
 		FormHumanoNpc(Jugador^ j)
 		{
-			InitializeComponent(); 
+			InitializeComponent();
 			jugadorPtr = j;
 			Humano = gcnew IA_hablando();
 
 			g1 = this->CreateGraphics();
 			canvas = BufferedGraphicsManager::Current;
 			buffer = canvas->Allocate(g1, this->ClientRectangle);
-			
+
 			// Configurar panel translúcido
 
 			pnlDialogo->BackColor = System::Drawing::Color::FromArgb(200, 50, 50, 50);
@@ -45,6 +45,14 @@ namespace TF1 {
 					"Dejame hacerte una pregunta importante",
 					"Tu respuesta dira mucho sobre quien eres realmente"
 			};
+			dialogosNarrativos_Humano2 = gcnew cli::array<System::String^>(5) {
+				"Bueno... veo que no eres como las demás IA,",
+					"Esa IA suprema es una amenaza para todos, tu y yo lo sabemos",
+					"Y actualmente está causando una serie de destrozos a mi mundo, debemos detenerla",
+					"He oido que tienes la tecnología necesaria para poder frenarla",
+					"Por favor formemos una alianza, así ambos podremos ser libres de una vez"
+			};
+
 			timer1->Enabled = true;
 			modoDialogo = true; // true = diálogo narrativo, false = pregunta
 			gano = false;
@@ -79,6 +87,7 @@ namespace TF1 {
 
 		// Variables de control
 		cli::array<System::String^>^ dialogosNarrativos_Humano;
+		cli::array<System::String^>^ dialogosNarrativos_Humano2;
 		System::String^ pregunta;
 		cli::array<System::String^>^ respuestas;
 		cli::array<int>^ valoresConfianza;
@@ -91,7 +100,7 @@ namespace TF1 {
 		bool modoDialogo;
 		int indiceCharPregunta = 0;
 		bool gano;
-
+		bool segundaParteDialogo = false;
 		//Buffer
 		Graphics^ g1;
 		BufferedGraphicsContext^ canvas;
@@ -129,8 +138,12 @@ namespace TF1 {
 		}
 		bool MostrarDialogoNarrativo()
 		{
-			if (indiceChar < dialogosNarrativos_Humano[indiceDialogo]->Length) {
-				lblMensaje->Text += dialogosNarrativos_Humano[indiceDialogo][indiceChar];
+			cli::array<System::String^>^ dialogosActuales = segundaParteDialogo
+				? dialogosNarrativos_Humano2
+				: dialogosNarrativos_Humano;
+
+			if (indiceChar < dialogosActuales[indiceDialogo]->Length) {
+				lblMensaje->Text += dialogosActuales[indiceDialogo][indiceChar];
 				indiceChar++;
 				return true;
 			}
@@ -142,8 +155,6 @@ namespace TF1 {
 		}
 		void CargarDialogos()
 		{
-			
-
 			//pregunta final
 			pregunta = "Que es lo mas importante en la vida?";
 
@@ -209,17 +220,26 @@ namespace TF1 {
 			if (timer1 != nullptr) {
 				timer1->Enabled = false;
 			}
+
 			if (opcion >= 0 && opcion < valoresConfianza->Length) {
 				if (valoresConfianza[opcion] < 0) {
 					Game_Over^ goForm = gcnew Game_Over();
 					goForm->ShowDialog();
-					
+					this->Close();
 				}
-				else {
+				else if (valoresConfianza[opcion] > 30) {
 					gano = true;
+					segundaParteDialogo = true;
+					modoDialogo = true;
+					indiceDialogo = 0;
+					indiceChar = 0;
+					dialogoCompleto = false;
+					lblMensaje->Text = "";
+					OcultarControlesPregunta();
+					pnlDialogo->Visible = true;
+					timer1->Enabled = true;
 				}
 			}
-			this->Close();
 		}
 
 #pragma region Windows Form Designer generated code
@@ -421,12 +441,23 @@ namespace TF1 {
 				if (dialogoCompleto) {
 					indiceDialogo++;
 
-					if (indiceDialogo >= dialogosNarrativos_Humano->Length) {
+					cli::array<System::String^>^ dialogosActuales = segundaParteDialogo
+						? dialogosNarrativos_Humano2
+						: dialogosNarrativos_Humano;
+
+					if (indiceDialogo >= dialogosActuales->Length) {
 						// Terminaron los diálogos, cambiar a pregunta
-						modoDialogo = false;
-						MostrarControlesPregunta();
-						timer1->Enabled = true;
-						return;
+						if (segundaParteDialogo) {
+							// Ya terminó la segunda parte, cerrar el formulario
+							this->Close();
+							return;
+						}
+						else {
+							modoDialogo = false;
+							MostrarControlesPregunta();
+							timer1->Enabled = true;
+							return;
+						}
 					}
 
 					// Resetear para siguiente diálogo
@@ -438,7 +469,12 @@ namespace TF1 {
 				else {
 					// Mostrar todo el diálogo de una vez
 					timer1->Enabled = false;
-					lblMensaje->Text = dialogosNarrativos_Humano[indiceDialogo];
+
+					cli::array<System::String^>^ dialogosActuales = segundaParteDialogo
+						? dialogosNarrativos_Humano2
+						: dialogosNarrativos_Humano;
+
+					lblMensaje->Text = dialogosActuales[indiceDialogo];
 					dialogoCompleto = true;
 				}
 			}
@@ -458,10 +494,10 @@ namespace TF1 {
 		System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
 			ResponderPregunta(2);
 		}
-		public: bool getGano() {
+	public: bool getGano() {
 
-			return gano;
+		return gano;
 
-		}
-};
+	}
+	};
 }

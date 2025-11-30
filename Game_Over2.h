@@ -340,7 +340,7 @@ private: System::Windows::Forms::Button^ button1;
 		this->Close();
 	}
 	private: System::Void nivel1_Click(System::Object^ sender, System::EventArgs^ e) {
-		condicion = 1;
+		condicion = 2;
 		this->Close();
 	}
 	public:  void SetCondicion(int c) {

@@ -122,6 +122,18 @@
     <ClInclude Include="Bala.h">
       <Filter>Mundo3</Filter>
     </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="FormScores.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Victoria.h">
+      <Filter>Formularios</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_Over3.h">
+      <Filter>Formularios</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -131,6 +143,12 @@
       <Filter>Formularios</Filter>
     </ClCompile>
     <ClCompile Include="Game_Over2.cpp">
+      <Filter>Formularios</Filter>
+    </ClCompile>
+    <ClCompile Include="Victoria.cpp">
+      <Filter>Formularios</Filter>
+    </ClCompile>
+    <ClCompile Include="Game_Over3.cpp">
       <Filter>Formularios</Filter>
     </ClCompile>
   </ItemGroup>

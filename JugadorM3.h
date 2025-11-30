@@ -25,7 +25,7 @@ public:
         idx = idy = 0;
         ancho = bmp->Width / 3;
         alto = bmp->Height / 10;
-        Ultima = Ninguna;
+        Ultima = Derecha;
         izq = der = false;
         enSuelo = false;
         disparando = false;

@@ -338,7 +338,7 @@ namespace TF1 {
 				this->Close();
 				gameover->ShowDialog();
 
-				if ( gameover->GetCondicion()) {
+				if (gameover->GetCondicion()) {
 					MenuForm^ nuevo = gcnew MenuForm();
 					nuevo->Show();
 				}

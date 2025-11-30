@@ -113,6 +113,9 @@ namespace TF1 {
 		   bool fondoCambiado = false;
 
 	private: System::Windows::Forms::Panel^ panel1;
+	private: System::Windows::Forms::Label^ label1;
+private: System::Windows::Forms::Label^ label3;
+
 		   Bitmap^ bmpFondo_IA_Guiño;
 	private:
 		/// <summary>
@@ -134,6 +137,8 @@ namespace TF1 {
 			this->lblNombre = (gcnew System::Windows::Forms::Label());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->timer2 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->pnl_Suprema->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -142,7 +147,7 @@ namespace TF1 {
 			this->pnl_Suprema->BackColor = System::Drawing::Color::Transparent;
 			this->pnl_Suprema->Controls->Add(this->lblMensaje);
 			this->pnl_Suprema->Controls->Add(this->lblNombre);
-			this->pnl_Suprema->Location = System::Drawing::Point(1, 364);
+			this->pnl_Suprema->Location = System::Drawing::Point(1, 356);
 			this->pnl_Suprema->Name = L"pnl_Suprema";
 			this->pnl_Suprema->Size = System::Drawing::Size(1082, 134);
 			this->pnl_Suprema->TabIndex = 2;
@@ -180,6 +185,27 @@ namespace TF1 {
 			this->timer2->Interval = 80;
 			this->timer2->Tick += gcnew System::EventHandler(this, &Transición1_2::timer2_Tick);
 			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->BackColor = System::Drawing::Color::Transparent;
+			this->label1->ForeColor = System::Drawing::SystemColors::ButtonFace;
+			this->label1->Location = System::Drawing::Point(851, 493);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(221, 16);
+			this->label1->TabIndex = 4;
+			this->label1->Text = L"Presiona ESC para saltar el diálogo";
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->BackColor = System::Drawing::Color::Transparent;
+			this->label3->ForeColor = System::Drawing::SystemColors::ButtonFace;
+			this->label3->Location = System::Drawing::Point(448, 263);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(0, 16);
+			this->label3->TabIndex = 6;
+			// 
 			// Transición1_2
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -187,6 +213,8 @@ namespace TF1 {
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(1084, 510);
+			this->Controls->Add(this->label3);
+			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pnl_Suprema);
 			this->DoubleBuffered = true;
 			this->Name = L"Transición1_2";
@@ -195,6 +223,7 @@ namespace TF1 {
 			this->pnl_Suprema->ResumeLayout(false);
 			this->pnl_Suprema->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -262,7 +291,12 @@ namespace TF1 {
 		Reseteo();
 	}
 	private: System::Void Transición1_2_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-
+		switch (e->KeyCode)
+		{
+		case Keys::Escape:
+			cronometro += 1000;
+			break;
+		}
 
 	}
 	};

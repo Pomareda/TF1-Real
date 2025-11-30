@@ -56,8 +56,6 @@ namespace TF1 {
             dialogoHumanoNpc = gcnew FormHumanoNpc(npcHumano);
             
             
-            gameover = gcnew Game_Over();
-
             try {
                 FileParametersMundo2* fileParams = new FileParametersMundo2();
 
@@ -96,7 +94,7 @@ namespace TF1 {
         int contadorPlataformas = 0;
         System::Collections::Generic::List<PlataformaM2^>^ plataformas;
         FormHumanoNpc^ dialogoHumanoNpc;
-        Game_Over^ gameover;
+        Game_Over2^ gameover;
         Bitmap^ bmpEnemigoM2;
     private: System::Windows::Forms::Label^ vidas;
 
@@ -259,10 +257,11 @@ namespace TF1 {
             delete Canvas;
             delete Espacio;
             delete G;
+            this->Close();
+            gameover = gcnew Game_Over2();
             gameover->ShowDialog();
             if (gameover->GetCondicion() == 2) {
-                this->Close();
-                MyForm^ nuevo = gcnew MyForm();
+                MyForm^ nuevo = gcnew MyForm(idJugadorActual);
                 nuevo->Show();
             }
             else {
